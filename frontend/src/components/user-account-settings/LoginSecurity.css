@@ -1,0 +1,131 @@
+.login-security {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Inria Serif", serif;
+}
+
+.login-sec-card-back-button {
+  align-self: flex-start;
+  margin-left: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-sec-card {
+  background-color: #ffe6cc;
+  border-radius: 20px; 
+  padding: 40px;
+  width: 500px;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+
+}
+
+.login-sec-card-field {
+  display: flex;
+  justify-content: center; /* Centers the elements inside the field */
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  position: relative; /* Keeps input and label positioning intact */
+  padding: 10px;
+  height: 50px;
+}
+
+.login-sec-card-label {
+  font-weight: bold;
+  font-size: 18px;
+  width: 40%; 
+  height: 50px;
+  position: absolute;
+  left: 10%; /* Adjust this based on desired label position */
+  transform: translateX(-50%);
+}
+
+.login-sec-card-value {
+  font-size: 16px;
+  color: #555;
+  width: 50%;
+  padding-left: 45%; /* Adjust to create space for label */
+  height: 50px;
+}
+
+.login-sec-card-edit-input {
+  font-size: 14px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 40%;
+  outline: none;
+  font-family: "Inria Serif", serif;
+  display: none; /* Hide input by default */
+  position: absolute;
+  left: 45%; /* Adjust to position input relative to the field */
+  transform: translateX(-50%);
+  transform: translateY(-50%);
+}
+
+.login-sec-card-edit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: "Inria Serif", serif;
+  position: absolute;
+  left: 90%; /* Adjust the button position */
+  transform: translateX(-50%);
+  transform: translateY(-50%);
+  margin-left: 10px;
+}
+
+.login-sec-card-edit-button:hover {
+  background-color: #0056b3;
+}
+
+.login-sec-card-save-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-family: "Inria Serif", serif;
+  position: absolute;
+  left: 90%; /* Centers the save button */
+  transform: translateX(-50%);
+  transform: translateY(-50%);
+}
+
+.login-sec-card-save-button:hover {
+  background-color: #218838;
+}
+
+/* Ensure that the input field is only shown when needed */
+.login-sec-card-field .login-sec-card-edit-input.show {
+  display: block;
+}
+.logout-button {
+  background-color: #d67b24; /* Warm orange */
+  font-family: "Inria Serif", serif;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.logout-button:hover {
+  background-color: #b5641a; /* Slightly darker orange */
+}

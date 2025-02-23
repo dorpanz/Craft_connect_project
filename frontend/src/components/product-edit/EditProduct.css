@@ -1,0 +1,21 @@
+.image-upload-section {
+    margin-top: 20px;
+  }
+  
+  .image-upload-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .image-upload-input {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .image-preview {
+    margin-top: 10px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+  

@@ -1,0 +1,63 @@
+.sell-sec-cont{
+    margin-top: 60px;
+    display: flex;
+    font-family: "Inria Serif", serif;
+    height: 350px;
+}
+.sell-sec {
+    display: flex;
+    text-align: center;
+    background-color: rgba(255, 225, 182, 1);
+}
+
+.sell-pic img{
+    height: 350px;
+    width: 600px;
+    object-fit: cover;
+}
+
+.sell-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.sell-info-title {
+    font-size: 24px;
+    font-weight: 900;
+    color:rgba(42, 76, 76, 1); 
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.sell-info-desc {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+.sell-try-cont{
+    text-align: center;
+}
+.sell-try {
+    text-decoration: none;
+    font-size: 18px;
+    padding: 14px 28px;
+    background-color: rgba(42, 76, 76, 1); 
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: "Inria Serif", serif;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sell-try:hover {
+    background-color: rgb(73, 113, 113); 
+    transform: scale(1.1); 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); 
+}

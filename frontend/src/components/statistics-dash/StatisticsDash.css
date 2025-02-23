@@ -1,0 +1,154 @@
+.statistics-dash{
+    width: 80%;
+    margin: auto;
+    font-family: "Inria Serif", serif;
+}
+.statistics-title{
+    display: flex;
+    margin-top: 30px;
+
+    align-items: center;
+}
+
+.statistics-title p{
+    font-size: 22px;
+    margin-left: 10px;
+    letter-spacing: 2px;
+}
+
+.stats-graph-1{
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+} 
+.green-square{
+    background-color: rgba(42, 76, 76, 1);
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+}
+.stats-graph-1-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-graph-1-item-info{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.stats-graph-1-item-info-desc{
+    font-weight: 600;
+}
+
+.stats-graph-1-item-info-title,
+.stats-graph-1-item-info-desc {
+    margin: 0; 
+}
+
+.top-items{
+    display: flex;
+    margin-bottom: 20px;
+}
+.top-items-img{
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.top-items-title{
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.top-items-desc{
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+
+
+
+
+.stats-graph-2{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 30px;
+}
+.green-square-2{
+    background-color: rgba(42, 76, 76, 1);
+    height: 70px;
+    width: 70px;
+    border-radius: 10px;
+    
+}
+.stats-graph-2-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-graph-2-item-info{
+    margin-left: 10px;
+    margin-right: 10px;
+    height:70px;
+}
+
+.stats-graph-2-item-info-desc{
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.stats-graph-2-item-info-title,
+.stats-graph-2-item-info-des {
+    margin: 0; 
+}
+
+.stats-section-title{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 1px;
+    text-align: center;
+    border-radius: 20px;
+    background-color: rgb(244, 244, 244);
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.stats-graph-2-item-info-title,
+.stats-graph-2-item-info-desc, .stats-graph-2-item-info-desc-expl {
+    margin: 0; 
+}
+
+.stats-section-multi{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+.search-clicks-section-title{
+    font-weight: 600;
+}
+
+.line-3{
+    width: 5px;
+    background-color:rgba(42, 76, 76, 1) ;
+}
+
+.line-4 {
+    height: 60px; /* Make the line span the full height of the parent container */; /* Set the width of the line to be very thin */
+    border-left: 1px solid; /* This creates the vertical line */
+    transform: rotate(0deg); /* Rotate the line 90 degrees to make it vertical */
+}
+

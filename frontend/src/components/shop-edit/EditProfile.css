@@ -1,0 +1,93 @@
+.account-section {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f9f9f9;
+    font-family: "Inria Serif", serif;
+}
+
+.account-section h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 95%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Inria Serif", serif;
+}
+
+.saveChangesbtn {
+    padding: 10px 20px;
+    background-color: rgba(42, 76, 76, 1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Inria Serif", serif;
+}
+
+.saveChangesbtn:hover {
+    background-color: rgb(24, 44, 44);
+}
+.saveChangesbtn-cont{
+    display: flex;
+    justify-content: center;
+}
+
+.gallery-preview img {
+    margin: 5px;
+}
+
+.account-section-title{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.account-section-title h2{
+    padding:  0 20px;
+}
+
+.go-back{
+    background-color: rgba(255, 225, 182, 1);
+    font-family: "Inria Serif", serif;
+    border: none;
+    padding: 10px;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.go-back:hover{
+    background-color: rgb(251, 203, 136);
+}
+
+.arrow{
+    width: 15px;
+    height: 15px;
+    transform: rotate(-90deg)
+}

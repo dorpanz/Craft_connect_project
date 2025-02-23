@@ -1,0 +1,102 @@
+
+.footer {
+    margin-top: 40px;
+    background-color: white;
+    color: #004d40;
+    font-family: "Inria Serif", serif;
+}
+
+.footer-top-line {
+    height: 1px;
+    background-color: #000000;
+}
+
+.footer-content {
+    padding: 40px 20px;
+}
+
+.footer-sections {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.footer-section {
+    min-width: 200px;
+}
+
+
+.footer-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ffd54f;
+    display: inline-block;
+    padding-bottom: 4px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin: 5px 0;
+}
+
+.footer-section ul li a {
+    color: #004d40;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #ffd54f;
+}
+
+.footer-subscription {
+    text-align: center;
+    margin-top: 20px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-subscription p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.footer-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.footer-form input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-width: 250px;
+    font-size: 1rem;
+    font-family: "Inria Serif", serif;
+}
+
+.footer-form button {
+    background-color: #ffd54f;
+    color: #004d40;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: "Inria Serif", serif;
+}
+
+.footer-form button:hover {
+    background-color: #ffc107;
+}
+  

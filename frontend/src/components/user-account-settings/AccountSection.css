@@ -1,0 +1,35 @@
+.account-section-1 {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Inria Serif", serif;
+}
+  
+.account-section-1-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .account-section-1-card {
+    background: #fdf6b2;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: black;
+    text-decoration: none;
+  }
+  
+  .account-section-1-card-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 50%;
+  }
+  

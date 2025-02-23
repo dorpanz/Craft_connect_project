@@ -1,0 +1,96 @@
+
+.regshop-container {
+  max-width: 400px;
+  margin: 50px auto;
+  background-color: #ffe4c7;
+  padding: 70px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: "Inria Serif", serif;
+}
+.regshop-container h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.regshop-container p {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+.regshop-container label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.regshop-container input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.regshop-container input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.regshop-container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.regshop-container .checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.regshop-checkbox-container{
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.regshop-container .checkbox-container label {
+  font-size: 12px;
+  color: #555;
+}
+.regshop-container button {
+  background-color: #c79256;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 30%;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  float: right;
+  margin-left: 30px;
+  font-family: "Inria Serif", serif;
+}
+.regshop-container button:hover {
+  background-color:#c2751d;
+}
+
+.regshop-container .back-btn_shopreg{
+  background-color: #3e5c50;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 30%;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  float: left;
+  font-family: "Inria Serif", serif;
+}
+.regshop-container .back-btn_shopreg:hover{
+  background-color: #2b3e36;
+} 

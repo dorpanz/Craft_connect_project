@@ -1,0 +1,112 @@
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-family: "Inria Serif", serif;
+  margin-top: 40px;
+}
+
+.signin-box {
+  background-color: #F5D7AF;
+  padding: 40px;
+  border-radius: 15px;
+  width: 380px;
+  text-align: center;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.signin-box h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.signin-box label {
+  display: block;
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.small-text {
+  font-size: 12px;
+  font-weight: normal;
+  color: #555;
+}
+
+.signin-box input[type="email"],
+.signin-box input[type="text"],
+.signin-box input[type="password"]{
+  width: 93%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  font-size: 0.9em;
+  color: #007bff;
+  text-decoration: none;
+  margin-bottom: 15px;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.signin-button {
+  background-color: #000;
+  color: #fff;
+  padding: 12px 162px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: "Inria Serif", serif;
+}
+
+.signin-button:hover {
+  background-color: #444;
+  
+}
+
+
+.signin-box p {
+  margin-top: 20px;
+  font-size: 0.9em;
+}
+
+.join-now {
+  color: red;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.join-now:hover {
+  text-decoration: underline;
+}
+
+.signin-button-cont{
+  background-color: #000;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: "Inria Serif", serif;
+}
+.signin-select{
+  width: 100%;
+  padding: 2px;
+  font-family: "Inria Serif", serif;
+}

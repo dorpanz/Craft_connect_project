@@ -1,0 +1,88 @@
+.category-page{
+    font-family: "Inria Serif", serif;
+    padding: 10px 40px;
+}
+
+.filtering-category{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: fit-content;
+    padding: 20px;
+    margin-right: 40px;
+    border: 1px solid black;
+    border-radius: 30px;
+}
+
+.price-range {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.price-range input[type="radio"] {
+    margin-bottom: 10px; 
+}
+
+.category-filter-type{
+    margin: 0;
+}
+
+.category-menu, .category-info {
+    margin: 0;
+    padding: 0;
+}
+
+.category-info {
+    margin-bottom: 20px;
+}
+
+.category-info h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.category-info h2, .category-info h3 {
+    font-size: 1.5rem;
+    color: #666;
+}
+
+.sort {
+    margin-bottom: 30px;
+
+}
+
+.sort p {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.sort input[type="radio"] {
+    margin-right: 10px;
+}
+
+.sort input[type="radio"]:checked + label {
+    font-weight: bold;
+    color: #2e5a2f;
+}
+
+.sort label {
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: color 0.3s ease-in-out;
+}
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 3 items per row */
+    gap: 20px;
+}
+
+.item-lsiting-img-cat{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+}

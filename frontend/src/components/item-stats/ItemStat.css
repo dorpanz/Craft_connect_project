@@ -1,0 +1,177 @@
+.item-stat-page{
+    font-family: "Inria Serif", serif;
+}
+
+.item-stat-section{
+    width: 900px;
+    margin: auto;
+}
+
+.item-stat-section-info-img img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.item-stat-section-info{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.266);
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.item-stat-section-info-img{
+    margin-right: 20px;
+}
+.item-stat-section-info-dess-title-1{
+    color: rgb(81, 81, 81);
+}
+
+.item-stat-section-info-desc-title-item{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.item-stat-section-info-desc{
+    margin-left: 20px;
+    width: 400px;
+}
+
+
+/* ItemStat.css */
+.chart-container {
+    margin-top: 40px;
+    width: 900px;
+    padding: 20px;
+  }
+  
+  .time-period-selector {
+    margin-bottom: 20px;
+  }
+  
+  .time-period-selector select {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+
+  /* ItemStat.css */
+/* ItemStat.css */
+.reviews-container {
+    margin-top: 40px;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .reviews-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .review-card {
+    display: flex;
+    padding: 25px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .review-card-left {
+    margin-right: 15px;
+  }
+  
+  .reviewer-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .review-card-right {
+    flex: 1;
+  }
+  
+  .reviewer-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .review-rating {
+    margin-bottom: 10px;
+    color: #ff9900;
+  }
+  
+  .review-comment {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+  }
+  
+  .item-images-container {
+    margin-top: 10px;
+  }
+  
+  .item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 10px;
+  }
+  
+  /* ItemStat.css */
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sort-options {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sort-options label {
+    margin-right: 10px;
+  }
+  
+  .sort-options select {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .load-more-button {
+    background-color: #777777;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: "Inria Serif", serif;
+    display: flex;
+    justify-self: center;
+  }
+  
+  .load-more-button:hover {
+    background-color: #3e3e3e;
+  }
+
+  .stats-graph .stats-graph-1{
+    width: 880px;
+  }

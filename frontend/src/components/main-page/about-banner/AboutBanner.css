@@ -1,0 +1,36 @@
+.about-section{
+    background-color:rgba(42, 76, 76, 1);
+    font-family: "Inria Serif", serif;
+    padding: 50px;
+    margin-top: 60px;
+    color: white;
+    text-align: center;
+}
+
+.about-info{
+    font-size: 16px;
+}
+
+.about-title{
+    font-size: 22px;
+}
+.read-more-btn-cont{
+    margin-top: 40px;
+}
+.read-more-btn{
+    font-family: "Inria Serif", serif;
+    font-size: 16px;
+    width: 150px;
+    border-radius: 30px;
+    border: none;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: rgb(173, 173, 173);
+    color: black;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.read-more-btn:hover{
+    background-color: rgb(208, 208, 208); 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}

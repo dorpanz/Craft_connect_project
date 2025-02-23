@@ -1,0 +1,139 @@
+.header-about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.banner-img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.banner-about-desc{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    z-index: 1; 
+    background-color: rgba(248, 213, 149, 0.88);
+    padding:50px;
+    border-radius: 40px;
+    text-align: center;
+    font-family: "Inter", serif;
+}
+
+.banner-title{
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.section-about-us-title{
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.section-about-us{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 30px;
+    font-size: 18px;
+    font-family: "Inter", serif;
+}
+.section-about-us-text{
+    width: 60%;
+    font-family: "Inria Serif", serif;
+}
+
+.section-offer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto; /* Ensure the entire section is centered */
+}
+
+.section-offer-title{
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-family: "Inter", serif;
+}
+
+
+.section-offer-item img{
+    width: 150px;
+    height: 150px;
+    border-radius: 30px;
+    object-fit: cover;
+}
+.section-offer-item-about{
+    width:350px;
+    margin-left: 20px;
+}
+.section-offer-item-about-title{
+    font-size: 20px;
+    letter-spacing: 3px;
+    font-weight:500;
+    color:rgb(255, 255, 255);
+    background-color:rgb(64, 97, 97) ;
+    width: fit-content;
+    padding: 8px;
+    text-align: center;
+    border-radius: 20px;
+    margin-bottom: 0;
+}
+.section-offer-item-about-desc{
+    font-family: "Inria Serif", serif;
+    margin-top: 10px;
+}
+
+.section-offer-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgb(166, 166, 166);
+    padding: 20px;
+    border-radius: 30px;
+    width: 450px;
+}
+
+
+.section-offer-items-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap:20px;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.section-faqs-list{
+    display: flex;
+    width: 80%;
+    font-family: "Inria Serif", serif;
+}
+
+.line-vert{
+    border: 1px solid rgb(202, 202, 202);
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.section-faqs-list-artisan{
+    width: 50%;
+}
+
+.section-faqs-list-customers{
+    width: 50%;
+}
+
+.section-faqs-list-title{
+    font-weight: 700;
+    justify-self: center;
+    font-size: 18px;
+}

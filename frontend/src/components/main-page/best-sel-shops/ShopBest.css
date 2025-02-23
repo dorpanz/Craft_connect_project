@@ -1,0 +1,89 @@
+.best-sel-shop-sec {
+    font-family: "Inria Serif", serif;
+    width: 90%;
+    margin:30px  auto;
+}
+
+
+.shop-info-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color:rgba(255, 225, 182, 1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.shop-info-section:hover{
+    background-color:rgb(255, 214, 157) ;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+.shops-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 30px;
+}
+
+.shop-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ffffff; 
+}
+
+.shop-name {
+    cursor: pointer;
+    display: inline-block; 
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.shop-name:hover {
+    transform: scale(1.1); 
+}
+
+
+.shop-name-products {
+    text-align: left;
+}
+
+.shop-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.shop-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 18px;
+    color:rgba(42, 76, 76, 1); 
+    margin-bottom: 15px;
+}
+
+.review-count {
+    font-size: 14px;
+    color: #888;
+}
+
+.shop-products {
+    display: flex;
+    gap: 10px;
+}
+
+.shop-products img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shop-products img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
