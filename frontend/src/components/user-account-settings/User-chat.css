@@ -1,4 +1,4 @@
-/* General Styles */
+
 .body-chat {
   font-family: "Inria Serif", serif;
   background-color: #f4f4f4;
@@ -12,14 +12,14 @@
 
 .chat-container {
   display: flex;
-  width: 900px;  /* Smaller chat box */
+  width: 900px; 
   height: 500px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Chat List (Sidebar) */
+
 .chat-list {
   width: 220px;
   background: #222;
@@ -53,7 +53,7 @@
   background: #444;
 }
 
-/* Chat Box */
+
 .chat-box {
   flex: 1;
   display: flex;
@@ -62,7 +62,7 @@
   border-left: 2px solid #ddd;
 }
 
-/* Chat Header */
+
 .chat-header {
   display: flex;
   align-items: center;
@@ -88,7 +88,7 @@
   cursor: pointer;
 }
 
-/* Chat Messages */
+
 .chat-body {
   flex: 1;
   padding: 15px;
@@ -121,7 +121,7 @@
   align-self: flex-end;
 }
 
-/* Chat Input */
+
 .chat-input {
   display: flex;
   padding: 10px;

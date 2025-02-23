@@ -2,8 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import sellerImage from "./pics/candlelogo.jpg"; // Seller's portrait
-import gallery1 from "./pics/candlelogo.jpg"; // Handmade candle images
+import sellerImage from "./pics/candlelogo.jpg"; 
+import gallery1 from "./pics/candlelogo.jpg"; 
 import gallery2 from "./pics/candleall.jpg";
 import gallery3 from "./pics/candlelogo.jpg";
 import instagramIcon from "./pics/mdi_instagram.png";

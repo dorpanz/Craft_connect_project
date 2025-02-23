@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const authenticate = (req, res, next) => {
-    const token = req.cookies.authToken; // Read token from cookies
+    const token = req.cookies.authToken; 
 
     if (!token) {
         return res.status(401).json({ status: false, message: "Unauthorized: No token provided" });

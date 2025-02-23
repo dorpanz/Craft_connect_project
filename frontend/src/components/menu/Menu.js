@@ -3,14 +3,14 @@ import liked_goods from "./pictures/mdi_heart-outline.png";
 import basket from "./pictures/Vector.png";
 import search_icon from "./pictures/material-symbols_search.png";
 import { Link } from 'react-router-dom';
-import { useCart } from '../../context/CartContext'; // Import Cart Context
-import { useFavorites } from '../../context/FavoritesContext'; // Import Favorites Context
+import { useCart } from '../../context/CartContext'; 
+import { useFavorites } from '../../context/FavoritesContext'; 
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
 const Menu = () => {
-    const { cart } = useCart(); // Get cart from context
-    const { favorites } = useFavorites(); // Get favorites from context
+    const { cart } = useCart(); 
+    const { favorites } = useFavorites(); 
     const { user, role, loading } = useContext(AuthContext);
     const [displayName, setDisplayName] = useState("Account");
   

@@ -27,8 +27,6 @@ const handleConfirmOrder = () => {
   }
 
   alert("Order placed successfully!");
-
-  // ✅ Navigate to Orders Page after confirmation
   navigate("/account-settings-user/your-orders");
 };
 
@@ -69,7 +67,6 @@ const handleConfirmOrder = () => {
         </label>
       </div>
 
-      {/* ✅ Show Card Details Form ONLY if "Credit/Debit Card" is Selected */}
       {paymentMethod === "card" && (
         <div className="card-details">
           <h2>Enter Card Details</h2>

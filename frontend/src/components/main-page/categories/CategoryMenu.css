@@ -20,7 +20,7 @@
     color: #000000;
 }
 
-/* Dropdown */
+
 .dropdown-wrapper {
     position: absolute;
     top: 100%;
@@ -32,13 +32,13 @@
     margin-top: 10px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Add opacity and visibility transitions */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 10;
 }
 
 .category-item:hover .dropdown-wrapper {
     opacity: 1;
-    visibility: visible; /* Make the dropdown visible */
+    visibility: visible;
 }
 
 .dropdown {
@@ -61,7 +61,7 @@
     background-color: #ddd;
 }
 
-/* Sub-Sub Dropdown */
+
 .sub-sub-dropdown {
     position: absolute;
     left: 100%;
@@ -79,7 +79,7 @@
 
 .sub-category-item:hover .sub-sub-dropdown {
     opacity: 1;
-    visibility: visible; /* Make the sub-sub dropdown visible */
+    visibility: visible;
 }
 
 .sub-sub-dropdown li {

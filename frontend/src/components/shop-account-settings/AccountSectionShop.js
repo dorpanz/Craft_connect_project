@@ -12,37 +12,37 @@ const accountOptions = [
     title: "Your shop",
     description: "View your listings, edit your shop page",
     imgSrc: ordersImg,
-    link: "/your-shop",  // Add the link to this section
+    link: "/your-shop",  
   },
   {
     title: "Add Items",
     description: "Add items, description and price",
     imgSrc: ordersImg,
-    link: "/Add-Items",  // Add the link to this section
+    link: "/Add-Items",  
   },
   {
     title: "Login & Security",
     description: "Manage password, email and mobile phone",
     imgSrc: securityImg,
-    link: "/your-shop-dashboard/login-security",  // Add the link to this section
+    link: "/your-shop-dashboard/login-security",  
   },
   {
     title: "Dashboard ",
     description: "Track you statistics overview, views and visits",
     imgSrc: subscriptionsImg,
-    link: "/your-shop-dashboard/shop-statistics",  // Add the link to this section
+    link: "/your-shop-dashboard/shop-statistics",  
   },
   {
     title: "Marketing",
     description: "Advertising tools, marketing strategy",
     imgSrc: messagesImg,
-    link: "/your-shop-dashboard/advertistment-overview",  // Add the link to this section
+    link: "/your-shop-dashboard/advertistment-overview",  
   },
   {
     title: "Messages",
     description: "Manage your messages with clients",
     imgSrc: messagesImg,
-    link: "/your-shop-dashboard/chat",  // Add the link to this section
+    link: "/your-shop-dashboard/chat",  
   },
 ];
 

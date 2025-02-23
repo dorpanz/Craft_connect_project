@@ -12,25 +12,25 @@ const accountOptions = [
     title: "Your orders",
     description: "Track, return, cancel an order or buy again",
     imgSrc: ordersImg,
-    link: "/account-settings-user/your-orders",  // Add the link to this section
+    link: "/account-settings-user/your-orders",  
   },
   {
     title: "Login & Security",
     description: "Manage password, email and mobile phone",
     imgSrc: securityImg,
-    link: "/account-settings-user/login-security",  // Add the link to this section
+    link: "/account-settings-user/login-security",  
   },
   {
     title: "Your Subscriptions",
     description: "Manage your favourite shops",
     imgSrc: subscriptionsImg,
-    link: "/account-settings-user/your-subscriptions",  // Add the link to this section
+    link: "/account-settings-user/your-subscriptions",  
   },
   {
     title: "Messages",
     description: "Ask direct questions to shops",
     imgSrc: messagesImg,
-    link: "/account-settings-user/chat",  // Add the link to this section
+    link: "/account-settings-user/chat",  
   },
 ];
 

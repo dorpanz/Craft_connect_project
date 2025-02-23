@@ -77,7 +77,7 @@
 }
 .product-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 3 items per row */
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
 }
 

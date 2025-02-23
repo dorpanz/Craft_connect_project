@@ -58,9 +58,9 @@ const salesData = {
 const inventoryData = [
   {
     name: "Inventory",
-    currentStock: 5, // Available stock
-    soldStock: 210, // Sold items
-    restockLevel: 50, // Expected restock
+    currentStock: 5, 
+    soldStock: 210, 
+    restockLevel: 50, 
   },
 ];
 

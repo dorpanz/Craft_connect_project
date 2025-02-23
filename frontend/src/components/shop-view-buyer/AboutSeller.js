@@ -17,7 +17,7 @@ export const AboutSeller = ({ shop, items }) => {
     arrows: false,
   };
 
-  // Filter items that belong to this shop
+  
   const shopItems = items.filter((item) => item.shop_id === shop.shop_id);
 
   return (

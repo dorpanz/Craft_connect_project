@@ -4,7 +4,7 @@ import tale from "./pics/tale.jpg";
 export const Seasonal = () => {
   const scrollRef = useRef(null);
 
-  // Function to handle scroll left
+  
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
@@ -14,7 +14,7 @@ export const Seasonal = () => {
     }
   };
 
-  // Function to handle scroll right
+  
   const scrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({

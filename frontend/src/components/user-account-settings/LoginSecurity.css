@@ -28,12 +28,12 @@
 
 .login-sec-card-field {
   display: flex;
-  justify-content: center; /* Centers the elements inside the field */
+  justify-content: center;
   align-items: center;
   margin-bottom: 15px;
   border-bottom: 1px solid #ccc;
   padding-bottom: 10px;
-  position: relative; /* Keeps input and label positioning intact */
+  position: relative;
   padding: 10px;
   height: 50px;
 }
@@ -44,7 +44,7 @@
   width: 40%; 
   height: 50px;
   position: absolute;
-  left: 10%; /* Adjust this based on desired label position */
+  left: 10%;
   transform: translateX(-50%);
 }
 
@@ -52,7 +52,7 @@
   font-size: 16px;
   color: #555;
   width: 50%;
-  padding-left: 45%; /* Adjust to create space for label */
+  padding-left: 45%;
   height: 50px;
 }
 
@@ -64,9 +64,9 @@
   width: 40%;
   outline: none;
   font-family: "Inria Serif", serif;
-  display: none; /* Hide input by default */
+  display: none;
   position: absolute;
-  left: 45%; /* Adjust to position input relative to the field */
+  left: 45%;
   transform: translateX(-50%);
   transform: translateY(-50%);
 }
@@ -81,7 +81,7 @@
   cursor: pointer;
   font-family: "Inria Serif", serif;
   position: absolute;
-  left: 90%; /* Adjust the button position */
+  left: 90%;
   transform: translateX(-50%);
   transform: translateY(-50%);
   margin-left: 10px;
@@ -102,7 +102,7 @@
   margin-left: 10px;
   font-family: "Inria Serif", serif;
   position: absolute;
-  left: 90%; /* Centers the save button */
+  left: 90%;
   transform: translateX(-50%);
   transform: translateY(-50%);
 }
@@ -111,12 +111,12 @@
   background-color: #218838;
 }
 
-/* Ensure that the input field is only shown when needed */
+
 .login-sec-card-field .login-sec-card-edit-input.show {
   display: block;
 }
 .logout-button {
-  background-color: #d67b24; /* Warm orange */
+  background-color: #d67b24;
   font-family: "Inria Serif", serif;
   color: white;
   border: none;
@@ -127,5 +127,5 @@
 }
 
 .logout-button:hover {
-  background-color: #b5641a; /* Slightly darker orange */
+  background-color: #b5641a;
 }

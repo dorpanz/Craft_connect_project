@@ -1,12 +1,12 @@
 import { useState } from "react";
-import reviewer1Image from "../shop-view-seller/pics/candleitem.jpg"; // Replace with actual image paths
+import reviewer1Image from "../shop-view-seller/pics/candleitem.jpg"; 
 import reviewer2Image from "../shop-view-seller/pics/candleitem.jpg";
-import itemImage1 from "../shop-view-seller/pics/candleitem.jpg"; // Replace with actual item images
-import itemImage2 from "../shop-view-seller/pics/candleitem.jpg"; // Replace with actual item images
+import itemImage1 from "../shop-view-seller/pics/candleitem.jpg"; 
+import itemImage2 from "../shop-view-seller/pics/candleitem.jpg"; 
 
 export const AllReviews = () => {
-  const [sortOption, setSortOption] = useState("date"); // Default sort by date
-  const [visibleReviews, setVisibleReviews] = useState(2); // Start with 2 reviews visible
+  const [sortOption, setSortOption] = useState("date"); 
+  const [visibleReviews, setVisibleReviews] = useState(2); 
 
   const reviews = [
     {
@@ -54,28 +54,28 @@ export const AllReviews = () => {
       itemImages: [itemImage1],
       date: "2025-02-02",
     },
-    // Add more reviews as needed
+    
   ];
 
-  // Sort reviews based on selected option
+  
   const sortedReviews = reviews.sort((a, b) => {
     if (sortOption === "date") {
-      return new Date(b.date) - new Date(a.date); // Sort by most recent
+      return new Date(b.date) - new Date(a.date); 
     }
     if (sortOption === "low-to-high") {
-      return a.rating - b.rating; // Sort by rating from low to high
+      return a.rating - b.rating; 
     }
     if (sortOption === "high-to-low") {
-      return b.rating - a.rating; // Sort by rating from high to low
+      return b.rating - a.rating; 
     }
     return 0;
   });
 
-  // Get the reviews to display based on visibility
+  
   const reviewsToDisplay = sortedReviews.slice(0, visibleReviews);
 
   const handleLoadMore = () => {
-    setVisibleReviews((prevVisibleReviews) => prevVisibleReviews + 2); // Show 2 more reviews on each click
+    setVisibleReviews((prevVisibleReviews) => prevVisibleReviews + 2); 
   };
 
   return (

@@ -36,7 +36,7 @@ export const EditProfile = () => {
     );
 };
 
-// Profile Edit Section - Shop Name, Description, Logo, and Gallery
+
 const ProfileEditSection = () => {
     const [shopName, setShopName] = useState("");
     const [shopDescription, setShopDescription] = useState("");
@@ -46,18 +46,18 @@ const ProfileEditSection = () => {
     const handleLogoChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setLogo(URL.createObjectURL(file)); // Display the selected image as a preview
+            setLogo(URL.createObjectURL(file)); 
         }
     };
 
     const handleGalleryChange = (e) => {
         const files = Array.from(e.target.files);
-        setGallery(files.map((file) => URL.createObjectURL(file))); // Display the selected images as previews
+        setGallery(files.map((file) => URL.createObjectURL(file))); 
     };
 
     const handleSaveChanges = (e) => {
         e.preventDefault();
-        // Handle saving changes here (e.g., API call to update profile)
+        
         console.log("Profile updated:", { shopName, shopDescription, logo, gallery });
     };
 
@@ -123,14 +123,14 @@ const ProfileEditSection = () => {
     );
 };
 
-// Security Section
+
 const SecuritySection = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handlePasswordChange = (e) => {
         e.preventDefault();
-        // Handle password change logic here
+        
     };
 
     return (
@@ -163,14 +163,14 @@ const SecuritySection = () => {
     );
 };
 
-// Private Information Section
+
 const PrivateInformationSection = () => {
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
 
     const handleSaveChanges = (e) => {
         e.preventDefault();
-        // Handle address and phone update logic here
+        
     };
 
     return (
@@ -210,9 +210,9 @@ const OurStoryEditSection = () => {
     const [profilePic, setProfilePic] = useState(null);
 
     const handleGalleryChange = (e) => {
-        const files = Array.from(e.target.files); // Convert FileList to Array
+        const files = Array.from(e.target.files); 
         const newGallery = files.map((file) => URL.createObjectURL(file)); 
-        setGallery((prevGallery) => [...prevGallery, ...newGallery]); // Append new images
+        setGallery((prevGallery) => [...prevGallery, ...newGallery]); 
     };
     
 

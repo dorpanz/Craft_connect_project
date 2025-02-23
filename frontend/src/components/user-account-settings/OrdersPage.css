@@ -17,14 +17,14 @@
   color: #777;
 }
 
-/* Grid Layout */
+
 .orders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
-/* Order Card */
+
 .order-card {
   background: #fff;
   padding: 15px;
@@ -59,7 +59,7 @@
   margin-top: 10px;
 }
 
-/* Order Items */
+
 .order-items {
   margin-top: 10px;
 }
@@ -84,7 +84,7 @@
   flex: 1;
 }
 
-/* Cancellation Section */
+
 .cancel-section {
   display: flex;
   flex-direction: column;

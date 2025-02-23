@@ -8,8 +8,8 @@ const authenticate = require("../middleware/authMiddleware");
 
 const router = express.Router();
 router.use(cors({
-    origin: "http://localhost:3000", // Adjust this as needed
-    credentials: true, // Allow cookies to be sent
+    origin: "http://localhost:3000", 
+    credentials: true, 
 }));
 
 // Seller Signup
@@ -82,15 +82,13 @@ router.post("/login", [
         if (!isValidPassword) {
             return res.status(400).json({ status: false, message: "Invalid password" });
         }
-
-        // Generate JWT Token
         const token = jwt.sign({ id: seller._id, role: "seller" }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
         // Store token in an httpOnly cookie
         res.cookie("authToken", token, {
-            httpOnly: true,  // Prevents JavaScript access (XSS protection)
-            secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-            sameSite: "Strict", // Prevent CSRF
+            httpOnly: true,  
+            secure: process.env.NODE_ENV === "production", 
+            sameSite: "Strict", 
         });
 
         res.json({ message: "Login successful" });

@@ -59,15 +59,15 @@
 
 
 .slick-dots {
-    bottom: 20px !important; /* Adjust this value to move dots higher */
+    bottom: 20px !important;
   }
 
   .slick-prev, .slick-next {
-    z-index: 1000; /* Ensure arrows are on top */
+    z-index: 1000;
     width: 40px;
     height: 40px;
-    display: block !important; /* Ensure arrows are displayed */
-    opacity: 1 !important; /* Make arrows fully visible */
+    display: block !important;
+    opacity: 1 !important;
 }
 
 .slick-prev {
@@ -81,5 +81,5 @@
 .slick-prev:before,
 .slick-next:before {
     font-size: 30px;
-    color: white; /* Change this if needed */
+    color: white;
 }

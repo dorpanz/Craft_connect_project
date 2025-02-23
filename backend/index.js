@@ -12,19 +12,19 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-// ✅ Middleware (Order matters!)
-app.use(cookieParser()); // ✅ Move this above CORS
+// Middleware (Order matters!)
+app.use(cookieParser()); 
 
 app.use(cors({
-    origin: 'http://localhost:3000',  // ✅ Frontend URL
+    origin: 'http://localhost:3000',  
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true  // ✅ Critical for cookies!
+    credentials: true  
 }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// ✅ MongoDB Connection
+//MongoDB Connection
 mongoose.connect(DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -35,16 +35,14 @@ mongoose.connect(DB_URL, {
     process.exit(1);
 });
 
-// ✅ Routes
+// Routes
 app.use('/api/v1/seller', sellerRoutes);
 app.use('/api/v1/user', userRoutes);
-
-// ✅ Test Route (to check if API is running)
 app.get('/', (req, res) => {
     res.send("🔥 Craft Connect Backend is Running! 🔥");
 });
 
-// ✅ Start Server
+// Start Server
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });

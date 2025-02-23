@@ -13,7 +13,7 @@ const OrdersPage = () => {
   }, []);
 
   useEffect(() => {
-    // Mock data for testing
+    
     const mockOrders = [
       {
         id: 1,

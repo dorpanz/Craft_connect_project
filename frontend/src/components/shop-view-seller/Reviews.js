@@ -1,5 +1,5 @@
 
-import reviewer1Image from "./pics/candleitem.jpg"; // Replace with actual image paths
+import reviewer1Image from "./pics/candleitem.jpg"; 
 import reviewer2Image from "./pics/candleitem.jpg";
 
 export const Reviews = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams
+import { useParams } from "react-router-dom"; 
 import Menu from "../menu/Menu";
 import Footer from "../footer/Foooter";
 import { AboutSeller } from "./AboutSeller";
@@ -12,13 +12,13 @@ import { shops } from "../../data/shop";
 import { data } from "../../data/products";
 
 export const ShopBuyer = () => {
-  const { shopId } = useParams(); // Get shopId from URL
+  const { shopId } = useParams(); 
   const [shop, setShop] = useState(null);
   useEffect(() => {
     window.scrollTo(0, 0);
 }, []);
   useEffect(() => {
-    // Find the shop that matches the shopId
+    
     const foundShop = shops.find((s) => s.shop_id === parseInt(shopId));
     setShop(foundShop);
   }, [shopId]);
