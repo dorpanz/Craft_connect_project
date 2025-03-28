@@ -1,0 +1,12 @@
+{
+  "name": "craft_connect_project",
+  "version": "1.0.0",
+  "description": "## Overview   Craft Connect is an e-commerce platform designed for artisans to sell and buy handcrafted goods. The platform provides features like dynamic category pages, user authentication, and inventory management using Firebase.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
