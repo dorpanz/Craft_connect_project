@@ -6,7 +6,7 @@ import { SingleItem } from './components/single-item/SingleItem';
 import { GiftGuide } from './components/gift-guide/GiftGuide';
 import { CustomizePage } from './components/customize-page/CustomizePage';
 import { ShopBuyer } from './components/shop-view-buyer/ShopBuyer';
-import { UplooadProduct } from './components/upload-product-page/UploadProduct';
+import { UploadProduct } from './components/upload-product-page/UploadProduct';
 import CategoryPage from './components/category-page/CategoryPage';
 import { EditProfile } from './components/shop-edit/EditProfile';
 import { ShopSeller } from './components/shop-view-seller/ShopSeller';
@@ -18,7 +18,7 @@ import { ItemStat } from './components/item-stats/ItemStat';
 import { ItemCustomize } from './components/item-customize/ItemCustomize';
 import AccountSection from './components/user-account-settings/AccountSection';
 import LoginSecurity from './components/user-account-settings/Login & Security';
-import UserChat from './components/user-account-settings/User-chat';
+import Chat from './components/user-account-settings/Chat';
 import OrdersPage from './components/user-account-settings/OrdersPage';
 import SubscriptionPage from './components/user-account-settings/SubscriptionPage';
 import CartPage from './components/cart/CartPage';
@@ -51,7 +51,7 @@ function App() {
         <Route path='/Gift-guides' element={<GiftGuide />} />
         <Route path='/Customize-goods' element={<CustomizePage />} />
         <Route path="/shop/:shopId" element={<ShopBuyer />} />
-        <Route path='/Add-Items' element={<UplooadProduct />} />
+        <Route path='/Add-Items' element={<UploadProduct />} />
         <Route path='/Shop/Edit' element={ <EditProfile/>}/>
         <Route path='/your-shop' element={ <ShopSeller/>}/>
         <Route path='/category/:categoryName' element={<CategoryPage />} />
@@ -66,7 +66,7 @@ function App() {
         <Route path="/customize-item" element={<ItemCustomize/>}/>
         <Route path="/account-settings-user" element={<AccountSection/>}/>
         <Route path="/account-settings-user/login-security" element={<LoginSecurity/>}/>
-        <Route path='/account-settings-user/chat' element={ <UserChat/>}/>
+        <Route path='/account-settings-user/chat' element={ <Chat/>}/>
         <Route path='/account-settings-user/your-orders' element={ <OrdersPage/>}/>
         <Route path='/account-settings-user/your-subscriptions' element={ <SubscriptionPage/>}/>
         <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />} />

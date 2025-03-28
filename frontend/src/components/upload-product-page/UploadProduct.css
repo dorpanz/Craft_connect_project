@@ -1,221 +1,282 @@
 .seller-settings-title {
-    display: flex;
-    align-items: center;
-    font-size: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
 }
 
 .seller-settings-title button {
-    border-radius: 30px;
-    height: 30px;
-    margin-right: 20px;
-    font-family: "Inria Serif", serif;
-    background-color: rgba(255, 225, 182, 1);
-    border: none;
-    cursor: pointer;
+  border-radius: 30px;
+  height: 30px;
+  margin-right: 20px;
+  font-family: "Inria Serif", serif;
+  background-color: rgba(255, 225, 182, 1);
+  border: none;
+  cursor: pointer;
 }
 
 .sellers-settings-section {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    margin: 40px auto 0 auto;
-    position: relative;
-    font-family: "Inria Serif", serif;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 40px auto 0 auto;
+  position: relative;
+  font-family: "Inria Serif", serif;
 }
 
 .upload-product-sections {
-    background-color: rgba(255, 225, 182, 1);
-    padding: 50px 100px;
-    border-radius: 30px;
-    margin-bottom: 30px;
+  background-color: rgba(255, 225, 182, 1);
+  padding: 50px 100px;
+  border-radius: 30px;
+  margin-bottom: 30px;
 }
 
 .info-about-product {
-    font-size: 18px;
-    font-weight: bolder;
-    margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: bolder;
+  margin-bottom: 5px;
 }
 
 .main-title-section {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .main-desc-section {
-    font-size: 19px;
-    margin-bottom: 20px;
+  font-size: 19px;
+  margin-bottom: 20px;
 }
 
 .line-2 {
-    border: 1px solid black;
-    margin: 20px 0;
+  border: 1px solid black;
+  margin: 20px 0;
 }
 
 .upload-about-section {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .input-about-product {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    font-family: "Inria Serif", serif;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-family: "Inria Serif", serif;
+}
+.input-about-product-hw {
+  width: 20%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-family: "Inria Serif", serif;
 }
 
 .input-about-product-desc {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    font-family: "Inria Serif", serif;
-    height: 100px;
-    resize: vertical; 
-    overflow-y: auto;
-    overflow-x: hidden; 
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-family: "Inria Serif", serif;
+  height: 100px;
+  resize: vertical;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .picture-upload-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border: 2px dashed #aaa;
-    border-radius: 10px;
-    text-align: center;
-    background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 2px dashed #aaa;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fff;
 }
 
 .picture-upload-section button {
-    margin-top: 10px;
-    background-color: rgba(255, 193, 128, 1);
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-family: "Inria Serif", serif;
+  margin-top: 10px;
+  background-color: rgba(255, 193, 128, 1);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: "Inria Serif", serif;
 }
 
 .picture-upload-section button:hover {
-    background-color: rgba(255, 160, 64, 1);
+  background-color: rgba(255, 160, 64, 1);
 }
 
 select.input-about-product {
-    appearance: none;
-    background-color: white;
-    cursor: pointer;
-    font-family: "Inria Serif", serif;
+  appearance: none;
+  background-color: white;
+  cursor: pointer;
+  font-family: "Inria Serif", serif;
 }
 
-.input-about-product-price{
-    width: 50%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    font-family: "Inria Serif", serif;
+.input-about-product-price {
+  width: 50%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  font-family: "Inria Serif", serif;
 }
 
 .tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .tag {
-    background-color: #f0c040;
-    padding: 6px 10px;
-    border-radius: 15px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
+  background-color: #f0c040;
+  padding: 6px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
 }
 
 .remove-tag {
-    background: none;
-    border: none;
-    color: red;
-    font-weight: bold;
-    margin-left: 5px;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: red;
+  font-weight: bold;
+  margin-left: 5px;
+  cursor: pointer;
 }
 
 .tag-selection {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .add-tag-button {
-    background-color: rgba(255, 193, 128, 1);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
+  background-color: rgba(255, 193, 128, 1);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .add-tag-button:disabled {
-    background-color: lightgray;
-    cursor: not
+  background-color: lightgray;
+  cursor: not;
 }
 
-.simple-policy-cont{
-    background-color: white;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 30px;
+.simple-policy-cont {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 30px;
 }
 
-.return-excahnge-policy-info{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.return-excahnge-policy-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.return-excahnge-policy-info p{
-    width: 70%;
-}
-
-.return-excahnge-policy-info button{
-    font-family: "Inria Serif", serif;
-    padding: 10px;
-    text-align: center;
-    border-radius: 20px;
-    border: 1px solid gray;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease; 
-
-}
-.return-excahnge-policy-info button:hover{
-    background-color: rgb(25, 25, 25);
-    color: white; 
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
+.return-excahnge-policy-info p {
+  width: 70%;
 }
 
-.button-submit{
-    text-align: center;
+.return-excahnge-policy-info button {
+  font-family: "Inria Serif", serif;
+  padding: 10px;
+  text-align: center;
+  border-radius: 20px;
+  border: 1px solid gray;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.return-excahnge-policy-info button:hover {
+  background-color: rgb(25, 25, 25);
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
-.button-submit button{
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-family: "Inria Serif", serif;
-    background-color: rgba(42, 76, 76, 1) ;
-    font-size: 20px;
-    color: white;
-    border: none;
-    transition: background-color 0.3s ease, color 0.3s ease; 
-    cursor: pointer;
+.button-submit {
+  text-align: center;
 }
 
-.button-submit button:hover{
-    background-color:  rgb(26, 46, 46);
-    color: white; 
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
+.button-submit button {
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-family: "Inria Serif", serif;
+  background-color: rgba(42, 76, 76, 1);
+  font-size: 20px;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
 }
 
+.button-submit button:hover {
+  background-color: rgb(26, 46, 46);
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.preview-section,
+.uploaded-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  justify-content: center;
+}
+
+.preview-item {
+  width: 280px; /* Adjust width */
+  height: 280px; /* Adjust height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden; /* Ensures the image doesn't overflow */
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image scales properly */
+  border-radius: 4px;
+}
+
+.uploaded-image {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.uploadphotos-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.uploadphotosbtn {
+  background-color: rgba(42, 76, 76, 1);
+  color: white;
+  padding: 10px 30px;
+  text-align: center;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: "Inria Serif", serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.uploadphotosbtn:hover {
+  background-color: rgb(19, 34, 34);
+}

@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import "./FavoritesPage.css";
 import Menu from "../menu/Menu";
 import { Link } from "react-router-dom";
-import { useFavorites } from "../../context/FavoritesContext"; 
+import { useFavorites } from "../../context/FavoritesContext"; // Import the Favorites Context
 
 const FavoritesPage = () => {
-  const { favorites, toggleFavorite } = useFavorites(); 
+  const { favorites, toggleFavorite } = useFavorites(); // Get favorites from context
 
   useEffect(() => {
     window.scrollTo(0, 0);

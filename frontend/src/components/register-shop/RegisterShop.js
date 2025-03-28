@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {Link} from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import { auth, db } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import "./regshop.css";
 import Menu from "../menu/Menu";
 
 const RegisterShop = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-
+  
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
@@ -21,14 +23,25 @@ const RegisterShop = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
-}, []);
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match!");
+      return;
+    }
+
     try {
-      const res = await axios.post("http://localhost:5000/api/v1/seller/signup", {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "sellers", user.uid), {
         fullName,
         email,
         streetAddress,
@@ -36,21 +49,27 @@ const RegisterShop = () => {
         postCode,
         isInCanada,
         shopName,
-        password,
         termsAccepted,
+        newsletterSubscribed,
       });
-      console.log("Seller registered:", res.data);
+
+      console.log("Seller registered:", user);
       navigate("/user-login");
     } catch (error) {
-      console.error("Error registering seller:", error.response?.data?.message || error.message);
-      setErrorMessage(error.response?.data?.message || "Registration failed!");
+      const errorMessages = {
+        "auth/email-already-in-use": "This email is already registered. Please use a different email or sign in.",
+        "auth/invalid-email": "Please enter a valid email address.",
+        "auth/weak-password": "Your password must be at least 6 characters long.",
+        "auth/network-request-failed": "Network error. Please check your internet connection.",
+      };
+
+      setErrorMessage(errorMessages[error.code] || "Registration failed. Please try again.");
     }
   };
 
   return (
     <>
-      <Menu/>
-
+      <Menu />
       {step === 1 && (
         <div className="regshop-container">
           <h1>About You</h1>
@@ -58,86 +77,31 @@ const RegisterShop = () => {
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <form onSubmit={(e) => { e.preventDefault(); setStep(2); }}>
             <label htmlFor="full-name">Full Name:</label>
-            <input 
-              type="text" 
-              id="full-name" 
-              name="full-name" 
-              placeholder="Enter your full name" 
-              value={fullName} 
-              onChange={(e) => setFullName(e.target.value)} 
-              required 
-            />
+            <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
 
             <label htmlFor="email">Email:</label>
-            <input 
-              type="email" 
-              id="email" 
-              name="email" 
-              placeholder="Enter your email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
-            />
+            <input type="email" id="email" name="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
             <label htmlFor="street-address">Street Address:</label>
-            <input 
-              type="text" 
-              id="street-address" 
-              name="street-address" 
-              placeholder="Enter your street address" 
-              value={streetAddress} 
-              onChange={(e) => setStreetAddress(e.target.value)} 
-              required 
-            />
+            <input type="text" id="street-address" name="street-address" placeholder="Enter your street address" value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} required />
 
             <label htmlFor="city">City:</label>
-            <input 
-              type="text" 
-              id="city" 
-              name="city" 
-              placeholder="Enter your city" 
-              value={city} 
-              onChange={(e) => setCity(e.target.value)} 
-              required 
-            />
+            <input type="text" id="city" name="city" placeholder="Enter your city" value={city} onChange={(e) => setCity(e.target.value)} required />
 
             <label htmlFor="postcode">Postcode:</label>
-            <input 
-              type="text" 
-              id="postcode" 
-              name="postcode" 
-              placeholder="Enter your postal code" 
-              value={postCode} 
-              onChange={(e) => setPostCode(e.target.value)} 
-              required 
-            />
+            <input type="text" id="postcode" name="postcode" placeholder="Enter your postal code" value={postCode} onChange={(e) => setPostCode(e.target.value)} required />
 
             <div className="checkbox-container">
-              <input 
-                type="checkbox" 
-                id="canada-check" 
-                name="canada-check" 
-                checked={isInCanada} 
-                onChange={(e) => setIsInCanada(e.target.checked)} 
-                required 
-              />
+              <input type="checkbox" id="canada-check" name="canada-check" checked={isInCanada} onChange={(e) => setIsInCanada(e.target.checked)} required />
               <label htmlFor="canada-check">
-                I live in Canada. You must live and work in Canada to sell your items on Craft Connect.
+                I live in Canada - You must live and work in Canada to sell your items on Craft Connect.
               </label>
             </div>
 
             <div className="checkbox-container">
-              <input 
-                type="checkbox" 
-                id="terms-check" 
-                name="terms-check" 
-                checked={termsAccepted} 
-                onChange={(e) => setTermsAccepted(e.target.checked)} 
-                required 
-              />
+              <input type="checkbox" id="terms-check" name="terms-check" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} required />
               <label htmlFor="terms-check">
-                I've read the 
-                <Link to="/terms-conditions"> terms and conditions.</Link>
+                I've read the <Link to="/terms-conditions">terms and conditions.</Link>
               </label>
             </div>
 
@@ -152,18 +116,11 @@ const RegisterShop = () => {
           <p>You can change your shop name at any point after you've signed up.</p>
           <form onSubmit={(e) => { e.preventDefault(); setStep(3); }}>
             <label htmlFor="shop-name">Shop Name:</label>
-            <input 
-              type="text" 
-              id="shop-name" 
-              name="shop-name" 
-              placeholder="Enter your Shop Name" 
-              value={shopName} 
-              onChange={(e) => setShopName(e.target.value)} 
-              required 
-            />
+            <input type="text" id="shop-name" name="shop-name" placeholder="Enter your Shop Name" value={shopName} onChange={(e) => setShopName(e.target.value)} required />
+
             <button type="submit">Next</button>
           </form>
-          <button className= "back-btn_shopreg" onClick={() => setStep(1)}>Back</button>
+          <button className="back-btn_shopreg" onClick={() => setStep(1)}>Back</button>
         </div>
       )}
 
@@ -173,35 +130,13 @@ const RegisterShop = () => {
           <p>Nearly there. Now choose your password.</p>
           <form onSubmit={handleSubmit}>
             <label htmlFor="password">Password:</label>
-            <input 
-              type="password" 
-              id="password" 
-              name="password" 
-              placeholder="Write a strong password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
-            />
+            <input type="password" id="password" name="password" placeholder="Write a strong password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
             <label htmlFor="confirm-password">Confirm Password:</label>
-            <input 
-              type="password" 
-              id="confirm-password" 
-              name="confirm-password" 
-              placeholder="Repeat your password to confirm" 
-              value={confirmPassword} 
-              onChange={(e) => setConfirmPassword(e.target.value)} 
-              required 
-            />
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Repeat your password to confirm" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
 
             <div className="regshop-checkbox-container">
-              <input 
-                type="checkbox" 
-                id="newsletter-check" 
-                name="newsletter-check" 
-                checked={newsletterSubscribed} 
-                onChange={(e) => setNewsletterSubscribed(e.target.checked)} 
-              />
+              <input type="checkbox" id="newsletter-check" name="newsletter-check" checked={newsletterSubscribed} onChange={(e) => setNewsletterSubscribed(e.target.checked)} />
               <label htmlFor="newsletter-check">
                 I'd like to receive unique gift guides and competitions.
               </label>
@@ -209,7 +144,7 @@ const RegisterShop = () => {
 
             <button type="submit">Sign Up</button>
           </form>
-          <button className= "back-btn_shopreg" onClick={() => setStep(2)}>Back</button>
+          <button className="back-btn_shopreg" onClick={() => setStep(2)}>Back</button>
         </div>
       )}
     </>

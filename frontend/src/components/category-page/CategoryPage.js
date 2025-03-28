@@ -3,7 +3,7 @@ import Menu from '../menu/Menu';
 import CategoryMenu, { categories } from '../main-page/categories/CategoryMenu';
 import './CategoryPage.css';
 import { useEffect, useState } from 'react';
-import { data } from '../../data/products'; 
+import { data } from '../../data/products'; // Assuming you have the categories structure imported
 import { useCart } from "../../context/CartContext"; 
 const CategoryPage = () => {
     useEffect(() => {
@@ -12,10 +12,10 @@ const CategoryPage = () => {
     const { addToCart } = useCart();
     const { categoryName, subCategory, subSubCategory } = useParams();
     const [selectedSubCategories, setSelectedSubCategories] = useState([]);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 200]); 
+    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 200]); // Default price range (0 to 200)
     const [sortOrder, setSortOrder] = useState(null);
 
-    
+    // Handle subcategory checkbox change
     const handleSubCategoryChange = (subCategory) => {
         setSelectedSubCategories((prevSelected) =>
             prevSelected.includes(subCategory)
@@ -38,13 +38,13 @@ const CategoryPage = () => {
         );
     };
     
-    
+    // Handle price range filter
     const handlePriceRangeChange = (event) => {
         const value = event.target.value;
-        setSelectedPriceRange(value.split(',').map(Number)); 
+        setSelectedPriceRange(value.split(',').map(Number)); // Update the price range based on slider value
     };
 
-    
+    // Filter products based on category, subCategory, and subSubCategory
     const filteredProducts = data.filter((product) => {
         const isCategoryMatch = product.category.toLowerCase() === categoryName.toLowerCase();
         const isSubCategoryMatch =
@@ -57,42 +57,42 @@ const CategoryPage = () => {
         return isCategoryMatch && isSubCategoryMatch && isSubSubCategoryMatch && isPriceRangeMatch;
     });
 
-    
+    // Sorting products based on selected sort option
     const sortedProducts = [...filteredProducts];
     if (sortOrder === 'Highest-price') {
         sortedProducts.sort((a, b) => b.price - a.price);
     } else if (sortOrder === 'Lowest-price') {
         sortedProducts.sort((a, b) => a.price - b.price);
     } else if (sortOrder === 'Recently-listed') {
-        sortedProducts.sort((a, b) => new Date(b.listedDate) - new Date(a.listedDate)); 
+        sortedProducts.sort((a, b) => new Date(b.listedDate) - new Date(a.listedDate)); // Assuming `listedDate` exists
     }
 
-    
+    // Generate subcategories based on category
     const getSubCategories = (category) => {
         const subCategories = [];
         const categoryData = categories[category];
         for (const [subCategoryKey, subCategoryValue] of Object.entries(categoryData)) {
             if (typeof subCategoryValue === 'object') {
-                
+                // If it's an object, show sub-subcategories
                 for (const subSubCategoryKey of Object.keys(subCategoryValue)) {
                     subCategories.push(subSubCategoryKey);
                 }
             } else {
-                
+                // If it's not an object, it's a subcategory without sub-subcategories
                 subCategories.push(subCategoryKey);
             }
         }
         return subCategories;
     };
 
-    
+    // If a subcategory is selected, get its subsubcategories
     const getSubSubCategories = (category, subCategory) => {
         const categoryData = categories[category];
         const subCategoryData = categoryData[subCategory];
         return subCategoryData && typeof subCategoryData === 'object' ? Object.keys(subCategoryData) : [];
     };
 
-    
+    // Generate the subcategories and subsubcategories
     const subCategories = getSubCategories(categoryName);
     const subSubCategories = subCategory ? getSubSubCategories(categoryName, subCategory) : [];
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
 import "./signin.css";
 import Menu from "../menu/Menu";
 
@@ -16,7 +15,6 @@ const SignIn = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "user", // Default role
   });
 
   const [loading, setLoading] = useState(false);
@@ -30,24 +28,22 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-
+    
     try {
-        const result = await login(formData.email, formData.password, formData.role);
-
-        if (result?.user) {
-            setMessage("Login successful!");
-            navigate(result.role === "seller" ? "/your-shop-dashboard" : "/account-settings-user");
-        } else {
-            setMessage("Login failed. Please check your credentials.");
-        }
-        
+      const result = await login(formData.email, formData.password);
+      
+      if (result.error) {
+        setMessage(result.error);
+        return;
+      }
+      
+      navigate(result.success === "seller" ? "/your-shop-dashboard" : "/account-settings-user");
     } catch (error) {
-        setMessage(error.response?.data?.message || "Invalid credentials.");
+      setMessage("Invalid credentials. Please try again.");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
-
+  };
 
   return (
     <div>
@@ -58,30 +54,10 @@ const SignIn = () => {
           {message && <p className="signin-message">{message}</p>}
           <form onSubmit={handleSubmit}>
             <label>Email Address:</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
+            <input type="email" name="email" placeholder="Enter your email" required value={formData.email} onChange={handleChange} />
 
             <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="***************"
-              required
-              value={formData.password}
-              onChange={handleChange}
-            />
-
-            <label>Login as:</label>
-            <select name="role" value={formData.role} onChange={handleChange} className="signin-select">
-              <option value="user">User</option>
-              <option value="seller">Seller</option>
-            </select>
+            <input type="password" name="password" placeholder="***************" required value={formData.password} onChange={handleChange} />
 
             <a href="#" className="forgot-password">Forgot Password?</a>
 

@@ -1,10 +1,10 @@
 import { useRef } from 'react';
-import tale from "./pics/tale.jpg"; 
+import tale from "./pics/tale.jpg"; // Use appropriate images for each interest
 
 export const GiftsByInterest = () => {
   const scrollRef = useRef(null);
 
-  
+  // Function to handle scroll left
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
@@ -14,7 +14,7 @@ export const GiftsByInterest = () => {
     }
   };
 
-  
+  // Function to handle scroll right
   const scrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({

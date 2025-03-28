@@ -1,0 +1,221 @@
+/* General container styles */
+.chat-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }
+  
+  /* Sidebar styles */
+  .sidebar {
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar .search-bar {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+  
+  .sidebar .user-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .sidebar .user-list .user {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .sidebar .user-list .user:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .sidebar .user-list .user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .sidebar .user-list .user .username {
+    font-weight: bold;
+    flex: 1;
+  }
+  
+  .sidebar .user-list .user .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: green; /* Active user green dot */
+  }
+  
+  /* Chat area styles */
+  .chat-box {
+    flex: 1;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-left: 1px solid #ccc;
+    overflow-y: auto;
+  }
+  
+  .chat-box .message {
+    max-width: 60%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    display: inline-block;
+    word-wrap: break-word;
+  }
+  
+  .chat-box .message.sent {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+  }
+  
+  .chat-box .message.received {
+    background-color: #f0f0f0;
+    color: #333;
+    align-self: flex-start;
+  }
+  
+  /* Chat header */
+  .chat-header {
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .chat-header .username {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .chat-header .icons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .chat-header .icons i {
+    cursor: pointer;
+    font-size: 20px;
+    color: #007bff;
+  }
+  
+  .chat-header .icons i:hover {
+    color: #0056b3;
+  }
+  
+  /* Chat input area styles */
+  .chat-input {
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chat-input input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  
+  .chat-input button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .chat-input button:hover {
+    background-color: #0056b3;
+  }
+  
+  .chat-input .emoji-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  /* Custom styles for the sidebar and main chat area */
+  .chat-container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .chat-box {
+    width: 100%;
+    overflow-y: scroll;
+  }
+  
+  .sidebar {
+    width: 250px;
+    overflow-y: auto;
+  }
+  
+  /* Sidebar search bar and user list */
+  .sidebar .search-bar {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 25px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+  }
+  
+  .sidebar .user-list {
+    margin-top: 20px;
+  }
+  
+  .sidebar .user-list .user {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .sidebar .user-list .user:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .sidebar .user-list .user .status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: green;
+  }
+  
+  .sidebar .user-list .user .username {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .sidebar .user-list .user .status-dot {
+    background-color: green;
+  }

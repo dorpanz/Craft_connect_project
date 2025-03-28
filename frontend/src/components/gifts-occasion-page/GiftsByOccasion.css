@@ -80,7 +80,7 @@
     font-weight: bold;
   }
   
- 
+  /* Responsive Design */
   @media (max-width: 768px) {
     .decorations-grid {
       grid-template-columns: repeat(2, 1fr);

@@ -1,148 +1,183 @@
-import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth, db } from "../firebase"; 
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged 
+} from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
+// Create authentication context
 export const AuthContext = createContext();
 
+// Custom hook for consuming AuthContext
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
+
+// Authentication provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [role, setRole] = useState(localStorage.getItem("userRole") || null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+    const [role, setRole] = useState(localStorage.getItem("userRole") || null);
+    const [displayName, setDisplayName] = useState(localStorage.getItem("displayName") || null);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-  const fetchProfile = async (role) => {
-    setLoading(true);
-    const url =
-      role === "seller" ? "/api/v1/seller/profile" : "/api/v1/user/profile";
+    // 🔹 Watch Firebase Auth state (Auto-login if already authenticated)
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            if (currentUser) {
+                let userDoc = await getDoc(doc(db, "users", currentUser.uid));
 
-    try {
-      const res = await fetch(`http://localhost:5000${url}`, {
-        method: "GET",
-        credentials: "include",
-      });
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    setUser({ uid: currentUser.uid, email: currentUser.email, ...userData });
+                    setRole("user");
+                    setDisplayName(userData.fullName);
+                    localStorage.setItem("userRole", "user");
+                    localStorage.setItem("displayName", userData.fullName);
+                } else {
+                    userDoc = await getDoc(doc(db, "sellers", currentUser.uid));
 
-      console.log("Profile Fetch Response:", res);
-      const data = await res.json();
-      console.log("Profile Fetch Data:", data);
+                    if (userDoc.exists()) {
+                        const sellerData = userDoc.data();
+                        setUser({ uid: currentUser.uid, email: currentUser.email, ...sellerData });
+                        setRole("seller");
+                        setDisplayName(sellerData.shopName);
+                        localStorage.setItem("userRole", "seller");
+                        localStorage.setItem("displayName", sellerData.shopName);
+                    } else {
+                        console.warn("User data not found in Firestore.");
+                        setUser(null);
+                        setRole(null);
+                        setDisplayName(null);
+                        localStorage.removeItem("userRole");
+                        localStorage.removeItem("displayName");
+                    }
+                }
+            } else {
+                setUser(null);
+                setRole(null);
+                setDisplayName(null);
+                localStorage.removeItem("userRole");
+                localStorage.removeItem("displayName");
+            }
+            setLoading(false);
+        });
 
-      if (res.ok && data.status) {
-        localStorage.setItem(
-          "userData",
-          JSON.stringify(data.seller || data.user)
-        );
-        setUser(data.seller || data.user);
-        setLoading(false);
-        return data.seller || data.user;
-      } else {
-        console.error("Error:", data.message);
-        logout();
-        setLoading(false);
-        return null;
-      }
-    } catch (error) {
-      console.error("Failed to fetch profile:", error);
-      setLoading(false);
-      return null;
-    }
-  };
+        return () => unsubscribe();
+    }, []);
 
-  useEffect(() => {
-    const storedRole = localStorage.getItem("userRole");
-    const storedUser = localStorage.getItem("userData");
+    // 🔹 Register function (Handles both users & sellers)
+    const registerUser = async (email, password, role, fullNameOrShopName) => {
+        setLoading(true);
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            const collection = role === "seller" ? "sellers" : "users";
+            const nameField = role === "seller" ? "shopName" : "fullName";
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setLoading(false);
-    }
+            // Store user data in Firestore
+            await setDoc(doc(db, collection, user.uid), { 
+                email, 
+                role, 
+                [nameField]: fullNameOrShopName 
+            });
 
-    if (storedRole && !storedUser) {
-      setRole(storedRole);
-      fetchProfile(storedRole);
-    } else {
-      setLoading(false);
-    }
-  }, []);
+            setUser({ uid: user.uid, email, role, [nameField]: fullNameOrShopName });
+            setRole(role);
+            setDisplayName(fullNameOrShopName);
+            localStorage.setItem("userRole", role);
+            localStorage.setItem("displayName", fullNameOrShopName);
+            
+            return { success: true };
+        } catch (error) {
+            console.error("Signup Error:", error.message);
+            if (error.code === "auth/email-already-in-use") {
+                return { error: "This email is already in use. Please use a different email." };
+            } else if (error.code === "auth/weak-password") {
+                return { error: "Password should be at least 6 characters long." };
+            } else if (error.code === "auth/invalid-email") {
+                return { error: "Invalid email format. Please enter a valid email." };
+            } else {
+                return { error: "Something went wrong. Please try again." };
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const login = async (email, password, role) => {
-    setLoading(true);
-    try {
-      const endpoint =
-        role === "seller"
-          ? "http://localhost:5000/api/v1/seller/login"
-          : "http://localhost:5000/api/v1/user/login";
+    // 🔹 Login function (Checks both users & sellers)
+    const loginUser = async (email, password) => {
+        setLoading(true);
+        try {
+            if (typeof email !== "string" || typeof password !== "string") {
+                throw new Error("Invalid email or password format.");
+            }
+    
+            const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
+            const user = userCredential.user;
+    
+            let userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                setUser({ uid: user.uid, email: user.email, ...userData });
+                setRole("user");
+                setDisplayName(userData.fullName);
+                localStorage.setItem("userRole", "user");
+                localStorage.setItem("displayName", userData.fullName);
+                return { success: "user" };  // ✅ Return user role
+            }
+    
+            userDoc = await getDoc(doc(db, "sellers", user.uid));
+            if (userDoc.exists()) {
+                const sellerData = userDoc.data();
+                setUser({ uid: user.uid, email: user.email, ...sellerData });
+                setRole("seller");
+                setDisplayName(sellerData.shopName);
+                localStorage.setItem("userRole", "seller");
+                localStorage.setItem("displayName", sellerData.shopName);
+                return { success: "seller" }; // ✅ Return seller role
+            }
+    
+            throw new Error("User data not found.");
+        } catch (error) {
+            console.error("Login Error:", error.message);
+            return { error: "Invalid credentials. Please try again." };
+        } finally {
+            setLoading(false);
+        }
+    };
+    
 
-      const res = await axios.post(
-        endpoint,
-        { email, password },
-        { withCredentials: true }
-      );
+    // 🔹 Logout function
+    const logoutUser = async () => {
+        try {
+            await signOut(auth);
+            setUser(null);
+            setRole(null);
+            setDisplayName(null);
+            localStorage.removeItem("userRole");
+            localStorage.removeItem("displayName");
+            navigate("/");
+        } catch (error) {
+            console.error("Logout Error:", error.message);
+        }
+    };
 
-      console.log("Full Login Response:", res.data);
-
-      const userData = await fetchProfile(role);
-      if (!userData) {
-        console.error("Failed to fetch user profile after login.");
-        return null;
-      }
-
-      localStorage.setItem("userRole", role);
-      if (role === "seller") {
-        localStorage.setItem("shopName", userData.shopName || "Your Shop");
-        setUser({ ...userData, shopName: userData.shopName });
-      } else {
-        localStorage.setItem("username", userData.username || "User");
-        setUser({ ...userData, username: userData.username });
-      }
-
-      setRole(role);
-      return { role, user: userData };
-    } catch (error) {
-      console.error(
-        "Error logging in:",
-        error.response?.data?.message || error.message
-      );
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const logout = async () => {
-    try {
-      const role = localStorage.getItem("userRole");
-      const logoutEndpoint =
-        role === "seller"
-          ? "http://localhost:5000/api/v1/seller/logout"
-          : "http://localhost:5000/api/v1/user/logout";
-
-      const res = await fetch(logoutEndpoint, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        console.error("Logout failed:", res.statusText);
-      }
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
-
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userData");
-    localStorage.removeItem("shopName");
-    localStorage.removeItem("username");
-
-    setUser(null);
-    setRole(null);
-
-    navigate("/");
-
-    setTimeout(() => setLoading(false), 100);
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, role, login, logout, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={{ 
+            user, 
+            role, 
+            displayName, 
+            login: loginUser, 
+            logout: logoutUser, 
+            register: registerUser, 
+            loading 
+        }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };

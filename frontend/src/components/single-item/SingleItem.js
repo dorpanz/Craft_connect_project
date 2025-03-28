@@ -12,6 +12,7 @@ export const SingleItem = () => {
   const { itemId } = useParams();
   const item = data.find((item) => item.id === parseInt(itemId));
   const { addToCart } = useCart();
+  // Unconditionally calling useState
   const [mainImage, setMainImage] = useState(item.photos_videos[0]);
   const [startIndex, setStartIndex] = useState(0);
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);

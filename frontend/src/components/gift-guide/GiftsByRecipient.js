@@ -1,10 +1,10 @@
 import { useRef } from 'react';
-import tale from "./pics/giftsrec.jpg"; 
+import tale from "./pics/giftsrec.jpg"; // Use appropriate images for each category
 
 export const GiftsByRecipient = () => {
   const scrollRef = useRef(null);
 
-  
+  // Function to handle scroll left
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
@@ -14,7 +14,7 @@ export const GiftsByRecipient = () => {
     }
   };
 
-  
+  // Function to handle scroll right
   const scrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({

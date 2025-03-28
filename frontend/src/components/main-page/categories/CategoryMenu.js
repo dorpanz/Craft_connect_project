@@ -50,33 +50,33 @@ const CategoryMenu = () => {
     let timeoutId;
 
     const handleCategoryMouseEnter = (category) => {
-        clearTimeout(timeoutId); 
+        clearTimeout(timeoutId); // Clear any previous timeout
         setHoveredCategory(category);
         timeoutId = setTimeout(() => {
-            setDropdownVisible(category); 
-        }, 200); 
+            setDropdownVisible(category); // Show dropdown after delay
+        }, 200); // Delay of 200ms before showing the dropdown
     };
 
     const handleCategoryMouseLeave = () => {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-            setDropdownVisible(null); 
-        }, 200); 
+            setDropdownVisible(null); // Hide dropdown after delay
+        }, 200); // Delay of 200ms before hiding the dropdown
     };
 
     const handleSubCategoryMouseEnter = (sub) => {
         clearTimeout(timeoutId);
         setHoveredSubCategory(sub);
         timeoutId = setTimeout(() => {
-            setSubDropdownVisible(sub); 
-        }, 200); 
+            setSubDropdownVisible(sub); // Show sub-dropdown after delay
+        }, 200); // Delay of 200ms before showing the sub-dropdown
     };
 
     const handleSubCategoryMouseLeave = () => {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-            setSubDropdownVisible(null); 
-        }, 200); 
+            setSubDropdownVisible(null); // Hide sub-dropdown after delay
+        }, 200); // Delay of 200ms before hiding the sub-dropdown
     };
 
     return (

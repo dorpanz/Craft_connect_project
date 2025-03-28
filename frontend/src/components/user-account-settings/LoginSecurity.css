@@ -3,129 +3,117 @@
   flex-direction: column;
   align-items: center;
   font-family: "Inria Serif", serif;
+  padding: 20px;
 }
 
-.login-sec-card-back-button {
-  align-self: flex-start;
-  margin-left: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  color: #333;
-  text-decoration: none;
+.edit-section-title {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.go-back {
+  margin-right: 10px;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+}
+
+.edit-featured-title {
+  font-size: 22px;
   font-weight: bold;
 }
 
 .login-sec-card {
   background-color: #ffe6cc;
-  border-radius: 20px; 
-  padding: 40px;
-  width: 500px;
-  align-items: center;
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
-
-}
-
-.login-sec-card-field {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  position: relative;
-  padding: 10px;
-  height: 50px;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.login-sec-card-label {
+.login-sec-card label {
   font-weight: bold;
-  font-size: 18px;
-  width: 40%; 
-  height: 50px;
-  position: absolute;
-  left: 10%;
-  transform: translateX(-50%);
-}
-
-.login-sec-card-value {
   font-size: 16px;
-  color: #555;
-  width: 50%;
-  padding-left: 45%;
-  height: 50px;
+  text-align: left;
+  width: 100%;
+  display: block;
+  margin-bottom: 5px;
 }
 
-.login-sec-card-edit-input {
-  font-size: 14px;
-  padding: 6px;
+.login-sec-card input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  width: 40%;
   outline: none;
-  font-family: "Inria Serif", serif;
-  display: none;
-  position: absolute;
-  left: 45%;
-  transform: translateX(-50%);
-  transform: translateY(-50%);
 }
 
-.login-sec-card-edit-button {
-  background-color: #007bff;
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.logout-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.save-button {
+  background-color: #1d6816;
   color: white;
+  width: 100%;
+  max-width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
   border: none;
   border-radius: 8px;
-  padding: 4px 12px;
-  font-size: 14px;
   cursor: pointer;
-  font-family: "Inria Serif", serif;
-  position: absolute;
-  left: 90%;
-  transform: translateX(-50%);
-  transform: translateY(-50%);
-  margin-left: 10px;
+}
+.save-button:hover {
+  background-color: #0b4a05;
 }
 
-.login-sec-card-edit-button:hover {
-  background-color: #0056b3;
-}
-
-.login-sec-card-save-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 4px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  margin-left: 10px;
-  font-family: "Inria Serif", serif;
-  position: absolute;
-  left: 90%;
-  transform: translateX(-50%);
-  transform: translateY(-50%);
-}
-
-.login-sec-card-save-button:hover {
-  background-color: #218838;
-}
-
-
-.login-sec-card-field .login-sec-card-edit-input.show {
-  display: block;
-}
 .logout-button {
   background-color: #d67b24;
-  font-family: "Inria Serif", serif;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  padding: 10px;
   font-size: 16px;
+  font-weight: bold;
+  border: none;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .logout-button:hover {
   background-color: #b5641a;
+}
+
+.newsletter-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between label and checkbox */
+}
+
+.newsletter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 2px; /* Adjust space between checkbox and "Yes" */
 }

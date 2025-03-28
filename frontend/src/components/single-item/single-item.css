@@ -63,7 +63,7 @@
   padding: 10px;
 }
 
-
+/* ====== IMAGE GALLERY ====== */
 .image-gallery {
   display: flex;
   flex-direction: column;
@@ -79,16 +79,16 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
+/* Thumbnail Row */
 .thumbnail-container {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  gap: 10px;
+  gap: 10px; /* Adds space between arrows and thumbnails */
 }
 
-
+/* Left and Right Arrow Buttons */
 .arrow-switch {
   background: none;
   border: none;
@@ -130,7 +130,7 @@
   border: 2px solid #3c9aff;
 }
 
-
+/* ====== PRODUCT DETAILS ====== */
 .product-details {
   width: 45%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.339);

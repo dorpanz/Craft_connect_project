@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import arrow from "../shop-view-seller/pics/arrow.png";
 import "./EditProduct.css";
 export const EditProduct = () => {
-  
+  // New state for image
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -42,7 +42,7 @@ export const AboutProductEdit = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file)); 
+      setImage(URL.createObjectURL(file)); // Set image preview
     }
   };
   const [title, setTitle] = useState("");
@@ -188,7 +188,7 @@ export const PricingInfoEdit = () => {
 };
 
 export const ReturnsEdit = () => {
-  const [policy, setPolicy] = useState(true); 
+  const [policy, setPolicy] = useState(true); // true for '30 days', false for custom
 
   return (
     <div>
@@ -236,7 +236,7 @@ export const TagsAttributeEdit = () => {
   const addTag = () => {
     if (selectedTag && tags.length < 13 && !tags.includes(selectedTag)) {
       setTags([...tags, selectedTag]);
-      setSelectedTag(""); 
+      setSelectedTag(""); // Reset dropdown
     }
   };
 

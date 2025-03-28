@@ -147,8 +147,8 @@
 }
 
 .line-4 {
-    height: 60px;;
-    border-left: 1px solid;
-    transform: rotate(0deg);
+    height: 60px; /* Make the line span the full height of the parent container */; /* Set the width of the line to be very thin */
+    border-left: 1px solid; /* This creates the vertical line */
+    transform: rotate(0deg); /* Rotate the line 90 degrees to make it vertical */
 }
 

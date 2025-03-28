@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Menu from "../menu/Menu";
-import { useCart } from "../../context/CartContext"; 
+import { useCart } from "../../context/CartContext"; // Import Cart Context
 import "./CartPage.css";
 
 const CartPage = () => {
-    const { cart, removeFromCart, updateQuantity } = useCart(); 
+    const { cart, removeFromCart, updateQuantity } = useCart(); // Use the cart context
 
-    
+    // Calculate total price
     const calculateTotal = () => {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     };
