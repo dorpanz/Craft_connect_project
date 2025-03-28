@@ -12,7 +12,7 @@ Craft Connect is an e-commerce platform designed for artisans to sell and buy ha
 
 ## Tech Stack  
 - **Frontend**: React.js, Tailwind CSS  
-- **Backend**: No dedicated backend; Firebase for authentication & database  
+- **Backend**: Firebase for authentication & database  
 - **Database**: Cloud Firestore  
 - **Authentication**: Firebase Authentication  
 
@@ -25,8 +25,8 @@ Ensure you have the following installed:
 
 ### Clone the Repository  
 ```sh
-git clone https://github.com/your-repo/craft-connect.git
-cd craft-connect
+git clone https://github.com/dorpanz/Craft_connect_project.git
+cd Craft_connect_project
 ```
 
 ### Install Dependencies  
@@ -36,7 +36,6 @@ npm install
 
 ### Run the Project  
 ```sh
-cd frontend
 npm start
 ```
 The app will be accessible at **http://localhost:3000**  
@@ -57,4 +56,4 @@ Firebase is already pre-configured in the project, so no additional setup is req
 - Chhavi Chhabra  
 
 ## License  
-MIT License  
+T17
