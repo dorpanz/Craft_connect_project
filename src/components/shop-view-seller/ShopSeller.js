@@ -12,45 +12,55 @@ import { AnimatedSection } from "../animation/AnimatedSection";
 
 export const ShopSeller = () => {
     const [seller, setSeller] = useState(null);
+    const [loading, setLoading] = useState(true); // Track loading state
     const auth = getAuth();
     const db = getFirestore();
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        
-        onAuthStateChanged(auth, async (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const sellerRef = doc(db, "sellers", user.uid);
-                const sellerSnap = await getDoc(sellerRef);
-                
-                if (sellerSnap.exists()) {
-                    const sellerData = sellerSnap.data();
+                try {
+                    const sellerRef = doc(db, "sellers", user.uid);
+                    const sellerSnap = await getDoc(sellerRef);
                     
-                    // Apply default placeholders for missing data
-                    const updatedSeller = {
-                        fullName: sellerData.fullName || "Seller Name",
-                        shopName: sellerData.shopName || "Your Shop Name",
-                        banner: sellerData.banner || "/pics/no-image.jpg",
-                        logo: sellerData.logo || "/pics/no-image.jpg",
-                        tagline: sellerData.tagline || "Add a catchy tagline for your shop!",
-                        description: sellerData.description || "Tell customers about your shop!",
-                        story: sellerData.story || "Write your brand's story here to connect!",
-                        profileImage: sellerData.profileImage || "/pics/no-image.jpg",
-                        gallery: sellerData.gallery || [],
-                        instagram: sellerData.instagram || "#",
-                        twitter: sellerData.twitter || "#",
-                        featuredItems: sellerData.featuredItems || [],
-                        products: sellerData.products || [],
-                        reviews: sellerData.reviews || []
-                    };
-
-                    setSeller(updatedSeller);
-                } else {
-                    console.log("No seller profile found!");
+                    if (sellerSnap.exists()) {
+                        const sellerData = sellerSnap.data();
+                        setSeller({
+                            fullName: sellerData.fullName || "Seller Name",
+                            shopName: sellerData.shopName || "Your Shop Name",
+                            banner: sellerData.banner || "/pics/no-image.jpg",
+                            logo: sellerData.logo || "/pics/no-image.jpg",
+                            tagline: sellerData.tagline || "Add a catchy tagline for your shop!",
+                            description: sellerData.description || "Tell customers about your shop!",
+                            story: sellerData.story || "Write your brand's story here to connect!",
+                            profileImage: sellerData.profileImage || "/pics/no-image.jpg",
+                            gallery: sellerData.gallery || [],
+                            instagram: sellerData.instagram || "#",
+                            twitter: sellerData.twitter || "#",
+                            featuredItems: sellerData.featuredItems || [],
+                            products: sellerData.products || [],
+                            reviews: sellerData.reviews || []
+                        });
+                    } else {
+                        console.log("No seller profile found!");
+                        setSeller(null);
+                    }
+                } catch (error) {
+                    console.error("Error fetching seller data:", error);
                 }
+            } else {
+                setSeller(null);
             }
+            setLoading(false);
         });
+
+        return () => unsubscribe(); // Clean up the listener on unmount
     }, []);
+
+    if (loading) {
+        return <p>Loading...</p>; // Show a loading state
+    }
 
     return (
         <div>

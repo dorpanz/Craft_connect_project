@@ -3,32 +3,58 @@ import Menu from '../menu/Menu';
 import CategoryMenu, { categories } from '../main-page/categories/CategoryMenu';
 import './CategoryPage.css';
 import { useEffect, useState } from 'react';
-import { data } from '../../data/products'; // Assuming you have the categories structure imported
+import { db } from '../../firebase'; // Firebase configuration
+import { collection, query, where, getDocs } from 'firebase/firestore'; // Firestore functions
 import { useCart } from "../../context/CartContext"; 
+import defaultpic from "./pics/shirt.jpg"
 const CategoryPage = () => {
+    const { categoryName, subCategory, subSubCategory } = useParams();
+    const { addToCart } = useCart();
+    const [products, setProducts] = useState([]);
+    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 200]); // Default price range
+    const [sortOrder, setSortOrder] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    const { addToCart } = useCart();
-    const { categoryName, subCategory, subSubCategory } = useParams();
-    const [selectedSubCategories, setSelectedSubCategories] = useState([]);
-    const [selectedPriceRange, setSelectedPriceRange] = useState([0, 200]); // Default price range (0 to 200)
-    const [sortOrder, setSortOrder] = useState(null);
 
-    // Handle subcategory checkbox change
-    const handleSubCategoryChange = (subCategory) => {
-        setSelectedSubCategories((prevSelected) =>
-            prevSelected.includes(subCategory)
-                ? prevSelected.filter((item) => item !== subCategory)
-                : [...prevSelected, subCategory]
-        );
-    };
+    // Fetch products from Firestore based on category
+    useEffect(() => {
+        const fetchProducts = async () => {
+            setLoading(true);
+            try {
+                const productsRef = collection(db, "products");
+                let q = query(productsRef, where("category", "==", categoryName));
+
+                if (subCategory) {
+                    q = query(q, where("subCategory", "==", subCategory));
+                }
+                if (subSubCategory) {
+                    q = query(q, where("subSubCategory", "==", subSubCategory));
+                }
+
+                const querySnapshot = await getDocs(q);
+                const fetchedProducts = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                setProducts(fetchedProducts);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+            setLoading(false);
+        };
+
+        fetchProducts();
+    }, [categoryName, subCategory, subSubCategory]);
 
     const generateStars = (rating) => {
         const fullStars = Math.floor(rating);
         const halfStar = rating % 1 >= 0.5;
         const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-    
+
         return (
             <>
                 {"★".repeat(fullStars)}
@@ -37,64 +63,27 @@ const CategoryPage = () => {
             </>
         );
     };
-    
+
     // Handle price range filter
     const handlePriceRangeChange = (event) => {
         const value = event.target.value;
-        setSelectedPriceRange(value.split(',').map(Number)); // Update the price range based on slider value
+        setSelectedPriceRange(value.split(',').map(Number));
     };
 
-    // Filter products based on category, subCategory, and subSubCategory
-    const filteredProducts = data.filter((product) => {
-        const isCategoryMatch = product.category.toLowerCase() === categoryName.toLowerCase();
-        const isSubCategoryMatch =
-            !subCategory || product.subCategory?.toLowerCase() === subCategory.toLowerCase();
-        const isSubSubCategoryMatch =
-            !subSubCategory || product.subSubCategory?.toLowerCase() === subSubCategory.toLowerCase();
-        const isPriceRangeMatch =
-            product.price >= selectedPriceRange[0] && product.price <= selectedPriceRange[1];
+    // Apply filters
+    const filteredProducts = products.filter((product) => 
+        product.price >= selectedPriceRange[0] && product.price <= selectedPriceRange[1]
+    );
 
-        return isCategoryMatch && isSubCategoryMatch && isSubSubCategoryMatch && isPriceRangeMatch;
-    });
-
-    // Sorting products based on selected sort option
+    // Apply sorting
     const sortedProducts = [...filteredProducts];
     if (sortOrder === 'Highest-price') {
         sortedProducts.sort((a, b) => b.price - a.price);
     } else if (sortOrder === 'Lowest-price') {
         sortedProducts.sort((a, b) => a.price - b.price);
     } else if (sortOrder === 'Recently-listed') {
-        sortedProducts.sort((a, b) => new Date(b.listedDate) - new Date(a.listedDate)); // Assuming `listedDate` exists
+        sortedProducts.sort((a, b) => new Date(b.listedDate) - new Date(a.listedDate));
     }
-
-    // Generate subcategories based on category
-    const getSubCategories = (category) => {
-        const subCategories = [];
-        const categoryData = categories[category];
-        for (const [subCategoryKey, subCategoryValue] of Object.entries(categoryData)) {
-            if (typeof subCategoryValue === 'object') {
-                // If it's an object, show sub-subcategories
-                for (const subSubCategoryKey of Object.keys(subCategoryValue)) {
-                    subCategories.push(subSubCategoryKey);
-                }
-            } else {
-                // If it's not an object, it's a subcategory without sub-subcategories
-                subCategories.push(subCategoryKey);
-            }
-        }
-        return subCategories;
-    };
-
-    // If a subcategory is selected, get its subsubcategories
-    const getSubSubCategories = (category, subCategory) => {
-        const categoryData = categories[category];
-        const subCategoryData = categoryData[subCategory];
-        return subCategoryData && typeof subCategoryData === 'object' ? Object.keys(subCategoryData) : [];
-    };
-
-    // Generate the subcategories and subsubcategories
-    const subCategories = getSubCategories(categoryName);
-    const subSubCategories = subCategory ? getSubSubCategories(categoryName, subCategory) : [];
 
     return (
         <div>
@@ -102,70 +91,68 @@ const CategoryPage = () => {
             <CategoryMenu />
 
             <div className='category-page'>
+                <div className="category-info">
+                    <h1>{categoryName}</h1>
+                    {subCategory && <h2>{subCategory}</h2>}
+                    {subSubCategory && <h3>{subSubCategory}</h3>}
+                </div>
 
-                <div>
-                    <div className="category-info">
-                        <h1>{categoryName}</h1>
-                        {subCategory && <h2>{subCategory}</h2>}
-                        {subSubCategory && <h3>{subSubCategory}</h3>}
-                    </div>
+                <div className="sort">
+                    <p>Sort By</p>
+                    <input type="radio" id="recently-listed" name="sorts" value="Recently-listed" onChange={() => setSortOrder('Recently-listed')} />
+                    <label htmlFor="recently-listed">Recently listed</label>
 
-                    <div className="sort">
-                        <p>Sort By</p>
-                        <input
-                            type="radio"
-                            id="recently-listed"
-                            name="sorts"
-                            value="Recently-listed"
-                            onChange={() => setSortOrder('Recently-listed')}
-                        />
-                        <label htmlFor="recently-listed">Recently listed</label>
+                    <input type="radio" id="highest-price" name="sorts" value="Highest-price" onChange={() => setSortOrder('Highest-price')} />
+                    <label htmlFor="highest-price">Highest price</label>
 
-                        <input
-                            type="radio"
-                            id="highest-price"
-                            name="sorts"
-                            value="Highest-price"
-                            onChange={() => setSortOrder('Highest-price')}
-                        />
-                        <label htmlFor="highest-price">Highest price</label>
+                    <input type="radio" id="lowest-price" name="sorts" value="Lowest-price" onChange={() => setSortOrder('Lowest-price')} />
+                    <label htmlFor="lowest-price">Lowest price</label>
+                </div>
 
-                        <input
-                            type="radio"
-                            id="lowest-price"
-                            name="sorts"
-                            value="Lowest-price"
-                            onChange={() => setSortOrder('Lowest-price')}
-                        />
-                        <label htmlFor="lowest-price">Lowest price</label>
-                    </div>
+                <div className="product-list">
+                    {loading ? (
+                        <p>Loading products...</p>
+                    ) : sortedProducts.length > 0 ? (
+                        sortedProducts.map((product) => (
+                            <div key={product.id} className="all-items-section-list-item">
+                                <div className="heart-icon-container">
+                                    <i className="fa fa-heart heart-icon"></i>
+                                </div>
+                                <Link to={`/item-listing/${product.id}`} style={{ textDecoration: 'none' }}>
+    {/* <img 
+        
+        src={product.photos?.[0] || defaultpic} 
+        alt={product.title} 
+    /> */}
+                  <img
+                src={
+                  product.photos && product.photos.length > 0
+                    ? product.photos.find((photo) => photo)
+                    : defaultpic
+                }
+                alt={product.title || "Item"}
+                className='item-lsiting-img-cat' 
+              />
+</Link>
 
-                    <div className="product-list">
-                        {sortedProducts.length > 0 ? (
-                            sortedProducts.map((product) => (
-                                <div key={product.id} className="all-items-section-list-item">
-                                    <div className="heart-icon-container">
-                                        <i className="fa fa-heart heart-icon"></i>
-                                    </div>
+                                <div className="all-items-section-list-item-desc">
                                     <Link to={`/item-listing/${product.id}`} style={{ textDecoration: 'none' }}>
-                                    <img className='item-lsiting-img-cat' src={product.photos_videos[0]} alt={product.title} />
+                                    <p className="shop-items-section-list-item-title">
+    {product.title.length > 30 ? product.title.substring(0, 20) + "..." : product.title}
+</p>
+
                                     </Link>
-                                    <div className="all-items-section-list-item-desc">
-                                    <Link to={`/item-listing/${product.id}`} style={{ textDecoration: 'none' }}>
-                                        <p className="shop-items-section-list-item-title">{product.title}</p>
-                                    </Link>
-                                        <div className="stars-2">{generateStars(product.average_rating)}</div>
-                                        <div className="all-items-section-list-item-info">
-                                            <p className="price">CA${product.price}</p>
-                                            <button className="add-to-cart-2" onClick={() => addToCart(product)}>Add</button>
-                                        </div>
+                                    <div className="stars-2">{generateStars(product.average_rating)}</div>
+                                    <div className="all-items-section-list-item-info">
+                                        <p className="price">CA${product.price.toFixed(2)}</p>
+                                        <button className="add-to-cart-2" onClick={() => addToCart(product)}>Add</button>
                                     </div>
                                 </div>
-                            ))
-                        ) : (
-                            <p>No products found.</p>
-                        )}
-                    </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No products found.</p>
+                    )}
                 </div>
             </div>
         </div>

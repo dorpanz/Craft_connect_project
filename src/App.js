@@ -33,7 +33,7 @@ import TermsAndConditions from './components/terms/TermsAndConditions';
 import AccountSectionShop from './components/shop-account-settings/AccountSectionShop';
 import SellersChat from './components/shop-account-settings/sellers-chat';
 import LoginSecurityShop from './components/shop-account-settings/Login & SecurityShop';
-import { EditProduct } from './components/product-edit/AboutProductEdit';
+import { EditProduct } from './components/product-edit/EditProduct';
 import { AuthProvider } from './context/AuthContext';
 import RegisterPage from './components/register-user/RegisterPage';
 
@@ -50,7 +50,7 @@ function App() {
         <Route path='/About-Craft-Connect' element={<AboutPage />} />
         <Route path='/Gift-guides' element={<GiftGuide />} />
         <Route path='/Customize-goods' element={<CustomizePage />} />
-        <Route path="/shop/:shopId" element={<ShopBuyer />} />
+        <Route path="/shop/:shopName" element={<ShopBuyer />} />
         <Route path='/Add-Items' element={<UploadProduct />} />
         <Route path='/Shop/Edit' element={ <EditProfile/>}/>
         <Route path='/your-shop' element={ <ShopSeller/>}/>
@@ -80,7 +80,7 @@ function App() {
         <Route path='/your-shop-dashboard' element={<AccountSectionShop/>}/>
         <Route path='/your-shop-dashboard/chat' element={<SellersChat/>}/>
         <Route path='/your-shop-dashboard/login-security' element={<LoginSecurityShop/>}/>
-        <Route path='/edit-product' element={<EditProduct/>}/>
+        <Route path='/edit-product/:productId' element={<EditProduct/>}/>
       </Routes>
       </AuthProvider>
     </Router>

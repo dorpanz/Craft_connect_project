@@ -1,22 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { db, storage } from "../../firebase";
-import { collection, addDoc, doc } from "firebase/firestore";
-import { ref,deleteObject } from "firebase/storage";
-import { AnimatedSection } from "../animation/AnimatedSection";
-import Footer from "../footer/Foooter";
-import Menu from "../menu/Menu";
-import { Link, useNavigate } from "react-router-dom";
-import arrow from "../shop-view-seller/pics/arrow.png";
-import "./UploadProduct.css";
-import { categories } from "../main-page/categories/CategoryMenu";
-import ImageUploader from "./ImageUploader";
-import { auth } from "../../firebase"; // Ensure Firebase auth is imported
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { DndContext, closestCenter } from "@dnd-kit/core";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import { DraggableImage } from "../product-edit/EditProduct";
+import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import "./EditProduct.css";
+import ImageUploader from "../upload-product-page/ImageUploader";
+import arrow from "../shop-view-seller/pics/arrow.png";
+import { AnimatedSection } from "../animation/AnimatedSection";
+import Menu from "../menu/Menu";
+import "../upload-product-page/UploadProduct.css";
+import { categories } from "../main-page/categories/CategoryMenu";
+import Footer from "../footer/Foooter";
 
+// ✅ Draggable Image Component
+export const DraggableImage = ({ imageUrl, index, handleDelete }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: imageUrl });
 
-export const UploadProduct = () => {
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} {...listeners} {...attributes} style={style} className="image-preview-item-2">
+      <img src={imageUrl} alt={`Uploaded ${index}`} className="image-preview-2" />
+      <button onClick={() => handleDelete(imageUrl)} className="delete-image-btn">&times;</button>
+    </div>
+  );
+};
+
+export const EditProduct = () => {
+  const { productId } = useParams();
+  const [product, setProduct] = useState(null);
+  const [price, setPrice] = useState("");
+  const [uploadedURLs, setUploadedURLs] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -26,57 +46,17 @@ export const UploadProduct = () => {
   const [availableSubSubCategories, setAvailableSubSubCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState("");
-  const [customized, setCustomized] = useState(false);
+  const [customized, setCustomized] = useState();
   const [primaryColour, setPrimaryColour] = useState("");
   const [secondaryColour, setSecondaryColour] = useState("");
   const [materials, setMaterials] = useState("");
-  const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [processingTime, setProcessingTime] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [width, setWidth] = useState("");
-  const [returnPolicy, setReturnPolicy] = useState("");
   const [shippingCost, setShippingCost] = useState("");
-  const [uploadedURLs, setUploadedURLs] = useState([]);
-  const [productId, setProductId] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
-    // Generate a new product ID when the component loads
-    const newProductRef = doc(collection(db, "products"));
-    setProductId(newProductRef.id);
-  }, []);
-
-  useEffect(() => {
-    // Reset subcategory and sub-subcategory when category changes
-    setSubCategory("");
-    setSubSubCategory("");
-
-    // Update available subcategories based on selected category
-    if (category && categories[category]) {
-      const subCategories = Object.keys(categories[category]);
-      setAvailableSubCategories(subCategories);
-
-      // Clear sub-subcategory if no subcategories are available
-      if (subCategories.length === 0) {
-        setAvailableSubSubCategories([]);
-      }
-    } else {
-      setAvailableSubCategories([]);
-      setAvailableSubSubCategories([]);
-    }
-  }, [category]);
-
-  useEffect(() => {
-    // Update available sub-subcategories based on selected subcategory
-    if (subCategory && categories[category][subCategory]) {
-      const subSubCategories = categories[category][subCategory];
-      setAvailableSubSubCategories(subSubCategories);
-    } else {
-      setAvailableSubSubCategories([]);
-    }
-  }, [category, subCategory]);
-
   const tagOptions = [
     "Handmade",
     "Jewelry",
@@ -92,24 +72,11 @@ export const UploadProduct = () => {
     "Eco-friendly",
     "Luxury",
   ];
-
-  const addTag = () => {
-    if (selectedTag && tags.length < 13 && !tags.includes(selectedTag)) {
-      setTags([...tags, selectedTag]);
-      setSelectedTag(""); // Reset dropdown
-    }
-  };
-
-  const removeTag = (tagToRemove) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
-  };
-
   const handleDeleteImage = async (imageUrl) => {
     const storageRef = ref(storage, imageUrl);
     await deleteObject(storageRef);
     setUploadedURLs(uploadedURLs.filter((url) => url !== imageUrl));
   };
-
   const handleReorder = (event) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
@@ -117,73 +84,95 @@ export const UploadProduct = () => {
     const oldIndex = uploadedURLs.indexOf(active.id);
     const newIndex = uploadedURLs.indexOf(over.id);
     const newArray = arrayMove(uploadedURLs, oldIndex, newIndex);
-    
+
     setUploadedURLs(newArray);
   };
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!productId) return;
+      const productRef = doc(db, "products", productId);
+      const productSnap = await getDoc(productRef);
 
-  const handleSubmit = async () => {
-    const user = auth.currentUser; // Get the logged-in user
-  
-    if (!user) {
-      alert("You must be logged in to upload a product.");
-      return;
+      if (productSnap.exists()) {
+        const product = productSnap.data();
+        setUploadedURLs(product.photos);
+        setTitle(product.title || "");
+        setPrice(product.price || "");
+        setDescription(product.description || "");
+        setCategory(product.category || "");
+        setSubCategory(product.subCategory || "");
+        setSubSubCategory(product.subSubCategory || "");
+        setTags(product.tags || []);
+        setPrimaryColour(product.primaryColour || "");
+        setSecondaryColour(product.secondaryColour || "");
+        setHeight(product.height || "");
+        setWidth(product.width || "");
+        setMaterials(product.materials || "");
+        setWeight(product.weight || "");
+        setCustomized(product.customized || false);
+        setQuantity(product.quantity || "")
+        setShippingCost(product.shippingCost || "")
+        setProcessingTime(product.processingTime || "")
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  // Update available subcategories when category changes
+  useEffect(() => {
+    if (category && categories[category]) {
+      setAvailableSubCategories(Object.keys(categories[category]));
+    } else {
+      setAvailableSubCategories([]);
+      setAvailableSubSubCategories([]);
     }
+  }, [category]);
+  // Function to add a tag
+  const handleAddTag = () => {
+    if (selectedTag.trim() !== "" && !tags.includes(selectedTag)) {
+      setTags([...tags, selectedTag.trim()]);
+      setSelectedTag(""); // Clear input field
+    }
+  };
   
-    const sellerId = user.uid; // Get the seller's unique Firebase UID
-  
-    // List of required fields (excluding secondaryColour)
-    const requiredFields = {
+  // Function to remove a tag
+  const handleRemoveTag = (tagToRemove) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
+  // Update available sub-subcategories when subcategory changes
+  useEffect(() => {
+    if (subCategory && categories[category]?.[subCategory]) {
+      setAvailableSubSubCategories(categories[category][subCategory]);
+    } else {
+      setAvailableSubSubCategories([]);
+    }
+  }, [subCategory, category]);
+
+  const handleUpdate = async () => {
+    const productRef = doc(db, "products", productId);
+    const updatedProduct = { ...product, photos: uploadedURLs };
+    await updateDoc(productRef, updatedProduct, {
       title,
       description,
-      customized,
       category,
       subCategory,
       subSubCategory,
       tags,
       primaryColour,
-      materials,
-      price,
-      quantity,
-      weight,
+      secondaryColour,
       height,
       width,
+      materials,
+      weight,
+      customized,
+      quantity,
       processingTime,
-      shippingCost,
-      returnPolicy,
-    };
-  
-    const emptyFields = Object.entries(requiredFields).filter(
-      ([key, value]) => value === undefined || value === "" || (Array.isArray(value) && value.length === 0)
-    );
-  
-    if (emptyFields.length > 0) {
-      alert(`Please fill out all required fields: ${emptyFields.map(([key]) => key).join(", ")}`);
-      return;
-    }
-  
-    if (uploadedURLs.length === 0) {
-      alert("Please upload at least one photo.");
-      return;
-    }
-  
-    try {
-      await addDoc(collection(db, "products"), {
-        ...requiredFields,
-        materials: materials.split(",").map((m) => m.trim()),
-        price: parseFloat(price),
-        quantity: parseInt(quantity),
-        photos: uploadedURLs, // Save uploaded image URLs in the product document
-        secondaryColour,
-        createdAt: new Date(),
-        sellerId, // Attach the seller's ID to the product
-      });
-      navigate("/your-shop");
-      alert("Product uploaded successfully!");
-    } catch (error) {
-      console.error("Error uploading product:", error);
-      alert("Failed to upload product.");
-    }
+      shippingCost
+    });
+    navigate("/your-shop");
+    alert("Product updated successfully!");
   };
 
   return (
@@ -195,34 +184,57 @@ export const UploadProduct = () => {
             <Link to="/your-shop-dashboard" className="go-back">
               <img src={arrow} alt="arrow" className="arrow" />
             </Link>
-            <p className="edit-featured-title">Upload your product!</p>
+            <p className="edit-featured-title">Edit your product!</p>
           </div>
         </AnimatedSection>
+
         <AnimatedSection>
           <div className="upload-product-sections">
             <p className="main-title-section">About</p>
-            <p className="main-desc-section">
-              Tell the world all about your item and why they’ll love it
-            </p>
             <div className="line-2"></div>
+
+            {/* ✅ Input Fields for Existing Product Details */}
             <div className="upload-about-section">
-              <p className="info-about-product">Title: </p>
-              <p>
-                Include the keywords that buyers would use to search for this
-                item
-              </p>
+              <p className="info-about-product">Title:</p>
               <input
                 className="input-about-product"
                 type="text"
-                placeholder="Ex: Natural Baltic Amber Handmade Sterling Silver Earrings"
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                required
               />
             </div>
 
-            <ImageUploader productId={productId} onUploadComplete={(newURLs) => setUploadedURLs((prev) => [...prev, ...newURLs])} />
+            <div className="upload-about-section">
+              <p className="info-about-product">Description:</p>
+              <textarea
+                className="input-about-product"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
 
-{/* ✅ Styled Image Upload Section */}
+            <div className="upload-about-section">
+              <p className="info-about-product">Price:</p>
+              <input
+                className="input-about-product"
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+              <p className="info-about-product">Quantity:</p>
+                <input
+                  type="number"
+                  value={quantity}
+                  className="input-about-product-price"
+                  onChange={(e) => setQuantity(e.target.value)}
+                  required
+                />
+            </div>
+
+             {/* ✅ Image Uploader */}
+             <ImageUploader productId={productId} onUploadComplete={(newURLs) => setUploadedURLs((prev) => [...prev, ...newURLs])} />
+
+{/* ✅ Draggable Image List */}
 <div className="image-upload-section-2">
   <p>Uploaded Images:</p>
   <DndContext collisionDetection={closestCenter} onDragEnd={handleReorder}>
@@ -235,27 +247,7 @@ export const UploadProduct = () => {
     </SortableContext>
   </DndContext>
 </div>
-            <div className="upload-about-section">
-              <p className="info-about-product">Description: </p>
-              <p>
-                What makes your item special? Buyers will only see the first few
-                lines unless they expand the description
-              </p>
-              <textarea
-                className="input-about-product-desc"
-                placeholder="Ex: A sweet elegant pair of earrings designed and hand crafted using 6mm round genuine Baltic Amber gemstones complemented with all 925 sterling silver components."
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-            </div>
-            <p className="info-about-product">Is your Item customized?</p>
-            <label>
-              <input
-                type="checkbox"
-                onChange={(e) => setCustomized(e.target.checked)}
-              />
-              Customized
-            </label>
+
             <div className="upload-about-section">
               <p className="info-about-product">Category: </p>
               <select
@@ -291,7 +283,6 @@ export const UploadProduct = () => {
                 </select>
               </div>
             )}
-
             {subCategory && availableSubSubCategories.length > 0 && (
               <div className="upload-about-section">
                 <p className="info-about-product">Sub-subcategory: </p>
@@ -300,7 +291,7 @@ export const UploadProduct = () => {
                   value={subSubCategory}
                   onChange={(e) => setSubSubCategory(e.target.value)}
                   required
-                >
+                  >
                   <option value="">Select a sub-subcategory</option>
                   {availableSubSubCategories.map((subSub, index) => (
                     <option key={index} value={subSub}>
@@ -310,7 +301,17 @@ export const UploadProduct = () => {
                 </select>
               </div>
             )}
-          </div>
+            
+            <p className="info-about-product">Is your Item customized?</p>
+            <label>
+              <input
+                type="checkbox"
+                checked={customized}
+                onChange={(e) => setCustomized(e.target.checked)}
+              />
+              Customized
+            </label>
+                  </div>
         </AnimatedSection>
 
         <AnimatedSection>
@@ -327,7 +328,7 @@ export const UploadProduct = () => {
                 <p className="info-about-product">Primary Colour:</p>
                 <input
                   type="text"
-                  placeholder="Primary Colour"
+                  value={primaryColour}
                   className="input-about-product"
                   onChange={(e) => setPrimaryColour(e.target.value)}
                   required
@@ -336,6 +337,7 @@ export const UploadProduct = () => {
                 <p className="info-about-product">Secondary Colour:</p>
                 <input
                   type="text"
+                  value={secondaryColour}
                   placeholder="Secondary Colour"
                   className="input-about-product"
                   onChange={(e) => setSecondaryColour(e.target.value)}
@@ -349,7 +351,7 @@ export const UploadProduct = () => {
                       {tag}
                       <button
                         className="remove-tag"
-                        onClick={() => removeTag(tag)}
+                        onClick={() => handleRemoveTag(tag)}
                       >
                         ×
                       </button>
@@ -373,7 +375,7 @@ export const UploadProduct = () => {
                   </select>
                   <button
                     className="add-tag-button"
-                    onClick={addTag}
+                    onClick={handleAddTag}
                     disabled={tags.length >= 13}
                   >
                     + Add Tag
@@ -381,12 +383,9 @@ export const UploadProduct = () => {
                 </div>
 
                 <p className="info-about-product">Materials:</p>
-                <p>
-                  Buyers value transparency - tell them what’s used to make your
-                  item
-                </p>
                 <input
                   className="input-about-product"
+                  value={materials}
                   type="text"
                   placeholder="Materials (comma separated)"
                   onChange={(e) => setMaterials(e.target.value)}
@@ -398,6 +397,7 @@ export const UploadProduct = () => {
                 <input
                   className="input-about-product"
                   type="number"
+                  value={weight}
                   placeholder="Ex: 0.5"
                   onChange={(e) => setWeight(e.target.value)}
                   required
@@ -405,16 +405,20 @@ export const UploadProduct = () => {
 
                 <p className="info-about-product">Size:</p>
                 <p>Enter size in cm:</p>
+                <label>Height: </label>
                 <input
                   className="input-about-product-hw"
                   type="number"
+                  value={height}
                   placeholder="Height"
                   onChange={(e) => setHeight(e.target.value)}
                   required
                 />
+                <label>Width: </label>
                 <input
                   className="input-about-product-hw"
                   type="number"
+                  value={width}
                   placeholder="Width"
                   onChange={(e) => setWidth(e.target.value)}
                   required
@@ -426,46 +430,7 @@ export const UploadProduct = () => {
 
         <AnimatedSection>
           <div className="upload-product-sections">
-            <p className="main-title-section">Price and Description</p>
-            <p className="main-desc-section">
-              Set a price for your item and indicates how many are available for
-              sale{" "}
-            </p>
-
-            <div className="line-2"></div>
-            <div className="upload-about-section">
-              <div className="price-quantity">
-                <p className="info-about-product">Price:</p>
-                <input
-                  type="number"
-                  className="input-about-product-price"
-                  placeholder="CAD$"
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
-
-                <p className="info-about-product">Quantity:</p>
-                <input
-                  type="number"
-                  className="input-about-product-price"
-                  placeholder="Number of items to sell"
-                  onChange={(e) => setQuantity(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection>
-          <div className="upload-product-sections">
             <p className="main-title-section">Delievery</p>
-            <p className="main-desc-section">
-              Give shoppers clear expectations about delivery time and cost by
-              making sure your delivery info is accurate, including your order
-              processing schedule. You can make update any time in Delivery
-              Settings
-            </p>
 
             <div className="line-2"></div>
             <div className="upload-about-section">
@@ -476,7 +441,7 @@ export const UploadProduct = () => {
                 <input
                   type="number"
                   className="input-about-product-price"
-                  placeholder="4"
+                  value={processingTime}
                   onChange={(e) => setProcessingTime(e.target.value)}
                   required
                 />
@@ -485,7 +450,7 @@ export const UploadProduct = () => {
                 <input
                   type="number"
                   className="input-about-product-price"
-                  placeholder="CAD$"
+                  value={shippingCost}
                   onChange={(e) => setShippingCost(e.target.value)}
                   required
                 />
@@ -494,36 +459,15 @@ export const UploadProduct = () => {
           </div>
         </AnimatedSection>
         <AnimatedSection>
-          <div>
-            <div className="upload-product-sections">
-              <p className="main-title-section">Returns and exchanges *</p>
-              <div className="simple-policy-cont">
-                <div>
-                  <p className="info-about-product">Simply Policy - 30 Days</p>
-                </div>
-                <div className="return-excahnge-policy-info">
-                  <p>
-                    Buyer is responsible for return postage costs and any loss
-                    in value if any item is not returned in original condition
-                  </p>
-                  <input
-                    type="checkbox"
-                    placeholder="Return Policy"
-                    onChange={(e) => setReturnPolicy(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-            </div>
+          <div className="button-submit">
+            <button onClick={handleUpdate}>Apply Changes</button>
           </div>
         </AnimatedSection>
+
+        <AnimatedSection>
+          <Footer/>
+        </AnimatedSection>
       </div>
-      <AnimatedSection>
-        <div className="button-submit">
-          <button onClick={handleSubmit}>Save and Post</button>
-        </div>
-      </AnimatedSection>
-      <Footer />
     </div>
   );
 };

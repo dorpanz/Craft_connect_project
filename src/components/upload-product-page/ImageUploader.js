@@ -1,37 +1,71 @@
-import { useState } from "react";
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import { useState, useEffect } from "react";
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject, listAll } from "firebase/storage";
 import { storage } from "../../firebase";
 
-const ImageUploader = ({ onUploadComplete }) => {
+const ImageUploader = ({ onUploadComplete, productId }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploadedURLs, setUploadedURLs] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
 
+  // Fetch previously uploaded images for the specific product
+  useEffect(() => {
+    if (!productId) return; // Prevent fetching if productId is undefined
+
+    const fetchUploadedImages = async () => {
+      try {
+        const imagesRef = ref(storage, `products/${productId}/images/`);
+        const result = await listAll(imagesRef);
+
+        if (result.items.length === 0) {
+          console.log("No images found.");
+          return;
+        }
+
+        const urls = await Promise.all(
+          result.items.map(async (itemRef) => {
+            const url = await getDownloadURL(itemRef);
+            return { url, ref: itemRef };
+          })
+        );
+
+        setUploadedURLs(urls);
+      } catch (error) {
+        console.error("Error fetching uploaded images:", error);
+      }
+    };
+
+    fetchUploadedImages();
+  }, [productId]);
+
+  // Handle file selection
   const handleFileSelection = (e) => {
     const files = Array.from(e.target.files);
-
     if (files.length + selectedFiles.length > 10) {
       alert("You can only upload up to 10 photos.");
       return;
     }
-
     setSelectedFiles((prev) => [...prev, ...files]);
   };
 
+  // Upload selected files to Firebase Storage
   const handleUpload = async () => {
+    if (!productId) {
+      console.error("Error: productId is undefined!");
+      return;
+    }
+
     const newUploadedURLs = [];
 
     for (let file of selectedFiles) {
       const fileName = `${Date.now()}-${file.name}`;
-      const fileRef = ref(storage, `products/${fileName}`);
+      const fileRef = ref(storage, `products/${productId}/images/${fileName}`);
       const uploadTask = uploadBytesResumable(fileRef, file);
 
       await new Promise((resolve, reject) => {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             setUploadProgress((prev) => ({ ...prev, [file.name]: progress }));
           },
           (error) => {
@@ -39,39 +73,42 @@ const ImageUploader = ({ onUploadComplete }) => {
             reject(error);
           },
           async () => {
-            const fileURL = await getDownloadURL(uploadTask.snapshot.ref);
-            newUploadedURLs.push({ url: fileURL, ref: fileRef });
-            resolve();
+            try {
+              const fileURL = await getDownloadURL(uploadTask.snapshot.ref);
+              newUploadedURLs.push({ url: fileURL, ref: fileRef });
+              resolve();
+            } catch (error) {
+              console.error("Error getting file URL:", error);
+              reject(error);
+            }
           }
         );
       });
-      console.log("Uploaded file ref:", fileRef)
     }
-    setUploadedURLs(newUploadedURLs);
+
+    setUploadedURLs((prev) => [...prev, ...newUploadedURLs]);
     onUploadComplete(newUploadedURLs.map((item) => item.url)); // Send URLs to parent
-    setSelectedFiles([]);
-    setUploadProgress({});
+    setSelectedFiles([]);  // Clear selected files
+    setUploadProgress({});  // Reset upload progress
   };
 
+  // Delete image from Firebase Storage
   const handleDeleteImage = async (fileRef, index) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this photo?");
     if (confirmDelete) {
       try {
-        console.log("Attempting to delete:", fileRef);
         await deleteObject(fileRef);
-        console.log("File deleted successfully.");
         setUploadedURLs((prev) => prev.filter((_, i) => i !== index));
       } catch (error) {
         console.error("Error deleting image:", error);
       }
     }
   };
-  
 
-  const handleDeletePreviewImage = (file, index) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this preview image?");
+  // Delete selected preview image before upload
+  const handleDeletePreviewImage = (index) => {
+    const confirmDelete = window.confirm("Are you sure you want to remove this preview image?");
     if (confirmDelete) {
-
       setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
     }
   };
@@ -89,6 +126,7 @@ const ImageUploader = ({ onUploadComplete }) => {
         />
       </div>
 
+      {/* Preview Selected Files Before Upload */}
       <div className="preview-section">
         {selectedFiles.map((file, index) => (
           <div key={index} className="preview-item">
@@ -96,7 +134,7 @@ const ImageUploader = ({ onUploadComplete }) => {
               src={URL.createObjectURL(file)}
               alt={`preview ${index}`}
               className="preview-image"
-              onDoubleClick={() => handleDeletePreviewImage(file, index)} // Double-click to delete preview
+              onDoubleClick={() => handleDeletePreviewImage(index)} // Double-click to delete preview
             />
             {uploadProgress[file.name] && (
               <p>Uploading: {Math.round(uploadProgress[file.name])}%</p>
@@ -105,6 +143,7 @@ const ImageUploader = ({ onUploadComplete }) => {
         ))}
       </div>
 
+      {/* Upload Button */}
       <div className="uploadphotos-div">
         <button
           onClick={handleUpload}
@@ -115,7 +154,8 @@ const ImageUploader = ({ onUploadComplete }) => {
         </button>
       </div>
 
-      <div className="uploaded-images">
+      {/* Display Uploaded Images */}
+      {/* <div className="uploaded-images">
         {uploadedURLs.map((item, index) => (
           <div key={index} className="uploaded-image-container">
             <img
@@ -126,7 +166,7 @@ const ImageUploader = ({ onUploadComplete }) => {
             />
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

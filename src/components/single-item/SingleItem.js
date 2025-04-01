@@ -1,33 +1,92 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { data } from "../../data/products";
-import heart from "../menu/pictures/mdi_heart-outline.png";
-import { Link } from "react-router-dom";
-import Footer from "../footer/Foooter";
+import { useParams, Link } from "react-router-dom";
+import { db } from "../../firebase"; // Firebase configuration file
+import { doc, getDoc } from "firebase/firestore"; // Firestore functions
+import Footer from "../footer/Foooter"; // Fixed typo in Footer import
 import Menu from "../menu/Menu";
-import './single-item.css'
-import { useCart } from "../../context/CartContext"; 
+import { useCart } from "../../context/CartContext";
 import { useFavorites } from "../../context/FavoritesContext";
+import "./single-item.css";
+import { ShopLink } from "./ShopLink";
+import { SellerInfo } from "./SellerInfo"; // Assuming SellerInfo is implemented correctly
+import { useAuth } from "../../context/AuthContext";
+import { AnimatedSection2 } from "../animation/AnimtedSection2";
+import { motion } from "framer-motion";
+
 export const SingleItem = () => {
-  const { itemId } = useParams();
-  const item = data.find((item) => item.id === parseInt(itemId));
-  const { addToCart } = useCart();
-  // Unconditionally calling useState
-  const [mainImage, setMainImage] = useState(item.photos_videos[0]);
+  const { itemId } = useParams(); // Retrieve itemId from URL params
+  const [item, setItem] = useState(null); // Store product data
+  const [mainImage, setMainImage] = useState("");
   const [startIndex, setStartIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true); 
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
-  const [sortOption, setSortOption] = useState("date");
-  const [reviewsData, setReviewsData] = useState(item.reviewsData);
+  const { addToCart } = useCart();
   const { toggleFavorite } = useFavorites();
+  const { user } = useAuth();
+  console.log("Current User:", user);
+  
+  const [sellerData, setSellerData] = useState(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
+  // Fetch product and seller data from Firestore
   useEffect(() => {
     window.scrollTo(0, 0);
-}, []);
-  if (!item) {
-    return <div>Item not found</div>;
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [itemId]);
+
+  useEffect(() => {
+    setIsLoading(true); // 🛑 Start loading before fetching
+
+    const fetchItem = async () => {
+      try {
+        const docRef = doc(db, "products", itemId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const productData = docSnap.data();
+          setItem(productData);
+          setMainImage(""); // 👈 Reset image to avoid flicker
+          
+          // Fetch seller data
+          if (productData.sellerId) {
+            const sellerRef = doc(db, "sellers", productData.sellerId);
+            const sellerSnap = await getDoc(sellerRef);
+
+            if (sellerSnap.exists()) {
+              setSellerData({ sellerId: productData.sellerId, ...sellerSnap.data() });
+            }
+          }
+
+          setTimeout(() => { 
+            setMainImage(productData.photos?.[0]); 
+            setIsLoading(false); // ✅ Stop loading after image is set
+          }, 200); // Slight delay for smooth transition
+        }
+      } catch (error) {
+        console.error("Error fetching document:", error);
+      }
+    };
+
+    fetchItem();
+  }, [itemId]);
+
+  if (!item || isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+      </div>
+    );
   }
+  
+
+  // Check seller status
+  const isSeller = user && user.uid === item.sellerId;
+  console.log("Is Seller:", isSeller);
 
   const nextImages = () => {
-    if (startIndex + 3 < item.photos_videos.length) {
+    if (startIndex + 3 < item.photos.length) {
       setStartIndex(startIndex + 1);
     }
   };
@@ -38,109 +97,88 @@ export const SingleItem = () => {
     }
   };
 
-  const toggleDetails = () => {
-    setIsDetailsExpanded(!isDetailsExpanded);
-  };
 
-  const sortReviews = (option) => {
-    let sortedReviews = [...item.reviews]; // Work with item.reviews
-
-    if (option === "rating") {
-      sortedReviews.sort((a, b) => b.rating - a.rating); // Sort by rating (high to low)
-    }
-    return sortedReviews;
-  };
-
-  const handleLike = (id) => {
-    setReviewsData((prevReviews) =>
-      prevReviews.map((review) =>
-        review.id === id ? { ...review, likes: review.likes + 1 } : review
-      )
-    );
-  };
-
-  const handleDislike = (id) => {
-    setReviewsData((prevReviews) =>
-      prevReviews.map((review) =>
-        review.id === id ? { ...review, dislikes: review.dislikes + 1 } : review
-      )
-    );
-  };
-
-  const handleSortChange = (event) => {
-    setSortOption(event.target.value);
-  };
   const generateStars = (rating) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5;
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
     return (
-        <>
-            {"★".repeat(fullStars)}
-            {halfStar && "☆"}
-            {"☆".repeat(emptyStars)}
-        </>
+      <>
+        {"★".repeat(fullStars)}
+        {halfStar && "☆"}
+        {"☆".repeat(emptyStars)}
+      </>
     );
-};
+  };
+
   return (
     <div className="item-customize">
       <Menu />
+      <AnimatedSection2 itemId={itemId}>
       <div className="item-container">
-        {/* Image Gallery */}
-        <div className="image-gallery">
-          {/* Big Image */}
-          <img className="big-image" src={mainImage} alt="Main Product" />
+          {/* Image Gallery */}
+          <div className="image-gallery">
+            <motion.img
+              key={mainImage} // 🚀 Force re-animation when mainImage changes
+              className="big-image"
+              src={mainImage}
+              alt="Main Product"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }} // 🌀 Smooth fade-in
+            />
 
-          {/* Small Images with Arrows */}
-          <div className="thumbnail-container">
-            <button className="arrow-switch left" onClick={prevImages}>
-              &#9664;
-            </button>
-            <div className="thumbnails">
-              {item.photos_videos
-                .slice(startIndex, startIndex + 3)
-                .map((src, index) => (
-                  <img
+            {/* Small Images */}
+            <div className="thumbnail-container">
+              <button className="arrow-switch left" onClick={() => setStartIndex(startIndex - 1)}>
+                &#9664;
+              </button>
+              <div className="thumbnails">
+                {item.photos.slice(startIndex, startIndex + 3).map((src, index) => (
+                  <motion.img
                     key={index}
                     src={src}
                     alt={`Thumbnail ${index}`}
                     className={src === mainImage ? "active-thumbnail" : ""}
                     onClick={() => setMainImage(src)}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }} // 🌀 Smooth fade-in
                   />
                 ))}
+              </div>
+              <button className="arrow-switch right" onClick={() => setStartIndex(startIndex + 1)}>
+                &#9654;
+              </button>
             </div>
-            <button className="arrow-switch right" onClick={nextImages}>
-              &#9654;
-            </button>
           </div>
-        </div>
 
         {/* Product Details */}
         <div className="product-details">
           <h2>{item.title}</h2>
-          <div className="stars-2">{generateStars(item.average_rating)} <span className="rating">- {item.average_rating}</span></div>
+          <div className="stars-2">
+            {generateStars(item.average_rating)}{" "}
+            <span className="rating">- {item.average_rating}</span>
+          </div>
+
           {/* Seller Info */}
-          <Link to={`/shop/${item.shop_id}`} className='item-shopname'>
-                                        {item.shop_name}
-                                    </Link>
-          <p className="price">{`$${item.price}`}</p>
-          {/* Description */}
-          <p className="description">{item.description}</p>
+          <Link to={user && user.uid === item.sellerId? "/your-shop" : `/shop/${item.shopName}`} className="item-shopname">
+            { user && user.uid === item.sellerId ? <p>{user.shopName}</p>: <ShopLink sellerId={item.sellerId} />}
+          </Link>
+          <p className="price">${item.price.toFixed(2)}</p>
 
           {/* Options */}
           <div className="options">
             <label>Size</label>
-            <select>
-              <option>{item.size}</option>
-            </select>
+            <p>
+              {item.height}cm x {item.width}cm
+            </p>
 
             <label>Color</label>
             <select>
-              {item.primary_colour && <option>{item.primary_colour}</option>}
-              {item.secondary_colour && (
-                <option>{item.secondary_colour}</option>
-              )}
+              {item.primaryColour && <option>{item.primaryColour}</option>}
+              {item.secondaryColour && <option>{item.secondaryColour}</option>}
             </select>
 
             <label>Quantity</label>
@@ -156,72 +194,57 @@ export const SingleItem = () => {
 
           {/* Action Buttons */}
           <div className="buttons">
-            <button className="add-to-cart" onClick={() => addToCart(item)}>Add To Cart</button>
-            <button className="add-to-fav" onClick={() => toggleFavorite(item)}>
-                        Favorite
-            </button>
+            {isSeller ? (
+              <>
+                <Link to={`/edit-product/${itemId}`} className="add-to-cart">
+                  Edit
+                </Link>
+                <Link to={`/stats/${itemId}`} className="add-to-fav">
+                  Stats
+                </Link>
+              </>
+            ) : (
+              <>
+                <button className="add-to-cart" onClick={() => addToCart(item)}>
+                  Add To Cart
+                </button>
+                <button
+                  className="add-to-fav"
+                  onClick={() => toggleFavorite(item)}
+                >
+                  Favorite
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
-
+            </AnimatedSection2>
       {/* Item Details Section with See More / See Less */}
+      <AnimatedSection2 itemId={itemId}>
+
       <div className="item-details">
         <p className="item-details-title">Item Details</p>
         <div>
           <span>
-            {isDetailsExpanded
-              ? item.expanded_description
-              : `${item.expanded_description.substring(0, 150)}...`}
+            <p className="description">{item.description}</p>
           </span>
-          <button className="see-more-less" onClick={toggleDetails}>
-            {isDetailsExpanded ? "See Less" : "See More"}
-          </button>
         </div>
       </div>
+      </AnimatedSection2>
+<AnimatedSection2 itemId={itemId}>
+
+      {/* Seller Info */}
       <div className="item-details">
-        <p className="item-details-title">Shop Details</p>
         <div>
-          <p>
-              {item.about}
-          </p>
+          <SellerInfo sellerData={sellerData} itemId={itemId} />
         </div>
       </div>
-
-      {/* Reviews Section */}
-      <div className="reviews-item-section">
-        <p className="reviews-title">{item.reviews.length} Reviews</p>
-        <div className="sort-options">
-          <label>Sort By:</label>
-          <select value={sortOption} onChange={handleSortChange}>
-            <option value="date">Date (Newest to Oldest)</option>
-            <option value="rating">Rating (High to Low)</option>
-          </select>
-        </div>
-        <div className="reviews-list">
-    {sortReviews(sortOption).map((review) => (
-      <div className="review-item-single" key={review.id}>
-        <div className="review-text">
-          {/* User Image & Name */}
-          <div className="review-header">
-            <p className="review-name">{review.user}</p>
-          </div>
-
-          {/* Rating Stars */}
-          <p className="review-rating">{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}</p>
-
-          {/* Comment & Date */}
-          <p className="review-message">{review.comment}</p>
-          <p className="review-date">{new Date(review.date).toLocaleDateString()}</p>
-
-          {/* Like/Dislike Buttons */}
-          
-        </div>
-      </div>
-    ))}
-  </div>
-      </div>
-
+</AnimatedSection2>
+<AnimatedSection2 itemId={itemId}>
       <Footer />
+
+</AnimatedSection2>
     </div>
   );
 };

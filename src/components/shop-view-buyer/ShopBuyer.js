@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams
-import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore"; // Firestore imports
-import { getAuth } from "firebase/auth"; // Auth imports
+import { useParams } from "react-router-dom";
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
 import Menu from "../menu/Menu";
 import Footer from "../footer/Foooter";
 import { AboutSeller } from "./AboutSeller";
@@ -12,56 +11,41 @@ import { ShopAboutBanner } from "./ShopAboutBanner";
 import { AnimatedSection } from "../animation/AnimatedSection";
 
 export const ShopBuyer = () => {
-  const { shopId } = useParams(); // Get shopId from URL
+  const { shopName } = useParams();
   const [shop, setShop] = useState(null);
   const [items, setItems] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const db = getFirestore(); // Firebase Firestore instance
-  const auth = getAuth(); // Firebase Auth instance
-
+  const db = getFirestore();
   useEffect(() => {
     window.scrollTo(0, 0);
+  
     const fetchShopData = async () => {
       try {
-        const shopRef = doc(db, "sellers", shopId); // Use 'sellers' collection in Firestore
-        const shopSnap = await getDoc(shopRef);
-        if (shopSnap.exists()) {
-          const shopData = shopSnap.data();
-          const updatedShop = {
-            shopId: shopData.shopId,
-            shopName: shopData.shopName || "Shop Name", // Default values in case data is missing
-            banner: shopData.banner || "/default-banner.jpg",
-            logo: shopData.logo || "/default-logo.jpg",
-            about: shopData.about || "No description available",
-            featuredItems: shopData.featuredItems || [],
-            reviews: shopData.reviews || [],
-            socialMedia: shopData.socialMedia || {},
-            expandedStory: shopData.expandedStory || "Tell your shop story here...",
-          };
-          setShop(updatedShop);
-          
-          // Fetch items associated with the shop
-          const itemsQuery = collection(db, "items");
-          const itemsSnap = await getDocs(itemsQuery);
-          const itemsList = itemsSnap.docs.map(doc => doc.data()).filter(item => item.shopId === shopId);
-          setItems(itemsList);
-
-          // Fetch reviews associated with the shop
-          const reviewsQuery = collection(db, "reviews");
-          const reviewsSnap = await getDocs(reviewsQuery);
-          const reviewsList = reviewsSnap.docs.map(doc => doc.data()).filter(review => review.shopId === shopId);
-          setReviews(reviewsList);
+        console.log("Fetching shop with name:", shopName);
+        
+        const sellersRef = collection(db, "sellers");
+        const q = query(sellersRef, where("shopName", "==", shopName.trim()));
+        const querySnapshot = await getDocs(q);
+  
+        if (!querySnapshot.empty) {
+          const shopData = querySnapshot.docs[0].data();
+          setShop(shopData);
+          console.log("Shop found:", shopData);
         } else {
-          console.log("Shop not found");
+          console.log("No shop found with that name.");
+          setShop(null);
         }
       } catch (error) {
-        console.log("Error fetching shop data: ", error);
+        console.error("Error fetching shop data:", error);
+        setShop(null);
       }
     };
-
-    fetchShopData();
-  }, [shopId, db]);
-
+  
+    if (shopName) {
+      fetchShopData();
+    }
+  }, [shopName]);
+  
   if (!shop) {
     return <div>Shop not found</div>;
   }
@@ -73,17 +57,17 @@ export const ShopBuyer = () => {
         <ShopAboutBanner shop={shop} />
       </AnimatedSection>
       <AnimatedSection>
-        <FeaturedItems shopId={shop.shopId} items={shop.featuredItems} />
+        <FeaturedItems shopId={shop.sellerId} items={items} />
       </AnimatedSection>
       <AnimatedSection>
-        <ItemsListing shopId={shop.shopId} items={items} />
+        <ItemsListing shopId={shop.sellerId} items={items} />
       </AnimatedSection>
       <AnimatedSection>
         <AboutSeller shop={shop} />
       </AnimatedSection>
-      <AnimatedSection>
+      {/* <AnimatedSection>
         <Reviews reviews={reviews} />
-      </AnimatedSection>
+      </AnimatedSection> */}
       <Footer />
     </div>
   );

@@ -21,7 +21,7 @@ export const AboutSeller = ({ sellerData }) => {
     <div className="featured-items-section">
       <div className="about-seller-content">
         <img
-          src={sellerData?.profileImage || defaultImage}
+          src={sellerData?.logo || defaultImage}
           alt="Seller"
           className="about-seller-image"
         />
@@ -46,22 +46,23 @@ export const AboutSeller = ({ sellerData }) => {
 
       {/* Gallery */}
       <div className="about-seller-gallery">
-        <p className="shop-items-section-title">Gallery</p>
-        <Slider {...settings} className="gallery-carousel">
-          {sellerData?.gallery?.length > 0 ? (
-            sellerData.gallery.map((image, index) => (
-              <div key={index}>
-                <img src={image} alt={`Gallery ${index}`} className="gallery-item" />
-              </div>
-            ))
-          ) : (
-            <div>
-              <img src={defaultImage} alt="No images yet" className="gallery-item" />
-              <p className="empty-gallery-message">No images yet. Upload some in your profile!</p>
-            </div>
-          )}
-        </Slider>
-      </div>
+  <p className="shop-items-section-title">Gallery</p>
+  {sellerData?.gallery?.length > 0 ? (
+    <Slider {...settings} className="gallery-carousel">
+      {sellerData.gallery.map((image, index) => (
+        <div key={index}>
+          <img src={image} alt={`Gallery ${index}`} className="gallery-item" />
+        </div>
+      ))}
+    </Slider>
+  ) : (
+    <div className="empty-gallery-message">
+      <img src={defaultImage} alt="No images yet" className="gallery-item" />
+      <p>No images yet. Upload some in your profile!</p>
+    </div>
+  )}
+</div>
+
     </div>
   );
 };
