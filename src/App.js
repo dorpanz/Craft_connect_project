@@ -13,7 +13,7 @@ import { ShopSeller } from './components/shop-view-seller/ShopSeller';
 import { GiftByOccasion } from './components/gifts-occasion-page/GiftsByOccasion';
 import { StatisticsDash } from './components/statistics-dash/StatisticsDash';
 import { AdStats } from './components/ads-stats-page/AdStats';
-import EditFeaturedItems from './components/shop-view-seller/EditFeaturedItems';
+import {EditFeaturedItems} from './components/shop-view-seller/EditFeaturedItems';
 import { ItemStat } from './components/item-stats/ItemStat';
 import { ItemCustomize } from './components/item-customize/ItemCustomize';
 import AccountSection from './components/user-account-settings/AccountSection';
@@ -26,7 +26,6 @@ import PaymentDetailsPage from './components/cart/PaymentDetailsPage';
 import FavoritesPage from './components/favs/FavoritesPage';
 import { useState } from 'react';
 import SignIn from './components/user-login/SignIn';
-
 import HomePage from './components/start-selling/Homepage';
 import RegisterShop from './components/register-shop/RegisterShop';
 import TermsAndConditions from './components/terms/TermsAndConditions';
@@ -36,52 +35,74 @@ import LoginSecurityShop from './components/shop-account-settings/Login & Securi
 import { EditProduct } from './components/product-edit/EditProduct';
 import { AuthProvider } from './context/AuthContext';
 import RegisterPage from './components/register-user/RegisterPage';
+import { AdminDashboard } from './components/admin-dashboard/AdminDashboard';
+import { AdminProductReview } from './components/admin-dashboard/AdminProductReview';
+import AdminAccount from './components/admin-dashboard/AdminAccount';
+import AdminLoginSecurity from './components/admin-dashboard/AdminLoginSecurity';
+import ProtectedRoute from './components/routes/ProtectedRoute';
 
 function App() {
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  
+
   return (
     <Router>
       <AuthProvider>
+        <Routes>
+          {/* Public Routes */}
+          <Route path='/' element={<Main />} />
+          <Route path='/About-Craft-Connect' element={<AboutPage />} />
+          <Route path='/Gift-guides' element={<GiftGuide />} />
+          <Route path='/Customize-goods' element={<CustomizePage />} />
+          <Route path="/shop/:shopName" element={<ShopBuyer />} />
+          <Route path='/category/:categoryName' element={<CategoryPage />} />
+          <Route path='/category/:categoryName/:subCategory' element={<CategoryPage />} />
+          <Route path='/category/:categoryName/:subCategory/:subSubCategory' element={<CategoryPage />} />
+          <Route path="/occasion-gift/:occasionTag" element={<GiftByOccasion/>}/>
+          <Route path='/item-listing/:itemId' element={<SingleItem/>}/>
+          <Route path="/item-statistics" element={<ItemStat/>}/>
+          <Route path="/customize-item" element={<ItemCustomize/>}/>
+          <Route path="/terms-conditions" element={<TermsAndConditions />} />
+          <Route path='/user-login' element={ <SignIn/>}/>
+          <Route path='/user-register' element={ <RegisterPage/>}/>
+          <Route path='/start-selling' element={ <HomePage/>}/>
+          <Route path='/register-shop' element={ <RegisterShop/>}/>
 
-      <Routes>
-        <Route path='/' element={<Main />} />
-        <Route path='/About-Craft-Connect' element={<AboutPage />} />
-        <Route path='/Gift-guides' element={<GiftGuide />} />
-        <Route path='/Customize-goods' element={<CustomizePage />} />
-        <Route path="/shop/:shopName" element={<ShopBuyer />} />
-        <Route path='/Add-Items' element={<UploadProduct />} />
-        <Route path='/Shop/Edit' element={ <EditProfile/>}/>
-        <Route path='/your-shop' element={ <ShopSeller/>}/>
-        <Route path='/category/:categoryName' element={<CategoryPage />} />
-        <Route path='/category/:categoryName/:subCategory' element={<CategoryPage />} />
-        <Route path='/category/:categoryName/:subCategory/:subSubCategory' element={<CategoryPage />} />
-        <Route path='/occasion-gift' element={<GiftByOccasion/>}/>
-        <Route path='/your-shop-dashboard/shop-statistics' element={<StatisticsDash/>}/>
-        <Route path='/your-shop-dashboard/advertistment-overview' element={<AdStats/>}/>
-        <Route path="/edit-featured-items" element={<EditFeaturedItems/>}/>
-        <Route path='/item-listing/:itemId' element={<SingleItem/>}/>
-        <Route path="/item-statistics" element={<ItemStat/>}/>
-        <Route path="/customize-item" element={<ItemCustomize/>}/>
-        <Route path="/account-settings-user" element={<AccountSection/>}/>
-        <Route path="/account-settings-user/login-security" element={<LoginSecurity/>}/>
-        <Route path='/account-settings-user/chat' element={ <Chat/>}/>
-        <Route path='/account-settings-user/your-orders' element={ <OrdersPage/>}/>
-        <Route path='/account-settings-user/your-subscriptions' element={ <SubscriptionPage/>}/>
-        <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />} />
-        <Route path="/payment-details" element={<PaymentDetailsPage />} />
-        <Route path="/favorites" element={<FavoritesPage favorites={favorites} setFavorites={setFavorites} />} />
-        <Route path='/user-login' element={ <SignIn/>}/>
-        <Route path='/user-register' element={ <RegisterPage/>}/>
-        <Route path='/start-selling' element={ <HomePage/>}/>
-        <Route path='/register-shop' element={ <RegisterShop/>}/>
-        <Route path="/terms-conditions" element={<TermsAndConditions />} />
-        <Route path='/your-shop-dashboard' element={<AccountSectionShop/>}/>
-        <Route path='/your-shop-dashboard/chat' element={<SellersChat/>}/>
-        <Route path='/your-shop-dashboard/login-security' element={<LoginSecurityShop/>}/>
-        <Route path='/edit-product/:productId' element={<EditProduct/>}/>
-      </Routes>
+          {/* Protected Routes - User */}
+          <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
+            <Route path="/account-settings-user" element={<AccountSection/>}/>
+            <Route path="/account-settings-user/login-security" element={<LoginSecurity/>}/>
+            <Route path='/account-settings-user/chat' element={ <Chat/>}/>
+            <Route path='/account-settings-user/your-orders' element={ <OrdersPage/>}/>
+            <Route path='/account-settings-user/your-subscriptions' element={ <SubscriptionPage/>}/>
+            <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />} />
+            <Route path="/payment-details" element={<PaymentDetailsPage />} />
+            <Route path="/favorites" element={<FavoritesPage favorites={favorites} setFavorites={setFavorites} />} />
+          </Route>
+
+          {/* Protected Routes - Seller */}
+          <Route element={<ProtectedRoute allowedRoles={["seller"]} />}>
+            <Route path='/Shop/Edit' element={<EditProfile/>}/>
+            <Route path='/your-shop' element={<ShopSeller/>}/>
+            <Route path='/your-shop-dashboard' element={<AccountSectionShop/>}/>
+            <Route path='/your-shop-dashboard/chat' element={<SellersChat/>}/>
+            <Route path='/your-shop-dashboard/login-security' element={<LoginSecurityShop/>}/>
+            <Route path='/edit-product/:productId' element={<EditProduct/>}/>
+            <Route path="/edit-featured-items" element={<EditFeaturedItems/>}/>
+            <Route path='/your-shop-dashboard/shop-statistics' element={<StatisticsDash/>}/>
+            <Route path='/your-shop-dashboard/advertistment-overview' element={<AdStats/>}/>
+            <Route path='/add-items' element={<UploadProduct/>}/>
+          </Route>
+
+          {/* Protected Routes - Admin */}
+          <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/review-product/:productId" element={<AdminProductReview />} />
+            <Route path="/admin/admin-account" element={<AdminAccount />} />
+            <Route path="/admin/login-security" element={<AdminLoginSecurity />} />
+            <Route path="/admin/login-security" element={<UploadProduct />} />
+          </Route>
+        </Routes>
       </AuthProvider>
     </Router>
   );

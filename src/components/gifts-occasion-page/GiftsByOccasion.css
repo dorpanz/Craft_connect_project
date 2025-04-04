@@ -14,6 +14,11 @@
     font-family: "Inria Serif", serif;
 }
 
+.gift-occasion-listing{
+  width: 80%;
+  margin: auto;
+}
+
 .banner-about-desc-gift{
     position: absolute;
     top: 50%;
@@ -50,11 +55,11 @@
   }
   
   .decoration-item {
+    text-decoration: none;
     background-color: white;
     padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
   }
   
   .decoration-image {
@@ -68,11 +73,17 @@
   .decoration-name {
     font-size: 1.125rem;
     font-weight: 600;
+
+    
   }
-  
+  .decoration-link{
+    text-decoration: none;
+    color: black;
+  }
   .decoration-shop {
     font-size: 0.875rem;
     color: gray;
+    text-decoration: none;
   }
   
   .decoration-price {

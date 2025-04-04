@@ -1,103 +1,130 @@
-
-import Menu from '../menu/Menu';
-import './GiftsByOccasion.css';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { Link, useParams } from "react-router-dom";
+import { db } from "../../firebase"; // Firebase setup
+import Menu from "../menu/Menu";
+import Footer from "../footer/Foooter";
+import { AnimatedSection } from "../animation/AnimatedSection";
 import heartbanner from "./pics/heartsbanner.jpg";
-import exampleimage from "../main-page/recommended/pictures/candle.jpg";
-import Footer from '../footer/Foooter';
-import { AnimatedSection } from '../animation/AnimatedSection';
-import { useEffect } from 'react';
-
-
+import "./GiftsByOccasion.css";
+import { ShopLink } from "../single-item/ShopLink";
 
 export const GiftByOccasion = () => {
+    const { occasionTag } = useParams(); // Get occasion from URL params
+    const [giftsForOccasion, setGiftsForOccasion] = useState([]);
+    const [giftsForHer, setGiftsForHer] = useState([]);
+    const [giftsForHim, setGiftsForHim] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); 
+
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
-    const decorations = [
-        { id: 1, name: "Balloon Set", image: exampleimage, shop: "PartyDecor", price: "$19.99" },
-        { id: 2, name: "Fairy Lights", image: exampleimage, shop: "GlowWorld", price: "$24.99" },
-        { id: 3, name: "Table Centerpiece", image: exampleimage, shop: "ElegantEvents", price: "$29.99" },
-        { id: 4, name: "Wall Banner", image: exampleimage, shop: "FestiveFabrics", price: "$14.99" },
-        { id: 5, name: "Confetti Pack", image: exampleimage, shop: "CelebrationCentral", price: "$9.99" },
-        { id: 6, name: "Lanterns", image: exampleimage, shop: "GlowWorld", price: "$34.99" },
-        { id: 7, name: "Floral Garland", image: exampleimage, shop: "BloomDecor", price: "$22.99" },
-        { id: 8, name: "Candles", image: exampleimage, shop: "CandleHaven", price: "$12.99" },
-    ];
+        setIsLoading(true); 
+        const fetchGifts = async () => {
+            try {
+                const formattedOccasionTag = occasionTag?.trim() || "Valentine’s Day";
+                console.log("📌 Fetching gifts for:", formattedOccasionTag);
 
+                // Queries to fetch products matching occasion and categories
+                const occasionQuery = query(collection(db, "products"), where("tags", "array-contains", formattedOccasionTag));
+                const herQuery = query(collection(db, "products"), where("tags", "array-contains", "For Her"));
+                const himQuery = query(collection(db, "products"), where("tags", "array-contains", "For Him"));
+
+                console.log("🔎 Fetching data from Firestore...");
+
+                // Execute occasion query
+                const occasionSnapshot = await getDocs(occasionQuery);
+                const fetchedOccasionGifts = occasionSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setGiftsForOccasion(fetchedOccasionGifts);
+
+                // Filtering "For Her" and "For Him" from occasion gifts (since Firestore doesn't allow two array-contains filters)
+                const filteredHerGifts = fetchedOccasionGifts.filter(gift => gift.tags?.includes("For Her"));
+                const filteredHimGifts = fetchedOccasionGifts.filter(gift => gift.tags?.includes("For Him"));
+
+                setGiftsForHer(filteredHerGifts);
+                setGiftsForHim(filteredHimGifts);
+
+                console.log("🎁 Occasion Gifts:", fetchedOccasionGifts);
+                console.log("🎀 Gifts for Her:", filteredHerGifts);
+                console.log("🕴️ Gifts for Him:", filteredHimGifts);
+
+            } catch (error) {
+                console.error("❌ Error fetching occasion gifts:", error);
+            } finally{
+                setIsLoading(false);
+            }
+        };
+
+        fetchGifts();
+    }, [occasionTag]);
+    if (isLoading || !giftsForOccasion) {
+        return (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+          </div>
+        );
+      }
     return (
         <div>
             <Menu />
-            <div className='gift-occasion-cont'>
+            <div className="gift-occasion-cont">
                 <AnimatedSection>
-                    <div className='header-about'>
-                        <img src={heartbanner} alt='banner-about-occasion' className='banner-occasion-img' />
-                        <div className='banner-about-desc-gift'>
-                            <p className='banner-title'>Valentines Gifts Ideas</p>
-                            <p className='banner-desc'>14 February</p>
+                    <div className="header-about">
+                        <img src={heartbanner} alt="Occasion banner" className="banner-occasion-img" />
+                        <div className="banner-about-desc-gift">
+                            <p className="banner-title">{occasionTag || "Valentine's Gifts Ideas"}</p>
+                            <p className="banner-desc">Find the perfect gift!</p>
                         </div>
                     </div>
                 </AnimatedSection>
 
-                <AnimatedSection>
-                    <p className='gift-occasio-list-title'>Craft Connect's Choice</p>
-                    <div className='rec-section-list'>
-                        {decorations.slice(0, 5).map((item) => (
-                            <div key={item.id} className='rec-section-list-item'>
-                                <img src={item.image} alt={item.name} className='rec-section-list-item-img' />
-                                <div className='item-desc'>
-                                    <p className='item-name'>{item.name}</p>
-                                    <div className='item-info'>
-                                        <div>
-                                            <Link to='/Shop' className='item-shopname'>{item.shop}</Link>
-                                            <p className='item-price'>{item.price}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </AnimatedSection>
-
-                <AnimatedSection>
-                    <p className='gift-occasio-list-title'>Gifts For Her</p>
-                    <div className='decorations-container'>
-                        <div className='decorations-grid'>
-                            {decorations.map((item) => (
-                                <div key={item.id} className='decoration-item'>
-                                    <img src={item.image} alt={item.name} className='decoration-image' />
-                                    <p className='decoration-name'>{item.name}</p>
-                                    <p className='decoration-shop'>{item.shop}</p>
-                                    <p className='decoration-price'>{item.price}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <div className='gift-more'>
-                            <Link className='seeMorebtn'>SEE MORE</Link>
-                        </div>
-                    </div>
-                </AnimatedSection>
-
-                <AnimatedSection>
-                    <p className='gift-occasio-list-title'>Gifts For Him</p>
-                    <div className='decorations-container'>
-                        <div className='decorations-grid'>
-                            {decorations.map((item) => (
-                                <div key={item.id} className='decoration-item'>
-                                    <img src={item.image} alt={item.name} className='decoration-image' />
-                                    <p className='decoration-name'>{item.name}</p>
-                                    <p className='decoration-shop'>{item.shop}</p>
-                                    <p className='decoration-price'>{item.price}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <div className='gift-more'>
-                            <Link className='seeMorebtn'>SEE MORE</Link>
-                        </div>
-                    </div>
-                </AnimatedSection>
+                {/* Sections for Different Gift Types */}
+                <GiftSection title={`Craft Connect's Choice for ${occasionTag}`} products={giftsForOccasion.slice(0, 5)} />
+                <GiftSection title={`For Her`} products={giftsForHer} />
+                <GiftSection title={`For Him`} products={giftsForHim} />
             </div>
             <Footer />
         </div>
+    );
+};
+
+const GiftSection = ({ title, products }) => {
+    const [visibleCount, setVisibleCount] = useState(12);
+
+    // Function to load more products
+    const loadMore = () => {
+        setVisibleCount((prevCount) => prevCount + 8);
+    };
+
+    console.log(`📌 Rendering section: ${title} with ${products.length} products`);
+
+    return (
+        <AnimatedSection>
+            <div className="gift-occasion-listing">
+                <p className="gift-occasio-list-title">{title}</p>
+                <div className="decorations-container">
+                    {products.length === 0 ? (
+                        <p className="no-products">No products available</p>
+                    ) : (
+                        <div className="decorations-grid">
+                            {products.slice(0, visibleCount).map((item) => (
+                                <div key={item.id} className="decoration-item">
+                                    <Link to={`/item-listing/${item.id}`} className="decoration-link">
+                                        <img src={item.photos?.[0] || heartbanner} alt={item.title} className="decoration-image" />
+                                        <p className="decoration-name">{item.title.substring(0, 20)}{item.title.length > 20 ? "..." : ""}</p>
+                                        <Link to={`/shop/${item.shopName}`} className="decoration-shop"><ShopLink sellerId={item.sellerId} /></Link>
+                                        <p className="decoration-price">${item.price?.toFixed(2)}</p>
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {products.length > visibleCount && (
+                        <div className="gift-more">
+                            <button className="seeMorebtn" onClick={loadMore}>SEE MORE</button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </AnimatedSection>
     );
 };

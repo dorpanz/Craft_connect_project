@@ -76,31 +76,75 @@ export const UploadProduct = () => {
       setAvailableSubSubCategories([]);
     }
   }, [category, subCategory]);
-
-  const tagOptions = [
-    "Handmade",
-    "Jewelry",
-    "Vintage",
+  const occasionTags = [
     "Gift",
-    "Custom",
-    "Unique",
-    "Natural",
+    "Birthday",
+    "Christmas",
+    "Valentine's Day",
+    "Wedding",
+    "Anniversary",
+    "Baby Shower",
+    "Housewarming",
+    "Graduation",
+    "Mother's Day",
+    "Father's Day",
+    "Bridal Shower",
+    "Halloween",
+    "Thanksgiving",
+    "Easter",
+    "New Year",
+    "Hanukkah",
+  ];
+
+  const recipientTags = [
+    "For Him",
+    "For Her",
+    "For Kids",
+    "For Pets",
+    "For Couples",
+    "For Friends",
+    "For Family",
+    "For Parents",
+    "For Grandparents",
+    "For Teachers",
+    "For Boss",
+  ];
+
+  const regularTags = [
     "Minimalist",
     "Boho",
     "Rustic",
     "Modern",
-    "Eco-friendly",
-    "Luxury",
+    "Vintage",
+    "Classic",
+    "Chic",
+    "Trendy",
+    "Abstract",
+    "Industrial",
+    "Cottagecore",
+    "Aesthetic",
+    "Kawaii",
+    "Steampunk",
+    "Wooden",
+    "Metal",
+    "Leather",
+    "Resin",
+    "Beaded",
+    "Fabric",
+    "Glass",
+    "Ceramic",
   ];
 
-  const addTag = () => {
-    if (selectedTag && tags.length < 13 && !tags.includes(selectedTag)) {
-      setTags([...tags, selectedTag]);
-      setSelectedTag(""); // Reset dropdown
+  const [selectedOccasionTag, setSelectedOccasionTag] = useState("");
+  const [selectedRecipientTag, setSelectedRecipientTag] = useState("");
+  const [selectedRegularTag, setSelectedRegularTag] = useState("");
+  const handleAddTag = (newTag) => {
+    if (newTag && !tags.includes(newTag) && tags.length < 13) {
+      setTags([...tags, newTag]);
     }
   };
 
-  const removeTag = (tagToRemove) => {
+  const handleRemoveTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
@@ -139,7 +183,6 @@ export const UploadProduct = () => {
       customized,
       category,
       subCategory,
-      subSubCategory,
       tags,
       primaryColour,
       materials,
@@ -152,7 +195,12 @@ export const UploadProduct = () => {
       shippingCost,
       returnPolicy,
     };
-  
+    
+    // Only require subSubCategory if options exist
+    if (availableSubSubCategories.length > 0) {
+      requiredFields.subSubCategory = subSubCategory;
+    }
+    
     const emptyFields = Object.entries(requiredFields).filter(
       ([key, value]) => value === undefined || value === "" || (Array.isArray(value) && value.length === 0)
     );
@@ -177,6 +225,8 @@ export const UploadProduct = () => {
         secondaryColour,
         createdAt: new Date(),
         sellerId, // Attach the seller's ID to the product
+        sales: 0,
+        status: "pending"
       });
       navigate("/your-shop");
       alert("Product uploaded successfully!");
@@ -291,25 +341,25 @@ export const UploadProduct = () => {
                 </select>
               </div>
             )}
+{subCategory && availableSubSubCategories.length > 0 && (
+  <div className="upload-about-section">
+    <p className="info-about-product">Sub-subcategory: </p>
+    <select
+      className="input-about-product"
+      value={subSubCategory}
+      onChange={(e) => setSubSubCategory(e.target.value)}
+      required={availableSubSubCategories.length > 0} // Only required if there are options
+    >
+      <option value="">Select a sub-subcategory</option>
+      {availableSubSubCategories.map((subSub, index) => (
+        <option key={index} value={subSub}>
+          {subSub}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
 
-            {subCategory && availableSubSubCategories.length > 0 && (
-              <div className="upload-about-section">
-                <p className="info-about-product">Sub-subcategory: </p>
-                <select
-                  className="input-about-product"
-                  value={subSubCategory}
-                  onChange={(e) => setSubSubCategory(e.target.value)}
-                  required
-                >
-                  <option value="">Select a sub-subcategory</option>
-                  {availableSubSubCategories.map((subSub, index) => (
-                    <option key={index} value={subSub}>
-                      {subSub}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
           </div>
         </AnimatedSection>
 
@@ -340,45 +390,82 @@ export const UploadProduct = () => {
                   className="input-about-product"
                   onChange={(e) => setSecondaryColour(e.target.value)}
                 />
-                <p className="info-about-product">Tags:</p>
-                <p>Add up to 13 tags to help people find your listings</p>
+<p className="info-about-product">Tags:</p>
+                  <p>Add up to 13 tags to help people find your listings</p>
 
-                <div className="tags-container">
-                  {tags.map((tag, index) => (
-                    <span key={index} className="tag">
-                      {tag}
-                      <button
-                        className="remove-tag"
-                        onClick={() => removeTag(tag)}
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-
-                <div className="tag-selection">
-                  <select
-                    className="input-about-product-price"
-                    value={selectedTag}
-                    onChange={(e) => setSelectedTag(e.target.value)}
-                    required
-                  >
-                    <option value="">Select a tag</option>
-                    {tagOptions.map((tag, index) => (
-                      <option key={index} value={tag}>
+                  <div className="tags-container">
+                    {tags.map((tag, index) => (
+                      <span key={index} className="tag">
                         {tag}
-                      </option>
+                        <button
+                          className="remove-tag"
+                          onClick={() => handleRemoveTag(tag)}
+                        >
+                          ×
+                        </button>
+                      </span>
                     ))}
-                  </select>
-                  <button
-                    className="add-tag-button"
-                    onClick={addTag}
-                    disabled={tags.length >= 13}
-                  >
-                    + Add Tag
-                  </button>
-                </div>
+                  </div>
+
+                  {/* Occasion Tags */}
+                  <div className="tag-selection">
+                    <p>Occasion Tags:</p>
+                    <select
+                      className="input-about-product"
+                      value={selectedOccasionTag}
+                      onChange={(e) => {
+                        setSelectedOccasionTag(e.target.value);
+                        handleAddTag(e.target.value);
+                      }}
+                    >
+                      <option value="">Select an occasion</option>
+                      {occasionTags.map((tag, index) => (
+                        <option key={index} value={tag}>
+                          {tag}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Recipient Tags */}
+                  <div className="tag-selection">
+                    <p>Recipient Tags:</p>
+                    <select
+                      className="input-about-product"
+                      value={selectedRecipientTag}
+                      onChange={(e) => {
+                        setSelectedRecipientTag(e.target.value);
+                        handleAddTag(e.target.value);
+                      }}
+                    >
+                      <option value="">Select a recipient</option>
+                      {recipientTags.map((tag, index) => (
+                        <option key={index} value={tag}>
+                          {tag}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Regular Tags */}
+                  <div className="tag-selection">
+                    <p>Regular Tags:</p>
+                    <select
+                      className="input-about-product"
+                      value={selectedRegularTag}
+                      onChange={(e) => {
+                        setSelectedRegularTag(e.target.value);
+                        handleAddTag(e.target.value);
+                      }}
+                    >
+                      <option value="">Select a tag</option>
+                      {regularTags.map((tag, index) => (
+                        <option key={index} value={tag}>
+                          {tag}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
                 <p className="info-about-product">Materials:</p>
                 <p>

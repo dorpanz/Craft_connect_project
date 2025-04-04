@@ -1,35 +1,78 @@
-import { Link } from 'react-router-dom'
-import './Recommended.css'
-import { data } from '../../../data/products';
-export const Recommended = () => {
-    return (
-        <div className='rec-section'>
-            <div className='rec-header'>
-                <p>Recommended by us</p>
-            </div>
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { db } from "../../../firebase";
+import { collection, getDocs, orderBy, query, limit } from "firebase/firestore";
+import "./Recommended.css";
 
-            <div className='rec-section-list'>
-                {data.slice(6,11).map((item) => (
-                    <div key={item.id} className='rec-section-list-item'>
-                        <Link to={`/item-listing/${item.id}`} style={{ textDecoration: 'none' }}>
-                        <img src={item.photos_videos[0]} alt={item.title} className='rec-section-list-item-img' />
-                        </Link>
-                        <div className='item-desc'>
-                        <Link to={`/item-listing/${item.id}`} style={{ textDecoration: 'none', color:'black' }}>
-                            <p className='item-name'>{item.title.slice(0, 40)}...</p>
-                        </Link>
-                            <div className='item-info'>
-                                <div>
-                                    <Link to={`/shop/${item.shop_id}`} className='item-shopname'>
-                                        {item.shop_name}
-                                    </Link>
-                                    <p className='item-price'>${item.price.toFixed(2)}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+export const Recommended = () => {
+  const [recommendedItems, setRecommendedItems] = useState([]);
+
+  useEffect(() => {
+    const fetchRandomItems = async () => {
+      try {
+        // Step 1: Fetch a larger pool to randomize from (e.g., 20 recent items)
+        const q = query(
+          collection(db, "products"),
+          orderBy("createdAt", "desc"),
+          limit(20)
+        );
+        const snapshot = await getDocs(q);
+        const items = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Step 2: Randomly pick 5
+        const shuffled = [...items].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 5);
+
+        setRecommendedItems(selected);
+      } catch (error) {
+        console.error("Error fetching random recommended items:", error);
+      }
+    };
+
+    fetchRandomItems();
+  }, []);
+
+  return (
+    <div className="rec-section">
+      <div className="rec-header">
+        <p>🎯 Recommended for you</p>
+      </div>
+
+      <div className="rec-section-list">
+        {recommendedItems.map((item) => (
+          <div key={item.id} className="rec-section-list-item">
+            <Link
+              to={`/item-listing/${item.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <img
+                src={item.photos?.[0] || "/pics/no-image.jpg"}
+                alt={item.title}
+                className="rec-section-list-item-img"
+              />
+            </Link>
+            <div className="item-desc">
+              <Link
+                to={`/item-listing/${item.id}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <p className="item-name">
+                  {item.title.length > 40 ? item.title.slice(0, 40) + "..." : item.title}
+                </p>
+              </Link>
+              <div className="item-info">
+                <Link to={`/shop/${item.shop_id}`} className="item-shopname">
+                  {item.shopName}
+                </Link>
+                <p className="item-price">${item.price.toFixed(2)}</p>
+              </div>
             </div>
-        </div>
-    );
-}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

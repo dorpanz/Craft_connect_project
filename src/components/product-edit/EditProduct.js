@@ -17,7 +17,8 @@ import Footer from "../footer/Foooter";
 
 // ✅ Draggable Image Component
 export const DraggableImage = ({ imageUrl, index, handleDelete }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: imageUrl });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: imageUrl });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -25,9 +26,24 @@ export const DraggableImage = ({ imageUrl, index, handleDelete }) => {
   };
 
   return (
-    <div ref={setNodeRef} {...listeners} {...attributes} style={style} className="image-preview-item-2">
-      <img src={imageUrl} alt={`Uploaded ${index}`} className="image-preview-2" />
-      <button onClick={() => handleDelete(imageUrl)} className="delete-image-btn">&times;</button>
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      style={style}
+      className="image-preview-item-2"
+    >
+      <img
+        src={imageUrl}
+        alt={`Uploaded ${index}`}
+        className="image-preview-2"
+      />
+      <button
+        onClick={() => handleDelete(imageUrl)}
+        className="delete-image-btn"
+      >
+        &times;
+      </button>
     </div>
   );
 };
@@ -43,7 +59,9 @@ export const EditProduct = () => {
   const [subCategory, setSubCategory] = useState("");
   const [subSubCategory, setSubSubCategory] = useState("");
   const [availableSubCategories, setAvailableSubCategories] = useState([]);
-  const [availableSubSubCategories, setAvailableSubSubCategories] = useState([]);
+  const [availableSubSubCategories, setAvailableSubSubCategories] = useState(
+    []
+  );
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [customized, setCustomized] = useState();
@@ -57,21 +75,7 @@ export const EditProduct = () => {
   const [width, setWidth] = useState("");
   const [shippingCost, setShippingCost] = useState("");
   const navigate = useNavigate();
-  const tagOptions = [
-    "Handmade",
-    "Jewelry",
-    "Vintage",
-    "Gift",
-    "Custom",
-    "Unique",
-    "Natural",
-    "Minimalist",
-    "Boho",
-    "Rustic",
-    "Modern",
-    "Eco-friendly",
-    "Luxury",
-  ];
+
   const handleDeleteImage = async (imageUrl) => {
     const storageRef = ref(storage, imageUrl);
     await deleteObject(storageRef);
@@ -111,9 +115,9 @@ export const EditProduct = () => {
         setMaterials(product.materials || "");
         setWeight(product.weight || "");
         setCustomized(product.customized || false);
-        setQuantity(product.quantity || "")
-        setShippingCost(product.shippingCost || "")
-        setProcessingTime(product.processingTime || "")
+        setQuantity(product.quantity || "");
+        setShippingCost(product.shippingCost || "");
+        setProcessingTime(product.processingTime || "");
       }
     };
 
@@ -130,13 +134,75 @@ export const EditProduct = () => {
     }
   }, [category]);
   // Function to add a tag
-  const handleAddTag = () => {
-    if (selectedTag.trim() !== "" && !tags.includes(selectedTag)) {
-      setTags([...tags, selectedTag.trim()]);
-      setSelectedTag(""); // Clear input field
+  const occasionTags = [
+    "Gift",
+    "Birthday",
+    "Christmas",
+    "Valentine's Day",
+    "Wedding",
+    "Anniversary",
+    "Baby Shower",
+    "Housewarming",
+    "Graduation",
+    "Mother's Day",
+    "Father's Day",
+    "Bridal Shower",
+    "Halloween",
+    "Thanksgiving",
+    "Easter",
+    "New Year",
+    "Hanukkah",
+  ];
+
+  const recipientTags = [
+    "For Him",
+    "For Her",
+    "For Kids",
+    "For Pets",
+    "For Couples",
+    "For Friends",
+    "For Family",
+    "For Parents",
+    "For Grandparents",
+    "For Teachers",
+    "For Boss",
+  ];
+
+  const regularTags = [
+    "Minimalist",
+    "Boho",
+    "Rustic",
+    "Modern",
+    "Vintage",
+    "Classic",
+    "Chic",
+    "Trendy",
+    "Abstract",
+    "Industrial",
+    "Cottagecore",
+    "Aesthetic",
+    "Kawaii",
+    "Steampunk",
+    "Wooden",
+    "Metal",
+    "Leather",
+    "Resin",
+    "Beaded",
+    "Fabric",
+    "Glass",
+    "Ceramic",
+  ];
+
+  const [selectedOccasionTag, setSelectedOccasionTag] = useState("");
+  const [selectedRecipientTag, setSelectedRecipientTag] = useState("");
+  const [selectedRegularTag, setSelectedRegularTag] = useState("");
+
+  const handleAddTag = (newTag) => {
+    if (newTag && !tags.includes(newTag) && tags.length < 13) {
+      setTags([...tags, newTag]);
     }
   };
-  
+
   // Function to remove a tag
   const handleRemoveTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
@@ -151,28 +217,36 @@ export const EditProduct = () => {
   }, [subCategory, category]);
 
   const handleUpdate = async () => {
-    const productRef = doc(db, "products", productId);
-    const updatedProduct = { ...product, photos: uploadedURLs };
-    await updateDoc(productRef, updatedProduct, {
-      title,
-      description,
-      category,
-      subCategory,
-      subSubCategory,
-      tags,
-      primaryColour,
-      secondaryColour,
-      height,
-      width,
-      materials,
-      weight,
-      customized,
-      quantity,
-      processingTime,
-      shippingCost
-    });
-    navigate("/your-shop");
-    alert("Product updated successfully!");
+    try {
+      if (!productId) return;
+
+      const productRef = doc(db, "products", productId);
+      await updateDoc(productRef, {
+        photos: uploadedURLs || [],
+        title: title || "",
+        description: description || "",
+        category: category || "",
+        subCategory: subCategory || "",
+        subSubCategory: subSubCategory || "",
+        tags: tags || [],
+        primaryColour: primaryColour || "",
+        secondaryColour: secondaryColour || "",
+        height: height || "",
+        width: width || "",
+        materials: materials || "",
+        weight: weight || "",
+        customized: customized || false,
+        quantity: quantity || 0,
+        processingTime: processingTime || "",
+        shippingCost: shippingCost || "",
+      });
+
+      alert("Product updated successfully!");
+      navigate("/your-shop");
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("Failed to update product. Please try again.");
+    }
   };
 
   return (
@@ -222,31 +296,44 @@ export const EditProduct = () => {
                 onChange={(e) => setPrice(e.target.value)}
               />
               <p className="info-about-product">Quantity:</p>
-                <input
-                  type="number"
-                  value={quantity}
-                  className="input-about-product-price"
-                  onChange={(e) => setQuantity(e.target.value)}
-                  required
-                />
+              <input
+                type="number"
+                value={quantity}
+                className="input-about-product-price"
+                onChange={(e) => setQuantity(e.target.value)}
+                required
+              />
             </div>
 
-             {/* ✅ Image Uploader */}
-             <ImageUploader productId={productId} onUploadComplete={(newURLs) => setUploadedURLs((prev) => [...prev, ...newURLs])} />
+            {/* ✅ Image Uploader */}
+            <ImageUploader
+              productId={productId}
+              onUploadComplete={(newURLs) =>
+                setUploadedURLs((prev) => [...prev, ...newURLs])
+              }
+            />
 
-{/* ✅ Draggable Image List */}
-<div className="image-upload-section-2">
-  <p>Uploaded Images:</p>
-  <DndContext collisionDetection={closestCenter} onDragEnd={handleReorder}>
-    <SortableContext items={uploadedURLs}>
-      <div className="image-preview-list-2">
-        {uploadedURLs.map((imageUrl, index) => (
-          <DraggableImage key={imageUrl} imageUrl={imageUrl} index={index} handleDelete={handleDeleteImage} />
-        ))}
-      </div>
-    </SortableContext>
-  </DndContext>
-</div>
+            {/* ✅ Draggable Image List */}
+            <div className="image-upload-section-2">
+              <p>Uploaded Images:</p>
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleReorder}
+              >
+                <SortableContext items={uploadedURLs}>
+                  <div className="image-preview-list-2">
+                    {uploadedURLs.map((imageUrl, index) => (
+                      <DraggableImage
+                        key={imageUrl}
+                        imageUrl={imageUrl}
+                        index={index}
+                        handleDelete={handleDeleteImage}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            </div>
 
             <div className="upload-about-section">
               <p className="info-about-product">Category: </p>
@@ -291,7 +378,7 @@ export const EditProduct = () => {
                   value={subSubCategory}
                   onChange={(e) => setSubSubCategory(e.target.value)}
                   required
-                  >
+                >
                   <option value="">Select a sub-subcategory</option>
                   {availableSubSubCategories.map((subSub, index) => (
                     <option key={index} value={subSub}>
@@ -301,7 +388,7 @@ export const EditProduct = () => {
                 </select>
               </div>
             )}
-            
+
             <p className="info-about-product">Is your Item customized?</p>
             <label>
               <input
@@ -311,7 +398,7 @@ export const EditProduct = () => {
               />
               Customized
             </label>
-                  </div>
+          </div>
         </AnimatedSection>
 
         <AnimatedSection>
@@ -342,45 +429,82 @@ export const EditProduct = () => {
                   className="input-about-product"
                   onChange={(e) => setSecondaryColour(e.target.value)}
                 />
-                <p className="info-about-product">Tags:</p>
-                <p>Add up to 13 tags to help people find your listings</p>
+                  <p className="info-about-product">Tags:</p>
+                  <p>Add up to 13 tags to help people find your listings</p>
 
-                <div className="tags-container">
-                  {tags.map((tag, index) => (
-                    <span key={index} className="tag">
-                      {tag}
-                      <button
-                        className="remove-tag"
-                        onClick={() => handleRemoveTag(tag)}
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-
-                <div className="tag-selection">
-                  <select
-                    className="input-about-product-price"
-                    value={selectedTag}
-                    onChange={(e) => setSelectedTag(e.target.value)}
-                    required
-                  >
-                    <option value="">Select a tag</option>
-                    {tagOptions.map((tag, index) => (
-                      <option key={index} value={tag}>
+                  <div className="tags-container">
+                    {tags.map((tag, index) => (
+                      <span key={index} className="tag">
                         {tag}
-                      </option>
+                        <button
+                          className="remove-tag"
+                          onClick={() => handleRemoveTag(tag)}
+                        >
+                          ×
+                        </button>
+                      </span>
                     ))}
-                  </select>
-                  <button
-                    className="add-tag-button"
-                    onClick={handleAddTag}
-                    disabled={tags.length >= 13}
-                  >
-                    + Add Tag
-                  </button>
-                </div>
+                  </div>
+
+                  {/* Occasion Tags */}
+                  <div className="tag-selection">
+                    <p>Occasion Tags:</p>
+                    <select
+                      className="input-about-product"
+                      value={selectedOccasionTag}
+                      onChange={(e) => {
+                        setSelectedOccasionTag(e.target.value);
+                        handleAddTag(e.target.value);
+                      }}
+                    >
+                      <option value="">Select an occasion</option>
+                      {occasionTags.map((tag, index) => (
+                        <option key={index} value={tag}>
+                          {tag}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Recipient Tags */}
+                  <div className="tag-selection">
+                    <p>Recipient Tags:</p>
+                    <select
+                      className="input-about-product"
+                      value={selectedRecipientTag}
+                      onChange={(e) => {
+                        setSelectedRecipientTag(e.target.value);
+                        handleAddTag(e.target.value);
+                      }}
+                    >
+                      <option value="">Select a recipient</option>
+                      {recipientTags.map((tag, index) => (
+                        <option key={index} value={tag}>
+                          {tag}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Regular Tags */}
+                  <div className="tag-selection">
+                    <p>Regular Tags:</p>
+                    <select
+                      className="input-about-product"
+                      value={selectedRegularTag}
+                      onChange={(e) => {
+                        setSelectedRegularTag(e.target.value);
+                        handleAddTag(e.target.value);
+                      }}
+                    >
+                      <option value="">Select a tag</option>
+                      {regularTags.map((tag, index) => (
+                        <option key={index} value={tag}>
+                          {tag}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
                 <p className="info-about-product">Materials:</p>
                 <input
@@ -465,7 +589,7 @@ export const EditProduct = () => {
         </AnimatedSection>
 
         <AnimatedSection>
-          <Footer/>
+          <Footer />
         </AnimatedSection>
       </div>
     </div>

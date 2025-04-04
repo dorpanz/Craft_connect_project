@@ -1,0 +1,65 @@
+/* Admin Account Section Styles */
+.admin-account-section {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "Inria Serif", serif;
+    background-color: #f8f9fa; /* Light background color */
+  }
+  
+  .admin-account-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .admin-account-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .admin-account-card {
+    background: #fdf6b2; /* Light yellowish background */
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: black;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .admin-account-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .admin-account-card-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 50%;
+  }
+  
+  .admin-account-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+  
+  .admin-account-card p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .admin-account-card div {
+    display: flex;
+    flex-direction: column;
+  }
+  

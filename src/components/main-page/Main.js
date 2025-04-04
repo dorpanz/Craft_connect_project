@@ -1,6 +1,4 @@
 
-import { data } from "../../data/products";
-import { shops } from "../../data/shop";
 import { AnimatedSection } from "../animation/AnimatedSection";
 import Footer from "../footer/Foooter";
 import Menu from "../menu/Menu";
@@ -42,7 +40,7 @@ const Main = () => {
         <PopularProduct />
       </AnimatedSection>
       <AnimatedSection>
-      <ShopsBest shops={shops} items={data} />
+      <ShopsBest/>
       </AnimatedSection>
       <AnimatedSection>
         <AboutBanner />

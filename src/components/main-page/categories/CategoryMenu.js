@@ -12,11 +12,7 @@ export const categories = {
     },
     "CLOTHING": {
         "Men": ["Shirts", "Pants", "Jackets"],
-        "Women": {
-            "Dresses": ["Casual", "Formal"],
-            "Tops": ["Blouses", "T-Shirts"],
-            "Bottoms": ["Skirts", "Jeans"]
-        },
+        "Women": ["Dresses", "Tops", "Bottoms"],
         "Kids": ["Baby Clothing", "Teen Wear"]
     },
     "HOMEWARE": {

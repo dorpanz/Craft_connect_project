@@ -1,16 +1,20 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";  // Adjust the path if needed
+import { Navigate, Outlet } from "react-router-dom";  // Add the import for Navigate and Outlet
 
 const ProtectedRoute = ({ allowedRoles }) => {
+    const { role: userRole } = useAuth();  // Get role directly from context
     const token = localStorage.getItem("authToken");
-    const userRole = localStorage.getItem("userRole"); // Store role after login
+
+    console.log("Token:", token);
+    console.log("UserRole:", userRole);
+    console.log("AllowedRoles:", allowedRoles);
 
     if (!token) {
         return <Navigate to="/user-login" replace />;
     }
 
-    if (!allowedRoles.includes(userRole)) {
-        return <Navigate to="/" replace />; // Redirect unauthorized users
+    if (!userRole || !allowedRoles.includes(userRole)) {
+        return <Navigate to="/" replace />;
     }
 
     return <Outlet />;

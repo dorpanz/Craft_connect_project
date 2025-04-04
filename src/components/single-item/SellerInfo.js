@@ -11,8 +11,7 @@ export const SellerInfo = ({ sellerData, itemId }) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
-}, [itemId]); // Runs every time itemId changes
-
+}, [itemId]);
   useEffect(() => {
     console.log("Fetching products for seller:", sellerData);
 
@@ -103,8 +102,7 @@ export const SellerInfo = ({ sellerData, itemId }) => {
                 className="more-shop-item-img"
               />
                   <div className="more-shop-item-desc">
-                  <p className="more-shop-item-title">{product.title}</p>
-                  <div className="stars-2">★★★★☆</div>
+                  <p className="more-shop-item-title">                  {product.title.substring(0, 20)}{product.title.length > 20 ? "..." : ""}</p>
                   <div className="more-shop-item-info">
                   <p className="price">${product.price.toFixed(2)}</p>
                   </div>

@@ -1,72 +1,109 @@
 import React, { useState } from "react";
-import candleall from "./pics/candleall.jpg";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getFirestore, doc, updateDoc, collection, getDocs } from "firebase/firestore";
+import arrow from "./pics/arrow.png";
 import Menu from "../menu/Menu";
-import arrow from "./pics/arrow.png"
-import { Link } from "react-router-dom";
-const items = [...Array(7)].map((_, index) => ({
-  id: index,
-  name: `Winter Candle ${index + 1}`,
-  price: "$31.99",
-  image: candleall,
-}));
 
-export const EditFeaturedItems = ({ onSave }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+export const EditFeaturedItems = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const db = getFirestore();
 
+  // Extract sellerId and items from state
+  const sellerId = location.state?.sellerId;
+  const { items = [] } = location.state || {};
+  const initialFeatured = items
+  .filter((item) => item.sellerId === sellerId && item.isFeatured)
+  .map((item) => item.id);
+  console.log("EditFeaturedItems - Seller ID:", sellerId);
+  console.log("EditFeaturedItems - Items:", items);
+  const [selectedItems, setSelectedItems] = useState(initialFeatured);
+
+  // Filter items that belong to the current seller
+  const sellerItems = items.filter((item) => item.sellerId === sellerId);
+
+
+
+if (!sellerId) {
+  console.warn("Seller ID is missing! Redirecting...");
+  navigate("/your-shop");
+  return null;
+}
+
+  // Toggle selection function
   const toggleSelection = (itemId) => {
-    if (selectedItems.includes(itemId)) {
-      setSelectedItems(selectedItems.filter((id) => id !== itemId));
-    } else if (selectedItems.length < 3) {
-      setSelectedItems([...selectedItems, itemId]);
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(itemId)
+        ? prevSelected.filter((id) => id !== itemId)
+        : prevSelected.length < 4
+        ? [...prevSelected, itemId]
+        : prevSelected
+    );
+  };
+
+  // Save featured items to Firebase
+  const handleSave = async () => {
+    try {
+      const productsRef = collection(db, "products");
+      const allProductsSnap = await getDocs(productsRef);
+
+      const updatePromises = allProductsSnap.docs
+        .filter((productDoc) => productDoc.data().sellerId === sellerId)
+        .map((productDoc) => {
+          const productId = productDoc.id;
+          const isFeatured = selectedItems.includes(productId);
+          return updateDoc(doc(db, "products", productId), { isFeatured });
+        });
+
+      await Promise.all(updatePromises);
+      console.log("Featured items updated successfully!");
+      navigate("/your-shop");
+    } catch (error) {
+      console.error("Error updating featured items:", error);
     }
   };
 
   return (
     <div>
-        <Menu/>
-
-    <div className="edit-featured-items">
+      <Menu />
+      <div className="edit-featured-items">
         <div className="edit-section-title">
-        <Link to="/your-shop" className="go-back"><img src={arrow} alt="arrow" className="arrow"/></Link>
-      <p className="edit-featured-title">Select 3 Featured Items</p>
+          <Link to="/your-shop" className="go-back">
+            <img src={arrow} alt="arrow" className="arrow" />
+          </Link>
+          <p className="edit-featured-title">Select up to 4 Featured Items</p>
         </div>
-      <div className="edit-featured-save">
 
-      <p className="selected-count">Selected: {selectedItems.length} / 3</p>
-      <button
-        className={`save-featured-btn ${selectedItems.length !== 3 ? "disabled" : ""}`}
-        disabled={selectedItems.length !== 3}
-        onClick={() => onSave(selectedItems)}
-        title={selectedItems.length !== 3 ? "Select exactly 3 items" : ""}
-      >
-        Save Featured Items
-      </button>
-            </div>
-      <div className="shop-items-section-list-all">
-        {items.map((item) => (
-            <div key={item.id} className="all-items-section-list-item">
-            <img src={item.image} alt="item to sell" />
-            <div className="all-items-section-list-item-desc">
-              <p className="shop-items-section-list-item-title">{item.name}</p>
-              <div className="stars-2">★★★★☆</div>
-              <div className="all-items-section-list-item-info">
-                <p className="price">{item.price}</p>
-                <input
-                  type="checkbox"
-                  checked={selectedItems.includes(item.id)}
-                  onChange={() => toggleSelection(item.id)}
-                  disabled={!selectedItems.includes(item.id) && selectedItems.length >= 3}
+        <div className="edit-featured-save">
+          <p className="selected-count">Selected: {selectedItems.length} / 4</p>
+          <button className="save-featured-btn" onClick={handleSave}>
+            Save Featured Items
+          </button>
+        </div>
+
+        <div className="shop-items-section-list-all">
+          {sellerItems.length === 0 ? (
+            <p>No items found for this seller.</p>
+          ) : (
+            sellerItems.map((item) => (
+              <div key={item.id} className="all-items-section-list-item">
+                <img src={item.photos?.[0] || "/pics/no-image.jpg"} alt={item.title} />
+                <div className="all-items-section-list-item-desc">
+                  <p className="shop-items-section-list-item-title">{item.title}</p>
+                  <p className="price">${item.price?.toFixed(2)}</p>
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(item.id)}
+                    onChange={() => toggleSelection(item.id)}
+                    disabled={selectedItems.length >= 4 && !selectedItems.includes(item.id)}
                   />
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            ))
+          )}
+        </div>
       </div>
-
-      
     </div>
-          </div>
   );
 };
 
-export default EditFeaturedItems;

@@ -131,7 +131,7 @@ const Menu = () => {
           {searchResults.map((result) => (
             <Link
               key={result.id}
-              to={result.type === "product" ? `/product/${result.id}` : `/shop/${result.id}`}
+              to={result.type === "product" ? `/product/${result.id}` : `/shop/${result.shopName}`}
               className="search-item"
             >
               {result.type === "product" ? `🛒 ${result.name}` : `🏪 ${result.shopName}`}

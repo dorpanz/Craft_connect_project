@@ -113,12 +113,11 @@ export const AuthProvider = ({ children }) => {
     const loginUser = async (email, password) => {
         setLoading(true);
         try {
-            if (typeof email !== "string" || typeof password !== "string") {
-                throw new Error("Invalid email or password format.");
-            }
-    
             const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
             const user = userCredential.user;
+    
+            // Store authToken in localStorage
+            localStorage.setItem("authToken", user.accessToken); // Add this line
     
             let userDoc = await getDoc(doc(db, "users", user.uid));
             if (userDoc.exists()) {
@@ -128,7 +127,7 @@ export const AuthProvider = ({ children }) => {
                 setDisplayName(userData.fullName);
                 localStorage.setItem("userRole", "user");
                 localStorage.setItem("displayName", userData.fullName);
-                return { success: "user" };  // ✅ Return user role
+                return { success: "user" };
             }
     
             userDoc = await getDoc(doc(db, "sellers", user.uid));
@@ -139,7 +138,18 @@ export const AuthProvider = ({ children }) => {
                 setDisplayName(sellerData.shopName);
                 localStorage.setItem("userRole", "seller");
                 localStorage.setItem("displayName", sellerData.shopName);
-                return { success: "seller" }; // ✅ Return seller role
+                return { success: "seller" };
+            }
+    
+            userDoc = await getDoc(doc(db, "admins", user.uid));
+            if (userDoc.exists()) {
+                const adminData = userDoc.data();
+                setUser({ uid: user.uid, email: user.email, ...adminData });
+                setRole("admin");
+                setDisplayName(adminData.fullName);
+                localStorage.setItem("userRole", "admin");
+                localStorage.setItem("displayName", adminData.fullName);
+                return { success: "admin" };  // Return admin role
             }
     
             throw new Error("User data not found.");
