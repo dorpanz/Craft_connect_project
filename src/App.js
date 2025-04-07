@@ -15,7 +15,6 @@ import { StatisticsDash } from './components/statistics-dash/StatisticsDash';
 import { AdStats } from './components/ads-stats-page/AdStats';
 import {EditFeaturedItems} from './components/shop-view-seller/EditFeaturedItems';
 import { ItemStat } from './components/item-stats/ItemStat';
-import { ItemCustomize } from './components/item-customize/ItemCustomize';
 import AccountSection from './components/user-account-settings/AccountSection';
 import LoginSecurity from './components/user-account-settings/Login & Security';
 import Chat from './components/user-account-settings/Chat';
@@ -40,6 +39,8 @@ import { AdminProductReview } from './components/admin-dashboard/AdminProductRev
 import AdminAccount from './components/admin-dashboard/AdminAccount';
 import AdminLoginSecurity from './components/admin-dashboard/AdminLoginSecurity';
 import ProtectedRoute from './components/routes/ProtectedRoute';
+import SearchResults from './components/menu/SearchResults';
+import SearchResultsPage from './components/menu/SearchResults';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -60,13 +61,13 @@ function App() {
           <Route path='/category/:categoryName/:subCategory/:subSubCategory' element={<CategoryPage />} />
           <Route path="/occasion-gift/:occasionTag" element={<GiftByOccasion/>}/>
           <Route path='/item-listing/:itemId' element={<SingleItem/>}/>
-          <Route path="/item-statistics" element={<ItemStat/>}/>
-          <Route path="/customize-item" element={<ItemCustomize/>}/>
+          <Route path="/item-statistics/:itemId" element={<ItemStat/>}/>
           <Route path="/terms-conditions" element={<TermsAndConditions />} />
           <Route path='/user-login' element={ <SignIn/>}/>
           <Route path='/user-register' element={ <RegisterPage/>}/>
           <Route path='/start-selling' element={ <HomePage/>}/>
           <Route path='/register-shop' element={ <RegisterShop/>}/>
+          <Route path="/search" element={<SearchResultsPage/>} />
 
           {/* Protected Routes - User */}
           <Route element={<ProtectedRoute allowedRoles={["user"]} />}>

@@ -7,7 +7,7 @@ import contact from "./pics/contact.png";
 import imagedefault from "./pics/avatar.png"
 import banner from "./pics/default-banner.jpg"
 
-export const ShopAboutBanner = ({ shop }) => {
+export const ShopAboutBanner = ({ shop, scrollToAboutSeller }) => {
   const [averageRating, setAverageRating] = useState(null);
   const [reviews, setReviews] = useState([]);
   const navigate = useNavigate();
@@ -89,17 +89,17 @@ export const ShopAboutBanner = ({ shop }) => {
           </span>
         </div>
         <div className='line-shop'></div>
-        <div className='shop-buyer-banner-about-section'>
+        <div className='shop-buyer-banner-about-section-small'>
           <div 
             className='shop-buyer-about-section-links' 
-            onClick={() => navigate(`/account-settings-user/chat?sellerId=${shop.sellerId}`)}
-            style={{ cursor: "pointer" }}
           >
             <img src={contact} alt="contact" className='icons-shop'/>
             <p>Contact</p>
           </div>
 
-          <div className='shop-buyer-about-section-links'>
+          <div className='shop-buyer-about-section-links'
+                      onClick={scrollToAboutSeller} // Trigger the scroll
+                      style={{ cursor: "pointer" }}>
             <img src={info} alt="info" className='icons-shop'/>
             <p>About</p>
           </div>

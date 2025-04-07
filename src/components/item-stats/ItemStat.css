@@ -175,3 +175,12 @@
   .stats-graph .stats-graph-1{
     width: 880px;
   }
+
+  .stats-graph-1-item-info-title-i,
+.stats-graph-1-item-info-desc-i {
+    margin: 0; 
+    width: 200px;
+}
+.stats-graph-1-item-info-desc-i {
+font-weight: 600;
+}

@@ -41,8 +41,13 @@
 .shop-buyer-banner-about-section {
   margin-left: 40px;
   margin-right: 40px;
+  min-width: 160px;
 }
-
+.shop-buyer-banner-about-section-small{
+  margin-left: 40px;
+  margin-right: 40px;
+width: 120px;
+}
 .icons-shop {
   width: 30px;
   height: 30px;
@@ -547,4 +552,37 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+.about-seller-additional-details {
+  margin-top: 30px;
+}
+
+.about-seller-additional-details p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.about-seller-additional-details strong {
+  font-weight: bold;
+  color: #333;
+}
+
+
+.sellers-answer-logo{
+  width:70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.about-seller-question{
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.sellers-answer{
+  display: flex;
+}
+.sellers-answer-text{
+  margin-left: 20px;
 }

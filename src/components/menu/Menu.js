@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { db } from "../../firebase"; // Firestore import
 import { collection, query, where, getDocs } from "firebase/firestore";
-
+import SearchBar from "./SearchBar";
 const Menu = () => {
   const { cart } = useCart();
   const { favorites } = useFavorites();
@@ -22,7 +22,13 @@ const Menu = () => {
 
   useEffect(() => {
     if (user) {
-      setDisplayName(role === "seller" ? user.shopName || "Shop" : user.username || "Account");
+      if (role === "seller") {
+        setDisplayName(user.shopName || "Shop");
+      } else if (role === "admin") {
+        setDisplayName("Admin");
+      } else {
+        setDisplayName(user.username || "Account");
+      }
     } else {
       setDisplayName("Account");
     }
@@ -85,26 +91,18 @@ const Menu = () => {
       <div className="menu">
         <Link to="/" className="logo">CRAFT CONNECT</Link>
 
-        {/* 🔍 Search Bar */}
-        <li className="input_search">
-          <input
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button className="search-btn">
-            <img src={search_icon} alt="search" />
-          </button>
-        </li>
+        <div className="searchbar-cont-comp">
+        <SearchBar/>
+        </div>
 
         {loading ? (
           <p>Loading...</p>
         ) : user ? (
           <>
-            <Link to={role === "seller" ? "/your-shop-dashboard" : "/account-settings-user"} className="menu-personal">
+            <Link to={role === "seller" ? "/your-shop-dashboard" : role === "admin" ? "/admin/admin-account" : "/account-settings-user"} className="menu-personal">
               {displayName}
             </Link>
-            {role !== "seller" && (
+            {role !== "seller" && role !== "admin" && (
               <Link to="/start-selling" className="menu-personal">START SELLING</Link>
             )}
           </>
@@ -115,14 +113,30 @@ const Menu = () => {
           </>
         )}
 
-        <Link to="/favorites" className="menu-personal">
-          <img src={liked_goods} alt="liked goods" className="menu-personal-img-liked" />
-          {favorites.length > 0 && <span className="fav-count">{favorites.length}</span>}
-        </Link>
-        <Link to="/cart" className="menu-personal">
-          <img src={basket} alt="basket" className="menu-personal-img-basket" />
-          {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
-        </Link>
+{role !== "seller" && (
+          <>
+            <Link to="/favorites" className="menu-personal">
+              <img
+                src={liked_goods}
+                alt="liked goods"
+                className="menu-personal-img-liked"
+              />
+              {favorites.length > 0 && (
+                <span className="fav-count">{favorites.length}</span>
+              )}
+            </Link>
+            <Link to="/cart" className="menu-personal">
+              <img
+                src={basket}
+                alt="basket"
+                className="menu-personal-img-basket"
+              />
+              {cart.length > 0 && (
+                <span className="cart-count">{cart.length}</span>
+              )}
+            </Link>
+          </>
+        )}
       </div>
 
       {/* 🔍 Search Results Dropdown */}
@@ -131,7 +145,7 @@ const Menu = () => {
           {searchResults.map((result) => (
             <Link
               key={result.id}
-              to={result.type === "product" ? `/product/${result.id}` : `/shop/${result.shopName}`}
+              to={result.type === "product" ? `/product/${result.id}` : `/shop/${result.id}`}
               className="search-item"
             >
               {result.type === "product" ? `🛒 ${result.name}` : `🏪 ${result.shopName}`}

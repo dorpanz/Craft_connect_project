@@ -8,8 +8,9 @@ import { FeaturedItems } from "./FeaturedItems";
 import { ItemsListingSeller } from "./ItemsListingSeller";
 import { ShopAboutBanner } from "./ShopAboutBanner";
 import { AnimatedSection } from "../animation/AnimatedSection";
-import imagedefault from "./pics/avatar.png"
-import banner from "./pics/default-banner.jpg"
+import imagedefault from "./pics/avatar.png";
+import banner from "./pics/default-banner.jpg";
+
 export const ShopSeller = () => {
   const [seller, setSeller] = useState(null);
   const [products, setProducts] = useState([]);  
@@ -41,6 +42,15 @@ export const ShopSeller = () => {
               twitter: sellerData.twitter || "#",
               featuredItems: sellerData.featuredItems || [],
               products: sellerData.products || [],
+              inspiration: sellerData.inspiration || "",
+              uniqueness: sellerData.uniqueness || "",
+              values: sellerData.values || "",
+              quality: sellerData.quality || "",
+              process: sellerData.process || "",
+              socialMedia: {
+                instagram: sellerData.socialMedia?.instagram || "", // Default Instagram URL
+                x: sellerData.socialMedia?.x || "", // Default X (Twitter) URL
+              },
             });
           } else {
             console.log("No seller profile found!");
@@ -101,23 +111,21 @@ export const ShopSeller = () => {
   return (
     <div>
       <Menu />
-              <AnimatedSection>
-                <ShopAboutBanner shopData={seller} />
-              </AnimatedSection>
-              <AnimatedSection>
-                <FeaturedItems sellerId={seller?.id} items={products} />
-              </AnimatedSection>
-              <AnimatedSection>
-                <ItemsListingSeller sellerData={seller} />
-              </AnimatedSection>
-              <AnimatedSection>
-                <AboutSeller sellerData={seller} />
-              </AnimatedSection>
-              <AnimatedSection>
-                <Footer />
-              </AnimatedSection>
-
-            </div>
-
+      <AnimatedSection>
+        <ShopAboutBanner shopData={seller} />
+      </AnimatedSection>
+      <AnimatedSection>
+        <FeaturedItems sellerId={seller?.id} items={products} />
+      </AnimatedSection>
+      <AnimatedSection>
+        <ItemsListingSeller sellerData={seller} />
+      </AnimatedSection>
+      <AnimatedSection>
+        <AboutSeller sellerData={seller} />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Footer />
+      </AnimatedSection>
+    </div>
   );
 };

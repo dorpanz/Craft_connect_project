@@ -22,9 +22,12 @@ export const Recommended = () => {
           ...doc.data(),
         }));
 
-        // Step 2: Randomly pick 5
-        const shuffled = [...items].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 5);
+        // Step 2: Filter to only include approved items
+        const approvedItems = items.filter(item => item.status === "approved");
+
+        // Step 3: Randomly pick 5 approved items
+        const shuffled = [...approvedItems].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 12);
 
         setRecommendedItems(selected);
       } catch (error) {

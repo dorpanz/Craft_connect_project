@@ -7,6 +7,7 @@ import { db } from "../../firebase"; // Firebase configuration
 import { collection, query, where, getDocs } from "firebase/firestore"; // Firestore functions
 import { useCart } from "../../context/CartContext";
 import defaultpic from "./pics/shirt.jpg";
+import { AnimatedSection } from "../animation/AnimatedSection";
 
 const CategoryPage = () => {
   const { categoryName, subCategory, subSubCategory } = useParams();
@@ -59,12 +60,15 @@ const CategoryPage = () => {
           const averageRating =
             reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : 0;
 
-          fetchedProducts.push({
-            id: doc.id,
-            ...productData,
-            reviews,
-            average_rating: averageRating,
-          });
+            if (productData.status === "approved") {
+              fetchedProducts.push({
+                id: doc.id,
+                ...productData,
+                reviews,
+                average_rating: averageRating,
+              });
+            }
+            
         }
 
         setProducts(fetchedProducts);
@@ -116,6 +120,7 @@ const CategoryPage = () => {
       <CategoryMenu />
 
       <div className="category-page">
+<AnimatedSection>
         <div className="category-info">
           <h1>{categoryName}</h1>
           {subCategory && <h2>{subCategory}</h2>}
@@ -130,7 +135,7 @@ const CategoryPage = () => {
             name="sorts"
             value="Recently-listed"
             onChange={() => setSortOrder("Recently-listed")}
-          />
+            />
           <label htmlFor="recently-listed">Recently listed</label>
 
           <input
@@ -139,7 +144,7 @@ const CategoryPage = () => {
             name="sorts"
             value="Highest-price"
             onChange={() => setSortOrder("Highest-price")}
-          />
+            />
           <label htmlFor="highest-price">Highest price</label>
 
           <input
@@ -148,28 +153,33 @@ const CategoryPage = () => {
             name="sorts"
             value="Lowest-price"
             onChange={() => setSortOrder("Lowest-price")}
-          />
+            />
           <label htmlFor="lowest-price">Lowest price</label>
         </div>
+          </AnimatedSection>
 
         <div className="product-list">
           {loading ? (
-            <p>Loading products...</p>
+                  <div className="loading-container">
+                  <div className="loading-spinner"></div>
+                </div>
           ) : sortedProducts.length > 0 ? (
             sortedProducts.map((product) => (
               <div key={product.id} className="all-items-section-list-item">
+                <AnimatedSection>
+
                 <div className="heart-icon-container">
                   <i className="fa fa-heart heart-icon"></i>
                 </div>
                 <Link
                   to={`/item-listing/${product.id}`}
                   style={{ textDecoration: "none" }}
-                >
+                  >
                   <img
                     src={
                       product.photos && product.photos.length > 0
-                        ? product.photos.find((photo) => photo)
-                        : defaultpic
+                      ? product.photos.find((photo) => photo)
+                      : defaultpic
                     }
                     alt={product.title || "Item"}
                     className="item-lsiting-img-cat"
@@ -180,7 +190,7 @@ const CategoryPage = () => {
                   <Link
                     to={`/item-listing/${product.id}`}
                     style={{ textDecoration: "none" }}
-                  >
+                    >
                     <p className="shop-items-section-list-item-title">
                       {product.title.length > 30
                         ? product.title.substring(0, 20) + "..."
@@ -198,13 +208,15 @@ const CategoryPage = () => {
                   <div className="all-items-section-list-item-info">
                     <p className="price">CA${product.price.toFixed(2)}</p>
                     <button
-                      className="add-to-cart-2"
-                      onClick={() => addToCart(product)}
-                    >
-                      Add
-                    </button>
+  className="add-to-cart-2"
+  onClick={() => addToCart({ ...product, amount: 1 })}
+>
+  Add
+</button>
+
                   </div>
                 </div>
+                      </AnimatedSection>
               </div>
             ))
           ) : (

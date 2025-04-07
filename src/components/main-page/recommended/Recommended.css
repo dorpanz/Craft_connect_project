@@ -5,10 +5,13 @@
     margin-top: 40px;
     font-family: "Inria Serif", serif;
 }
-.rec-section-list{
-    display: flex;
-    justify-content: space-around;
-}
+.rec-section-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 items per row */
+    gap: 1.5rem; /* spacing between items */
+    padding: 1rem 0;
+  }
+  
 .rec-header{
     display: flex;
     justify-content: space-between;
@@ -47,6 +50,8 @@
     border-radius: 10px; 
     position: relative; 
     box-sizing: border-box;
+    height: fit-content;
+    width: 260px;
     box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -60,7 +65,7 @@
     padding: 5px;
 }
 .rec-section-list-item-img{
-    width: 220px;
+    width: 260px;
     height: 220px;
     object-fit: cover;
     cursor: pointer;
@@ -69,17 +74,10 @@
 }
 .item-name{
     font-weight: 600;
-    width: 210px;
     cursor: pointer;
 }
 
-.item-info{
-    display: flex;
-    align-items: center;
-    width: 210px;
-    justify-content: space-between;
-    height: 60px;
-}
+
 
 .item-shopname{
     cursor: pointer;

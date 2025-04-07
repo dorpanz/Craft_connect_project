@@ -12,23 +12,23 @@ export const EditFeaturedItems = () => {
   // Extract sellerId and items from state
   const sellerId = location.state?.sellerId;
   const { items = [] } = location.state || {};
-  const initialFeatured = items
-  .filter((item) => item.sellerId === sellerId && item.isFeatured)
-  .map((item) => item.id);
-  console.log("EditFeaturedItems - Seller ID:", sellerId);
-  console.log("EditFeaturedItems - Items:", items);
+
+  // Only consider approved items for featured
+  const approvedItems = items.filter(
+    (item) => item.sellerId === sellerId && item.status === "approved"
+  );
+
+  const initialFeatured = approvedItems
+    .filter((item) => item.isFeatured)
+    .map((item) => item.id);
+
   const [selectedItems, setSelectedItems] = useState(initialFeatured);
 
-  // Filter items that belong to the current seller
-  const sellerItems = items.filter((item) => item.sellerId === sellerId);
-
-
-
-if (!sellerId) {
-  console.warn("Seller ID is missing! Redirecting...");
-  navigate("/your-shop");
-  return null;
-}
+  if (!sellerId) {
+    console.warn("Seller ID is missing! Redirecting...");
+    navigate("/your-shop");
+    return null;
+  }
 
   // Toggle selection function
   const toggleSelection = (itemId) => {
@@ -82,10 +82,10 @@ if (!sellerId) {
         </div>
 
         <div className="shop-items-section-list-all">
-          {sellerItems.length === 0 ? (
-            <p>No items found for this seller.</p>
+          {approvedItems.length === 0 ? (
+            <p>No approved items available for featuring.</p>
           ) : (
-            sellerItems.map((item) => (
+            approvedItems.map((item) => (
               <div key={item.id} className="all-items-section-list-item">
                 <img src={item.photos?.[0] || "/pics/no-image.jpg"} alt={item.title} />
                 <div className="all-items-section-list-item-desc">
@@ -106,4 +106,3 @@ if (!sellerId) {
     </div>
   );
 };
-

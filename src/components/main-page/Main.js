@@ -33,9 +33,6 @@ const Main = () => {
       <AnimatedSection>
         <Customize />
       </AnimatedSection>
-      {/* <AnimatedSection>
-        <GiftIdeas />
-      </AnimatedSection> */}
       <AnimatedSection>
         <PopularProduct />
       </AnimatedSection>

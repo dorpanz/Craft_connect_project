@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import './ShopBuyer.css';
 import candleitem from "./pics/candleitem.jpg";
 export const FeaturedItems = ({ shopId, items }) => {
-  const featuredItems = items.filter(item => item.isFeatured); // Example condition
-
+  const featuredItems = items.filter(
+    (item) =>
+      item.isFeatured &&
+      item.status === "approved"
+  );
   return (
     <div className="featured-items-section">
       <p className="shop-items-section-title">Featured Items:</p>

@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import instagramIcon from "../shop-view-seller/pics/mdi_instagram.png";
 import imagedefault from "./pics/avatar.png"
-
+import twitterIcon from  "../shop-view-seller/pics/pajamas_twitter.png";
 import defaultImage from "./pics/no-image.jpg";
 export const AboutSeller = ({ shop, items }) => {
   const settings = {
@@ -30,17 +30,20 @@ export const AboutSeller = ({ shop, items }) => {
         <div className="about-seller-details">
           <p className="about-seller-name">{shop.shopName}</p>
           <p className="about-seller-description">{shop.description}</p>
-          <p className="about-seller-story">
-            {shop.expandedStory ? shop.expandedStory : "No story added yet"}
-          </p>
 
           <div className="about-seller-socials">
-            {shop.socialMedia?.instagram && (
-              <a href={shop.socialMedia.instagram} target="_blank" rel="noopener noreferrer">
-                <img src={instagramIcon} alt="Instagram" className="social-icon" />
-              </a>
-            )}
-          </div>
+    {shop?.socials?.instagramLink && (
+        <a href={shop?.socials?.instagramLink} target="_blank" rel="noopener noreferrer">
+            <img src={instagramIcon} alt="Instagram" className="social-icon" />
+        </a>
+    )}
+    {shop?.socials?.xLink && (
+        <a href={shop?.socials?.xLink} target="_blank" rel="noopener noreferrer">
+            <img src={twitterIcon} alt="Twitter" className="social-icon" />
+        </a>
+    )}
+</div>
+
         </div>
       </div>
 
@@ -55,15 +58,6 @@ export const AboutSeller = ({ shop, items }) => {
         </div>
       ))}
     </Slider>
-  ) : productImages.length > 0 ? (
-    <Slider {...settings} className="gallery-carousel">
-      {/* Show product images if gallery is empty */}
-      {productImages.map((photo, index) => (
-        <div key={`product-${index}`}>
-          <img src={photo} alt={`Product Image ${index + 1}`} className="gallery-item" />
-        </div>
-      ))}
-    </Slider>
   ) : (
     /* Show fallback if no images exist */
     <div className="empty-gallery-message">
@@ -73,7 +67,53 @@ export const AboutSeller = ({ shop, items }) => {
   )}
 </div>
 
-
+<div className="about-seller-additional-details">
+        {shop?.inspiration && (
+          <div className="about-seller-question-answer">
+            <p className="about-seller-question">What inspired you to start your shop?</p>
+            <div className="sellers-answer">
+              <img src={shop?.logo} className="sellers-answer-logo" alt="Logo" />
+              <p className="sellers-answer-text">{shop?.inspiration}</p>
+            </div>
+          </div>
+        )}
+        {shop?.uniqueness && (
+          <div className="about-seller-question-answer">
+            <p className="about-seller-question">What makes your shop different from others?</p>
+            <div className="sellers-answer">
+              <img src={shop?.logo} className="sellers-answer-logo" alt="Logo" />
+              <p className="sellers-answer-text">{shop?.uniqueness}</p>
+            </div>
+          </div>
+        )}
+        {shop?.values && (
+          <div className="about-seller-question-answer">
+            <p className="about-seller-question">What values are important to you when creating your products?</p>
+            <div className="sellers-answer">
+              <img src={shop?.logo} className="sellers-answer-logo" alt="Logo" />
+              <p className="sellers-answer-text">{shop?.values}</p>
+            </div>
+          </div>
+        )}
+        {shop?.quality && (
+          <div className="about-seller-question-answer">
+            <p className="about-seller-question">How do you ensure quality in your work?</p>
+            <div className="sellers-answer">
+              <img src={shop?.logo} className="sellers-answer-logo" alt="Logo" />
+              <p className="sellers-answer-text">{shop?.quality}</p>
+            </div>
+          </div>
+        )}
+        {shop?.process && (
+          <div className="about-seller-question-answer">
+            <p className="about-seller-question">Tell us something unique about your creative process:</p>
+            <div className="sellers-answer">
+              <img src={shop?.logo} className="sellers-answer-logo" alt="Logo" />
+              <p className="sellers-answer-text">{shop?.process}</p>
+            </div>
+          </div>
+        )}
+      </div>
       
     </div>
   );

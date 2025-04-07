@@ -30,20 +30,28 @@ const SignIn = () => {
     setMessage("");
     
     try {
-      const result = await login(formData.email, formData.password);
-      
-      if (result.error) {
-        setMessage(result.error);
-        return;
-      }
-      
-      navigate(result.success === "seller" ? "/your-shop-dashboard" : "/account-settings-user");
+        const result = await login(formData.email, formData.password);
+        
+        if (result.error) {
+            setMessage(result.error);
+            return;
+        }
+
+        // Handle redirection based on role
+        if (result.success === "seller") {
+            navigate("/your-shop-dashboard");
+        } else if (result.success === "user") {
+            navigate("/account-settings-user");
+        } else if (result.success === "admin") {
+            navigate("/admin-dashboard"); // Redirect admin to the admin dashboard
+        }
     } catch (error) {
-      setMessage("Invalid credentials. Please try again.");
+        setMessage("Invalid credentials. Please try again.");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
 
   return (
     <div>

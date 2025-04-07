@@ -31,17 +31,20 @@ export const GiftByOccasion = () => {
 
                 console.log("🔎 Fetching data from Firestore...");
 
-                // Execute occasion query
                 const occasionSnapshot = await getDocs(occasionQuery);
-                const fetchedOccasionGifts = occasionSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setGiftsForOccasion(fetchedOccasionGifts);
+const fetchedOccasionGifts = occasionSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                // Filtering "For Her" and "For Him" from occasion gifts (since Firestore doesn't allow two array-contains filters)
-                const filteredHerGifts = fetchedOccasionGifts.filter(gift => gift.tags?.includes("For Her"));
-                const filteredHimGifts = fetchedOccasionGifts.filter(gift => gift.tags?.includes("For Him"));
+// ✅ Filter by status: "approved"
+const approvedOccasionGifts = fetchedOccasionGifts.filter(gift => gift.status === "approved");
+setGiftsForOccasion(approvedOccasionGifts);
 
-                setGiftsForHer(filteredHerGifts);
-                setGiftsForHim(filteredHimGifts);
+// ✅ Filter 'For Her' and 'For Him' from approved gifts
+const filteredHerGifts = approvedOccasionGifts.filter(gift => gift.tags?.includes("For Her"));
+const filteredHimGifts = approvedOccasionGifts.filter(gift => gift.tags?.includes("For Him"));
+
+setGiftsForHer(filteredHerGifts);
+setGiftsForHim(filteredHimGifts);
+
 
                 console.log("🎁 Occasion Gifts:", fetchedOccasionGifts);
                 console.log("🎀 Gifts for Her:", filteredHerGifts);

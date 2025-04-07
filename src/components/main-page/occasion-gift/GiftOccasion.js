@@ -44,6 +44,7 @@ export const GiftOccasion = () => {
   }, []);
 
   return (
+
     <div className="rec-section">
       <div className="rec-header">
         <p>Shop gifts perfect for the occasion!</p>

@@ -6,6 +6,7 @@ import Footer from "../footer/Foooter";
 import { Link } from "react-router-dom";
 import './CustomizePage.css'
 import custom from "./pics/custom.jpg"
+import { AnimatedSection } from "../animation/AnimatedSection";
 export const CustomizePage = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,12 @@ export const CustomizePage = () => {
       setLoading(true);
       try {
         const productsRef = collection(db, "products");
-        const q = query(productsRef, where("customized", "==", true));
+        const q = query(
+          productsRef,
+          where("customized", "==", true),
+          where("status", "==", "approved")
+        );
+        
         const querySnapshot = await getDocs(q);
 
         const fetchedProducts = [];
@@ -82,6 +88,8 @@ export const CustomizePage = () => {
     <div>
       <Menu />
       <div className="custom-page">
+        <AnimatedSection>
+
       <div
   className="category-info"
   style={{
@@ -100,7 +108,9 @@ export const CustomizePage = () => {
     <span>{filteredItems.length} items crafted with love</span>
   </div>
 </div>
+  </AnimatedSection>
 
+<AnimatedSection>
 
         <div className="sort">
           <p>Sort By</p>
@@ -111,7 +121,7 @@ export const CustomizePage = () => {
             value="Recently-listed"
             checked={sortOrder === "Recently-listed"}
             onChange={() => setSortOrder("Recently-listed")}
-          />
+            />
           <label htmlFor="recently-listed">Recently listed</label>
 
           <input
@@ -121,7 +131,7 @@ export const CustomizePage = () => {
             value="Highest-price"
             checked={sortOrder === "Highest-price"}
             onChange={() => setSortOrder("Highest-price")}
-          />
+            />
           <label htmlFor="highest-price">Highest price</label>
 
           <input
@@ -131,9 +141,12 @@ export const CustomizePage = () => {
             value="Lowest-price"
             checked={sortOrder === "Lowest-price"}
             onChange={() => setSortOrder("Lowest-price")}
-          />
+            />
           <label htmlFor="lowest-price">Lowest price</label>
         </div>
+
+        </AnimatedSection>
+        <AnimatedSection>
 
         {loading ? (
           <div className="loading-container">
@@ -147,16 +160,16 @@ export const CustomizePage = () => {
                   <div className="heart-icon-container">
                     <i className="fa fa-heart heart-icon"></i>
                   </div>
-                  <Link to={`/product-details/${product.id}`} style={{ textDecoration: "none" }}>
+                  <Link to={`/item-listing/${product.id}`} style={{ textDecoration: "none" }}>
                     <img
                       src={product.photos?.[0] || "/pics/no-image.jpg"}
                       alt={product.title || "Item"}
                       className="item-lsiting-img-cat"
-                    />
+                      />
                   </Link>
 
                   <div className="all-items-section-list-item-desc">
-                    <Link to={`/product-details/${product.id}`} style={{ textDecoration: "none" }}>
+                    <Link to={`/item-listing/${product.id}`} style={{ textDecoration: "none" }}>
                       <p className="shop-items-section-list-item-title">
                         {product.title.length > 20 ? product.title.substring(0, 20) + "..." : product.title}
                       </p>
@@ -180,7 +193,11 @@ export const CustomizePage = () => {
           </div>
         )}
 
+        </AnimatedSection>
+        <AnimatedSection>
+          
         <Footer />
+        </AnimatedSection>
       </div>
     </div>
   );

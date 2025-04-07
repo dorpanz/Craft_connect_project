@@ -5,7 +5,10 @@ export const FeaturedItems = ({ items = [], sellerId }) => {
   console.log("Items:", items);
 
   const featuredItems = items.filter(
-    (item) => item.isFeatured && String(item.sellerId) === String(sellerId)
+    (item) =>
+      item.isFeatured &&
+      item.status === "approved" &&
+      String(item.sellerId) === String(sellerId)
   );
 
   console.log("Filtered Items:", featuredItems);
@@ -24,11 +27,11 @@ export const FeaturedItems = ({ items = [], sellerId }) => {
         ) : (
           featuredItems.map((item) => (
             <div key={item.id} className="shop-items-section-list-item">
-                            <Link to={`/item-listing/${item.id}`} style={{ textDecoration: "none" }}>
-              <img
-                src={item.photos?.[0] || "/pics/no-image.jpg"}
-                alt={item.title}
-              />
+              <Link to={`/item-listing/${item.id}`} style={{ textDecoration: "none" }}>
+                <img
+                  src={item.photos?.[0] || "/pics/no-image.jpg"}
+                  alt={item.title}
+                />
               </Link>
               <p className="shop-items-section-list-item-title">
                 {item.title.substring(0, 25)}

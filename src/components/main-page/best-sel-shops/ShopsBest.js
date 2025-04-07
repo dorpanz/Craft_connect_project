@@ -17,7 +17,10 @@ export const ShopsBest = () => {
         const fetchedShops = shopSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
         // Sort shops by sales or reviews count
-        const sortedShops = fetchedShops.sort((a, b) => (b.sales || b.reviews?.length || 0) - (a.sales || a.reviews?.length || 0));
+        const sortedShops = fetchedShops.sort((a, b) =>
+          (b.sales || b.reviews?.length || 0) - (a.sales || a.reviews?.length || 0)
+        );
+        
         setShops(sortedShops);
 
         // Fetch ratings for all shops
@@ -93,11 +96,8 @@ export const ShopsBest = () => {
               </div>
 
               {/* Featured Products */}
-              <div className="shop-products">
-                {shop.featured_items?.slice(0, 4).map((photo, index) => (
-                  <img key={index} src={photo} alt={`Featured item ${index + 1}`} className="shop-product-image" />
-                ))}
-              </div>
+              <p className="sales-count">{shop.sales || 0} sales</p>
+
             </div>
           </div>
         ))}

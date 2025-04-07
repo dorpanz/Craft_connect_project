@@ -30,11 +30,17 @@ export const EditProfile = () => {
 const ProfileEditSection = () => {
     const [shopName, setShopName] = useState("");
     const [shopDescription, setShopDescription] = useState("");
+    const [shopInspiration, setShopInspiration] = useState(""); // New state for shop inspiration
+    const [shopUniqueness, setShopUniqueness] = useState(""); // New state for uniqueness
+    const [shopValues, setShopValues] = useState(""); // New state for values
+    const [shopQuality, setShopQuality] = useState(""); // New state for quality
+    const [shopProcess, setShopProcess] = useState(""); // New state for creative process
     const [logo, setLogo] = useState(null);
     const [banner, setBanner] = useState(null);
     const [gallery, setGallery] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [instagramLink, setInstagramLink] = useState(""); // State for Instagram link
+    const [xLink, setXLink] = useState(""); 
     const auth = getAuth();
     const db = getFirestore();
     const storage = getStorage();
@@ -48,9 +54,16 @@ const ProfileEditSection = () => {
                     const data = sellerSnap.data();
                     setShopName(data.shopName || "");
                     setShopDescription(data.description || "");
+                    setShopInspiration(data.inspiration || ""); // Load the existing inspiration
+                    setShopUniqueness(data.uniqueness || ""); // Load uniqueness
+                    setShopValues(data.values || ""); // Load values
+                    setShopQuality(data.quality || ""); // Load quality
+                    setShopProcess(data.process || ""); // Load creative process
                     setLogo(data.logo || null);
                     setBanner(data.banner || null);
                     setGallery(data.gallery || []);
+                    setInstagramLink(data.socialMedia?.instagram || ""); // Load Instagram link
+                    setXLink(data.socialMedia?.x || ""); 
                 }
             }
         });
@@ -80,14 +93,9 @@ const ProfileEditSection = () => {
                 const storageRef = ref(storage, `banners/${auth.currentUser.uid}/${file.name}`);
                 await uploadBytes(storageRef, file);
                 const bannerUrl = await getDownloadURL(storageRef);
-    
                 setBanner(bannerUrl);
-    
-                // Ensure Firestore updates with the new banner URL
                 const sellerRef = doc(db, "sellers", auth.currentUser.uid);
                 await updateDoc(sellerRef, { banner: bannerUrl });
-    
-                console.log("Banner updated successfully!");
             } catch (error) {
                 console.error("Error uploading banner:", error);
             }
@@ -111,11 +119,9 @@ const ProfileEditSection = () => {
                 const updatedGallery = [...gallery, ...newGallery];
                 setGallery(updatedGallery);
     
-                // Ensure Firestore updates with the new gallery
                 const sellerRef = doc(db, "sellers", auth.currentUser.uid);
                 await updateDoc(sellerRef, { gallery: updatedGallery });
     
-                console.log("Gallery updated successfully!");
             } catch (error) {
                 console.error("Error uploading gallery images:", error);
             }
@@ -132,9 +138,18 @@ const ProfileEditSection = () => {
             await updateDoc(sellerRef, {
                 shopName,
                 description: shopDescription,
+                inspiration: shopInspiration, // Save inspiration
+                uniqueness: shopUniqueness, // Save uniqueness
+                values: shopValues, // Save values
+                quality: shopQuality, // Save quality
+                process: shopProcess, // Save creative process
                 logo,
                 banner,
                 gallery,
+                socialMedia: {
+                    instagram: instagramLink, // Save Instagram link
+                    x: xLink, // Save X link
+                },
             });
             alert("Profile updated successfully!");
         } catch (error) {
@@ -160,7 +175,7 @@ const ProfileEditSection = () => {
                         value={shopName}
                         onChange={(e) => setShopName(e.target.value)}
                         placeholder="Enter your shop name"
-                        required
+                        
                     />
                 </div>
                 <div className="form-group">
@@ -169,9 +184,82 @@ const ProfileEditSection = () => {
                         value={shopDescription}
                         onChange={(e) => setShopDescription(e.target.value)}
                         placeholder="Enter a brief description of your shop"
-                        required
+                        
                     />
                 </div>
+
+                {/* New Questions */}
+                <div className="form-group">
+                    <label>What inspired you to start your shop?</label>
+                    <textarea
+                        value={shopInspiration}
+                        onChange={(e) => setShopInspiration(e.target.value)}
+                        placeholder="Tell us what inspired you to start your shop"
+                        
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>What makes your shop different from others?</label>
+                    <textarea
+                        value={shopUniqueness}
+                        onChange={(e) => setShopUniqueness(e.target.value)}
+                        placeholder="Explain what makes your shop stand out"
+                        
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>What values are important to you when creating your products?</label>
+                    <textarea
+                        value={shopValues}
+                        onChange={(e) => setShopValues(e.target.value)}
+                        placeholder="Share the values that guide your product creation"
+                        
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>How do you ensure quality in your work?</label>
+                    <textarea
+                        value={shopQuality}
+                        onChange={(e) => setShopQuality(e.target.value)}
+                        placeholder="Describe how you ensure the quality of your products"
+                        
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Tell us something unique about your creative process.</label>
+                    <textarea
+                        value={shopProcess}
+                        onChange={(e) => setShopProcess(e.target.value)}
+                        placeholder="Share your unique creative process"
+                        
+                    />
+                </div>
+{/* Social Media Links */}
+<div className="form-group">
+                    <label>Instagram Link</label>
+                    <input
+                        type="text"
+                        value={instagramLink}
+                        onChange={(e) => setInstagramLink(e.target.value)}
+                        placeholder="Enter your Instagram link"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>X (formerly Twitter) Link</label>
+                    <input
+                        type="text"
+                        value={xLink}
+                        onChange={(e) => setXLink(e.target.value)}
+                        placeholder="Enter your X (formerly Twitter) link"
+                    />
+                </div>
+
+                {/* Logo, Banner, Gallery */}
                 <div className="form-group">
                     <label>Shop Logo</label>
                     <input type="file" accept="image/*" onChange={handleLogoChange} />

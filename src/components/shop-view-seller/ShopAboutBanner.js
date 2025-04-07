@@ -96,7 +96,7 @@ export const ShopAboutBanner = ({ shopData }) => {
           </span>
         </div>
         <div className="line-shop"></div>
-        <div className="shop-buyer-banner-about-section">
+        <div className="shop-buyer-banner-about-section-small">
           <div className="shop-buyer-about-section-links">
             <img src={contact} alt="contact" className="icons-shop" />
             <p>Contact</p>
@@ -108,7 +108,7 @@ export const ShopAboutBanner = ({ shopData }) => {
         </div>
         <div className="line-shop"></div>
         <div className="shop-buyer-banner-about-section">
-          <p>{shopData?.tagline || "Add a tagline for your shop!"}</p>
+          <p>{shopData?.description || "Add a tagline for your shop!"}</p>
           <Link to="/Shop/Edit" className="edit-seller-btn">
             Edit profile
           </Link>

@@ -7,6 +7,8 @@ import shoppic from "./pics/Group 110.png"
 import support from "../aboutpage/pics/community.jpg"
 import analytics from "./pics/analytics.png"
 import { AnimatedSection } from "../animation/AnimatedSection";
+import profile from "./pics/pic.png"
+import profile2 from "./pics/profile.jpg"
 const HomePage = () => {
   return (
     <div className="home-container">
@@ -61,36 +63,37 @@ const HomePage = () => {
       <AnimatedSection>
 
       <section className="testimonials-section">
-        <h3>Loved by Crafters</h3>
-        <p>We're really proud of Craft Connect and here’s what makers have to say about us:</p>
-        <div className="reviews-crafters">
-        <div className="reviews-crafters-item">
-          <p>Thanks for making it possible for people like me to sell online and be part of a lovely, supportive community</p>
-          <div className="line-2"></div>
-          <div className="reviews-crafters-item-by">
-            <p>Jeweller Helen Duncan Silver Nutmeg</p>
-            <img src={support} alt="profile"/>
-          </div>
-        </div>
+      <h3>Loved by Crafters</h3>
+<p>We're really proud of Craft Connect and here’s what makers have to say about us:</p>
+<div className="reviews-crafters">
+  <div className="reviews-crafters-item">
+    <p>Thanks for making it possible for people like me to sell online and be part of a lovely, supportive community</p>
+    <div className="line-2"></div>
+    <div className="reviews-crafters-item-by">
+      <p>Jeweller Helen Duncan Silver Nutmeg</p>
+      <img src={support} alt="profile" />
+    </div>
+  </div>
 
-        <div className="reviews-crafters-item">
-          <p>Thanks for making it possible for people like me to sell online and be part of a lovely, supportive community</p>
-          <div className="line-2"></div>
-          <div className="reviews-crafters-item-by">
-            <p>Jeweller Helen Duncan Silver Nutmeg</p>
-            <img src={support} alt="profile"/>
-          </div>
-        </div>
+  <div className="reviews-crafters-item">
+    <p>Craft Connect has been a game-changer for my business. The platform is easy to use, and I've been able to connect with so many new customers!</p>
+    <div className="line-2"></div>
+    <div className="reviews-crafters-item-by">
+      <p>Artist Emma Brooks Creative Blooms</p>
+      <img src={profile2} alt="profile" />
+    </div>
+  </div>
 
-        <div className="reviews-crafters-item">
-          <p>Thanks for making it possible for people like me to sell online and be part of a lovely, supportive community</p>
-          <div className="line-2"></div>
-          <div className="reviews-crafters-item-by">
-            <p>Jeweller Helen Duncan Silver Nutmeg</p>
-            <img src={support} alt="profile"/>
-          </div>
-        </div>
-        </div>
+  <div className="reviews-crafters-item">
+    <p>I love the sense of community here. It’s more than just a platform—it’s a place where makers truly support one another.</p>
+    <div className="line-2"></div>
+    <div className="reviews-crafters-item-by">
+      <p>Crafter Sarah Lee The Stitchery</p>
+      <img src={profile} alt="profile" />
+    </div>
+  </div>
+</div>
+
       </section>
       </AnimatedSection>
 <AnimatedSection>

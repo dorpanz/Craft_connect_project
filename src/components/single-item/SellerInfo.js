@@ -6,7 +6,8 @@ import instagramIcon from "../shop-view-seller/pics/mdi_instagram.png";
 import twitterIcon from "../shop-view-seller/pics/pajamas_twitter.png";
 import { Link } from "react-router-dom";
 import './single-item.css'
-export const SellerInfo = ({ sellerData, itemId }) => {
+import { ShopLink } from "./ShopLink";
+export const SellerInfo = ({ item,user,sellerData, itemId }) => {
   const [shopProducts, setShopProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -27,7 +28,8 @@ export const SellerInfo = ({ sellerData, itemId }) => {
               // Exclude the current product by filtering it out
               const products = querySnapshot.docs
                 .map(doc => ({ id: doc.id, ...doc.data() }))
-                .filter(product => product.id !== itemId); 
+                .filter(product => product.id !== itemId && product.status === "approved");
+
           
               setShopProducts(products);
             } catch (error) {
@@ -57,15 +59,12 @@ export const SellerInfo = ({ sellerData, itemId }) => {
 
         {/* Shop Details */}
         <div className="about-seller-details">
-          <Link to={`/shop/${sellerData?.shopName}`} className="item-shopname">
-            {sellerData?.shopName}
+        <Link to={user && user.uid === item.sellerId? "/your-shop" : `/shop/${item.shopName}`} className="item-shopname">
+            { user && user.uid === item.sellerId ? <p>{user.shopName}</p>: <ShopLink sellerId={item.sellerId} />}
           </Link>
 
           <p className="about-seller-description">
             {sellerData?.description || "Tell customers about your shop and what makes it special!"}
-          </p>
-          <p className="about-seller-story">
-            {sellerData?.story || "Seller has not yet added the story of the shop"}
           </p>
 
           {/* Social Links */}
