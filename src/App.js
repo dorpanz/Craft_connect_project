@@ -42,6 +42,8 @@ import ProtectedRoute from './components/routes/ProtectedRoute';
 import SearchResultsPage from './components/menu/SearchResults';
 import { Orders } from './components/shop-account-settings/Orders';
 import InfoPage from './components/aboutpage/InfoPage';
+import { AdminUserManage } from "./components/admin-dashboard/AdminUserManage"
+import { AdminSellerManage } from "./components/admin-dashboard/AdminSellerManage"
 function App() {
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -104,6 +106,8 @@ function App() {
             <Route path="/admin/admin-account" element={<AdminAccount />} />
             <Route path="/admin/login-security" element={<AdminLoginSecurity />} />
             <Route path="/admin/login-security" element={<UploadProduct />} />
+            <Route path="/admin/users-management" element={<AdminUserManage/>}/>
+            <Route path="/admin/sellers-management" element={<AdminSellerManage/>}/>
           </Route>
         </Routes>
       </AuthProvider>

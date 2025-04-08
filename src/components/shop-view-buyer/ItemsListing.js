@@ -108,7 +108,7 @@ export const ItemsListing = ({ items }) => {
                   {ratings[item.id] !== null && <span className="rating">- {ratings[item.id]}</span>}
                 </div>
                 <div className="all-items-section-list-item-info">
-                  <p className="price">${item.price}</p>
+                  <p className="price">${item.price.toFixed(2)}</p>
                   <button onClick={() => addToCart(item)} className="add-to-cart-2">
                     Add
                   </button>

@@ -57,7 +57,7 @@ export const AdminProductReview = () => {
     try {
       await deleteDoc(doc(db, "products", productId));
       alert("Product denied and removed.");
-      navigate("/admin");
+      navigate("/admin-dashboard");
     } catch (error) {
       console.error("Error denying product:", error);
       alert("Failed to deny product.");

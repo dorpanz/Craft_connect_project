@@ -3,25 +3,24 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export const categories = {
-    "SALE": [],
     "ACCESSORIES": {
-        "Bags": [],
-        "Jewelry": ["Necklaces", "Bracelets", "Rings"],
+        "Bags": ["Tote Bags", "Backpacks", "Clutches"],
+        "Jewelry": ["Necklaces", "Bracelets", "Rings", "Earrings"],
         "Hats": [],
         "Scarves": []
     },
     "CLOTHING": {
-        "Men": ["Shirts", "Pants", "Jackets"],
-        "Women": ["Dresses", "Tops", "Bottoms"],
-        "Kids": ["Baby Clothing", "Teen Wear"]
+        "Men": ["Shirts", "Pants", "Jackets", "Hoodies", "Suits"],
+        "Women": ["Dresses", "Tops", "Bottoms", "Jumpsuits", "Outerwear"],
+        "Kids": ["Baby Clothing", "Teen Wear", "Toddler Sets", "Costumes"]
     },
     "HOMEWARE": {
-        "Decor": ["Wall Art", "Vases"],
-        "Kitchen": ["Utensils", "Dinnerware"],
-        "Furniture": ["Tables", "Chairs"]
+        "Decor": ["Wall Art", "Vases", "Candles", "Pillows", "Planters", "Storage"],
+        "Kitchen": ["Utensils", "Dinnerware", "Cutting Boards", "Aprons", "Mugs"],
+        "Furniture": ["Tables", "Chairs", "Shelves", "Benches", "Stools"]
     },
     "ART": {
-        "Paintings": ["Oil", "Watercolor"],
+        "Paintings": [],
         "Sculptures": [],
         "Photography": []
     },
@@ -36,6 +35,7 @@ export const categories = {
         "Painting": []
     }
 };
+
 
 const CategoryMenu = () => {
     const [hoveredCategory, setHoveredCategory] = useState(null);

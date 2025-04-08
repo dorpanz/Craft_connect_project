@@ -8,6 +8,7 @@ import Menu from "../menu/Menu";
 import Footer from "../footer/Foooter";
 import { Link } from "react-router-dom";
 import addloo from "./pic/addlogo.png"
+import orers from "./pic/ordersall.jpg"
 const accountOptions = [
   {
     title: "Your shop",
@@ -24,7 +25,7 @@ const accountOptions = [
   {
     title: "Orders",
     description: "Manage your orders",
-    imgSrc: addloo,
+    imgSrc: orers,
     link: "/your-shop-dashboard/orders",  // Add the link to this section
   },
   {

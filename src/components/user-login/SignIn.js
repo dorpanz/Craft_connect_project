@@ -61,7 +61,7 @@ const SignIn = () => {
       } else if (result.success === "user") {
         navigate("/account-settings-user");
       } else if (result.success === "admin") {
-        navigate("/admin-dashboard");
+        navigate("/admin/admin-account");
       }
     } catch (error) {
       console.error(error);
@@ -98,8 +98,6 @@ const SignIn = () => {
               value={formData.password}
               onChange={handleChange}
             />
-
-            <a href="#" className="forgot-password">Forgot Password?</a>
 
             <button type="submit" className="signin-button" disabled={loading}>
               {loading ? "Logging in..." : "SIGN IN"}
