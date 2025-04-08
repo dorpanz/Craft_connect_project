@@ -99,3 +99,7 @@
 .basket:hover {
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); 
 }
+.item-price{
+    color: black;
+    font-size: 16px;
+}

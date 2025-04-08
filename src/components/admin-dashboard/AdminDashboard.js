@@ -54,7 +54,7 @@ export const AdminDashboard = () => {
                 <div className="product-desc">
                   <p className="product-title" >{product.title.slice(0,25)}...</p>
                   <div className="product-info">
-                    <p className="price">CA${product.price.toFixed(2)}</p>
+                    <p className="price-admin">CA${product.price.toFixed(2)}</p>
                     
                   </div>
                   <button className="review-btn">Review Product</button>
