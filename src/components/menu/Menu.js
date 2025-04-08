@@ -113,7 +113,7 @@ const Menu = () => {
           </>
         )}
 
-{role !== "seller" && (
+{role !== "seller" && role !== "admin" && (
           <>
             <Link to="/favorites" className="menu-personal">
               <img

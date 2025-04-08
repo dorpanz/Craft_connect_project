@@ -11,22 +11,10 @@ const Footer = () => {
             <h4>Buying on Craft Connect</h4>
             <ul>
               <li>
-                <a href="#">How it works</a>
+                <a href="/craft-connect-info">Returns</a>
               </li>
               <li>
-                <a href="#">Delivery</a>
-              </li>
-              <li>
-                <a href="#">Returns</a>
-              </li>
-              <li>
-                <a href="#">Contact the seller</a>
-              </li>
-              <li>
-                <a href="#">Buying FAQ</a>
-              </li>
-              <li>
-                <a href="#">Subscribe for Gifts & Offers</a>
+                <a href="/About-Craft-Connect#buying-faqs">Buying FAQ</a>
               </li>
             </ul>
           </div>
@@ -35,16 +23,13 @@ const Footer = () => {
             <h4>Sell on Craft Connect</h4>
             <ul>
               <li>
-                <a href="#">Open a Craft Connect shop</a>
+                <a href="/About-Craft-Connect#ready-to-sell">Open a Craft Connect shop</a>
               </li>
               <li>
-                <a href="#">Help & Support</a>
+                <a href="mailto:contact@craftconnect.com">Help & Support</a>
               </li>
               <li>
-                <a href="#">Why Sell on Craft Connect</a>
-              </li>
-              <li>
-                <a href="#">Subscribe to Seller Tips</a>
+                <a href="/About-Craft-Connect#buying-faqs">Why Sell on Craft Connect</a>
               </li>
             </ul>
           </div>
@@ -53,19 +38,19 @@ const Footer = () => {
             <h4>About Craft Connect</h4>
             <ul>
               <li>
-                <a href="#">The Craft Connect Story</a>
+              <a href="https://www.instagram.com/craftconnectt/" target="_blank" rel="noopener noreferrer">Craft Connect on Instagram</a>
               </li>
               <li>
-                <a href="#">Contact us</a>
+                <a href="mailto:contact@craftconnect.com">Contact us</a>
               </li>
               <li>
-                <a href="#">Privacy policy</a>
+                <a href="/craft-connect-info">Privacy Policy</a>
               </li>
               <li>
-                <a href="#">Terms of use</a>
+                <a href="/craft-connect-info">Terms of Use</a>
               </li>
               <li>
-                <a href="#">Press enquiries</a>
+                <a href="mailto:press@craftconnect.com">Press enquiries</a>
               </li>
             </ul>
           </div>

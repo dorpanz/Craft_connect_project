@@ -12,64 +12,69 @@
 
 .chat-container {
   display: flex;
-  width: 900px;  /* Smaller chat box */
+  width: 900px;
   height: 500px;
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  border: 2px solid rgba(42, 76, 76, 0.3);
 }
 
-/* Chat List (Sidebar) */
+/* Sidebar Chat List */
 .chat-list {
-  width: 220px;
-  background: #222;
+  width: 240px;
+  background: linear-gradient(to bottom, rgba(42, 76, 76, 1), rgba(44, 92, 92, 1)); /* Gradient effect */
   color: white;
-  padding: 15px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
 }
 
 .chat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  font-size: 18px;
   font-weight: bold;
-  height: 50px;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #f0f0f0; /* Slightly lighter text */
 }
 
 .chat-item {
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 10px;
+  border-radius: 10px;
   margin-bottom: 10px;
-  background: #333;
-  transition: 0.3s;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
 }
 
 .chat-item:hover,
 .chat-item.active {
-  background: #444;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Chat Box */
+/* Main Chat Box */
 .chat-box {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: white;
-  border-left: 2px solid #ddd;
+  border-left: 1px solid rgba(42, 76, 76, 0.2);
+  background: #fdfdfd;
 }
 
-/* Chat Header */
-.chat-header {
+/* Top Chat Header */
+.chat-box .chat-header {
+  background-color: rgba(42, 76, 76, 0.9);
+  color: white;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
-  background: #007bff;
-  color: white;
+  font-family: "Inter", sans-serif;
+  letter-spacing: 1px;
 }
 
 .back-btn {
@@ -79,75 +84,158 @@
   color: white;
   cursor: pointer;
   margin-right: 10px;
-  text-decoration: none;
 }
 
 .chat-icons span {
   font-size: 18px;
-  margin-left: 10px;
+  margin-left: 12px;
   cursor: pointer;
 }
 
-/* Chat Messages */
+/* Chat Messages Area */
 .chat-body {
   flex: 1;
-  padding: 15px;
+  padding: 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-.empty-chat {
-  text-align: center;
-  color: #888;
-  margin-top: 20px;
-}
-
 .chat-message {
-  padding: 10px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
   max-width: 70%;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-family: "Inria Serif", serif;
 }
 
 .chat-message.received {
-  background: #e0e0e0;
+  background: #f0f0f0;
+  color: #222;
   align-self: flex-start;
 }
 
 .chat-message.sent {
-  background: #007bff;
+  background: #2a4c4c; /* Darker shade for sent messages */
   color: white;
   align-self: flex-end;
 }
 
-/* Chat Input */
+.empty-chat {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+/* Chat Input Area */
 .chat-input {
   display: flex;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  background: #fff;
+  padding: 12px 16px;
+  border-top: 1px solid #ccc;
+  background: white;
 }
 
 .chat-input input {
   flex: 1;
-  padding: 10px;
+  padding: 10px 14px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 25px;
   outline: none;
+  font-family: "Inria Serif", serif;
 }
 
 .chat-input button {
-  padding: 10px;
+  padding: 10px 16px;
   margin-left: 10px;
   border: none;
-  background: #007bff;
+  border-radius: 25px;
+  background: #1a5b5b; /* Dark teal */
   color: white;
-  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
+  font-weight: bold;
+  font-family: "Inter", sans-serif;
+  transition: background 0.3s ease-in-out;
 }
 
 .chat-input button:hover {
-  background: #0056b3;
+  background: #193c3c; /* Darker teal on hover */
+}
+
+/* Main Page Components (like About Section) */
+.about-section {
+  background-color: rgba(42, 76, 76, 1);
+  font-family: "Inria Serif", serif;
+  padding: 50px;
+  margin-top: 60px;
+  color: white;
+  text-align: center;
+}
+
+.about-info {
+  font-size: 16px;
+}
+
+.about-title {
+  font-size: 22px;
+}
+
+.read-more-btn-cont {
+  margin-top: 40px;
+}
+
+.read-more-btn {
+  font-family: "Inria Serif", serif;
+  font-size: 16px;
+  width: 150px;
+  border-radius: 30px;
+  border: none;
+  text-decoration: none;
+  padding: 5px 10px;
+  background-color: rgb(173, 173, 173);
+  color: black;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.read-more-btn:hover {
+  background-color: rgb(208, 208, 208);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Shop Info Section */
+.shop-info-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: rgba(255, 225, 182, 1);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.shop-info-section:hover {
+  background-color: rgb(255, 214, 157);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+/* Custom Try Button */
+.custom-try {
+  font-size: 18px;
+  padding: 14px 28px;
+  background-color: rgba(42, 76, 76, 1);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: "Inria Serif", serif;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.custom-try:hover {
+  background-color: rgb(73, 113, 113);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }

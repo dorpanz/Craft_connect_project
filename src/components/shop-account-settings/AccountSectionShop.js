@@ -7,6 +7,7 @@ import messagesImg from "./pic/messages.png";
 import Menu from "../menu/Menu";
 import Footer from "../footer/Foooter";
 import { Link } from "react-router-dom";
+import addloo from "./pic/addlogo.png"
 const accountOptions = [
   {
     title: "Your shop",
@@ -17,8 +18,14 @@ const accountOptions = [
   {
     title: "Add Items",
     description: "Add items, description and price",
-    imgSrc: ordersImg,
+    imgSrc: addloo,
     link: "/Add-Items",  // Add the link to this section
+  },
+  {
+    title: "Orders",
+    description: "Manage your orders",
+    imgSrc: addloo,
+    link: "/your-shop-dashboard/orders",  // Add the link to this section
   },
   {
     title: "Login & Security",
@@ -32,18 +39,14 @@ const accountOptions = [
     imgSrc: subscriptionsImg,
     link: "/your-shop-dashboard/shop-statistics",  // Add the link to this section
   },
-  {
-    title: "Marketing",
-    description: "Advertising tools, marketing strategy",
-    imgSrc: messagesImg,
-    link: "/your-shop-dashboard/advertistment-overview",  // Add the link to this section
-  },
+
   {
     title: "Messages",
     description: "Manage your messages with clients",
     imgSrc: messagesImg,
-    link: "/account-settings-user/chat",  // Add the link to this section
+    link: "/your-shop-dashboard/chat",  // Add the link to this section
   },
+
 ];
 
 const AccountSectionShop = () => {

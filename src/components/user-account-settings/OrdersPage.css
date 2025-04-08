@@ -24,6 +24,22 @@
   gap: 20px;
 }
 
+.status-pending {
+  color: orange;
+}
+
+.status-completed {
+  color: blue;
+}
+
+.status-in-delivery {
+  color: green;
+}
+
+.status-default {
+  color: black;
+}
+
 /* Order Card */
 .order-card {
   background: #fff;
@@ -44,8 +60,6 @@
 }
 
 .order-status {
-  background: #f4c542;
-  color: white;
   padding: 5px 10px;
   border-radius: 8px;
   text-align: center;

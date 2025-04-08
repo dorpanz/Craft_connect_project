@@ -72,11 +72,18 @@
     padding: 10px;
     border: 1px solid black;
     border-radius: 20px;
+    width: 1000px;
 }
 
+.top-items-buttons-cont{
+    display: flex;
+    justify-content: center;
+}
 
+.top-items-buttons{
+    margin-left: 20px;
 
-
+}
 
 .stats-graph-2{
     display: flex;
@@ -152,3 +159,51 @@
     transform: rotate(0deg); /* Rotate the line 90 degrees to make it vertical */
 }
 
+.stats-graph-4{
+    display: flex;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 30px;
+    width: 350px;
+}
+.conv-rate-cont{
+    display: flex;
+
+}
+.conv-rate-cont-explain{
+    margin-left: 20px;
+    width: 70%;
+}
+
+
+ 
+  .category-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .category-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(72, 72, 72, 0.05);
+  }
+  
+  .category-name {
+    font-size: 20px;
+    color: #2c3e50;
+  }
+  
+  .category-sales,
+  .category-revenue {
+    font-size: 16px;
+    color: #7f8c8d;
+  }
+  
+  .no-categories {
+    font-size: 18px;
+    color: #e74c3c;
+    font-style: italic;
+  }
+  

@@ -97,11 +97,6 @@ const TermsAndConditions = () => {
         By proceeding with your shop registration, you acknowledge that you have
         read, understood, and agreed to these Terms and Conditions.
       </p>
-
-      <p>
-        For any questions or support, please contact us at{" "}
-        <strong>[Insert Contact Information]</strong>.
-      </p>
     </div>
   );
 };

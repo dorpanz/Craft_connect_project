@@ -5,7 +5,8 @@ import dashboardImg from "./pic/dashboard.png"; // Admin dashboard image
 import Menu from "../menu/Menu";
 import Footer from "../footer/Foooter";
 import { Link } from "react-router-dom";
-
+import user from "./pic/users.jpg"
+import shop from "./pic/shops.jpg"
 const adminAccountOptions = [
   {
     title: "Product Verification Dashboard",
@@ -19,6 +20,18 @@ const adminAccountOptions = [
     imgSrc: securityImg,
     link: "/admin/login-security",  // Link to login & security settings
   },
+  {
+    title: "Users Management",
+    description: "Manage Users",
+    imgSrc: user,
+    link: "/admin/users-management",  // Link to login & security settings
+  },
+  {
+    title: "Sellers Management",
+    description: "Manage Sellers",
+    imgSrc: shop,
+    link: "/admin/sellers-management",  // Link to login & security settings
+  },
 ];
 
 const AdminAccount = () => {
@@ -29,14 +42,14 @@ const AdminAccount = () => {
   return (
     <div>
       <Menu />
-      <section className="admin-account-section">
-        <div className="admin-account-cards-container">
+      <section className="account-section-1">
+        <div className="account-section-1-cards-container">
           {adminAccountOptions.map((option, index) => (
-            <Link key={index} to={option.link} className="admin-account-card">
+            <Link key={index} to={option.link} className="account-section-1-card">
               <img
                 src={option.imgSrc}
                 alt={option.title}
-                className="admin-account-card-icon"
+                className="account-section-1-card-icon"
               />
               <div>
                 <h3>{option.title}</h3>

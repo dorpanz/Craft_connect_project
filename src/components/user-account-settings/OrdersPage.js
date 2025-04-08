@@ -99,6 +99,20 @@ const OrdersPage = () => {
     ? orders 
     : orders.filter(order => order.status === statusFilter);
 
+  // Function to dynamically assign status color classes
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "pending":
+        return "status-pending";
+      case "shipped":
+        return "status-completed";
+      case "delivered":
+        return "status-in-delivery";
+      default:
+        return "status-default";
+    }
+  };
+
   return (
     <div>
       <Menu />
@@ -110,8 +124,8 @@ const OrdersPage = () => {
           <select id="status" value={statusFilter} onChange={handleStatusFilterChange}>
             <option value="All">All</option>
             <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-            <option value="in Delivery">In Delivery</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
           </select>
         </div>
 
@@ -132,7 +146,9 @@ const OrdersPage = () => {
                     <h3>Order #{order.id}</h3>
                     <p className="order-date">{order.date}</p>
                   </div>
-                  <p className="order-status">{order.status}</p>
+                  <p className={`order-status ${getStatusClass(order.status)}`}>
+                    {order.status}
+                  </p>
                   <div className="order-items">
                     {order.items.map((item, index) => (
                       <div key={index} className="order-item">

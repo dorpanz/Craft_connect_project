@@ -1,89 +1,88 @@
 .admin-dashboard {
-    margin: 0 auto;
-    font-family: "Inria Serif", serif;
-  }
-  
-  .admin-dashboard h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .admin-dashboard .product-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .product-item {
-    background: #f9f9f9;
-    border-radius: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .product-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .product-img {
-    width: 170px;
-    height: 190px;
-    object-fit: cover;
-    border-radius: 20px;
-  }
-  
-  .product-desc {
-    margin-top: 10px;
-  }
-  
-  .product-title {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .product-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  .price {
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .review-btn {
-    background-color: #f5a623;
-    padding: 5px 20px;
-    border: none;
-    border-radius: 20px;
-    color: white;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .review-btn:hover {
-    background-color: #c9871e;
-    transform: scale(1.1);
-  }
-  
-  .seller-link {
-    display: block;
-    margin-top: 10px;
-    font-size: 16px;
-    color: #007bff; /* Change color as needed */
-    text-decoration: none;
-  }
-  
-  .shop-name {
-    font-weight: bold;
-    font-size: 14px;
-  }
-  
+  font-family: "Inria Serif", serif;
+}
+
+.admin-dashboard h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .product-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Change to 5 items per row */
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.product-item {
+  background: #f9f9f9;
+  border-radius: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.product-img {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.product-desc {
+  margin-top: 10px;
+}
+
+.product-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.price {
+  font-size: 16px;
+  color: #333;
+}
+
+.review-btn {
+  background-color: #f5a623;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.review-btn:hover {
+  background-color: #c9871e;
+  transform: scale(1.1);
+}
+
+.seller-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #007bff; /* Change color as needed */
+  text-decoration: none;
+}
+
+.shop-name {
+  font-weight: bold;
+  font-size: 14px;
+}

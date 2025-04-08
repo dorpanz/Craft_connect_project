@@ -115,6 +115,7 @@ export const ItemStat = () => {
 
     fetchFavoritesCount();
   }, [itemId]);
+  
   useEffect(() => {
     const generateChartData = async () => {
       try {
@@ -242,7 +243,9 @@ export const ItemStat = () => {
   
   
 
-  if (loading) return <p>Loading item statistics...</p>;
+  if (loading) return       <div className="loading-container">
+  <div className="loading-spinner"></div>
+</div>;
   if (!itemData) return <p>Item not found.</p>;
 
   const {
@@ -259,9 +262,6 @@ export const ItemStat = () => {
       <Menu />
       <AnimatedSection>
         <div className="edit-section-title">
-          <Link to="/your-shop" className="go-back">
-            <img src={arrow} alt="arrow" className="arrow" />
-          </Link>
           <p className="edit-featured-title">Item Statistics</p>
         </div>
       </AnimatedSection>

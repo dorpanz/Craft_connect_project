@@ -1,62 +1,125 @@
 .subscription-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    text-align: center;
-    font-family: "Inria Serif", serif;
-  }
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  font-family: "Inria Serif", serif;
+}
+
+.edit-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.go-back .arrow {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.edit-featured-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.subscribed-sellers-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.seller-card {
+  text-decoration: none;
+  color: inherit;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.seller-card:hover {
   
-  .subscription-form {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 15px;
-  }
+  transform: translateY(-5px);
+}
+
+.seller-card-content {
   
-  .subscription-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 60%;
-  }
-  
-  .subscribe-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .subscribe-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .subscription-list {
-    margin-top: 20px;
-  }
-  
-  .subscription-item {
-    background: #fff3cd;
-    padding: 10px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 5px 0;
-  }
-  
-  .unsubscribe-button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .unsubscribe-button:hover {
-    background-color: #c82333;
-  }
-  
+  padding: 20px;
+  text-align: center;
+}
+
+.seller-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.seller-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.subscription-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.subscription-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 60%;
+}
+
+.subscribe-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.subscribe-button:hover {
+  background-color: #0056b3;
+}
+
+.subscription-list {
+  margin-top: 20px;
+}
+
+.subscription-item {
+  background: #fff3cd;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.unsubscribe-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.unsubscribe-button:hover {
+  background-color: #c82333;
+}
+.shop-info-section {
+  text-decoration: none;  /* Remove underline */
+  color: inherit;  /* Inherit color from parent */
+}

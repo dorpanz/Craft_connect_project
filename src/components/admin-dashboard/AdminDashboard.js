@@ -30,7 +30,9 @@ export const AdminDashboard = () => {
     fetchPendingProducts();
   }, []);
 
-  if (loading) return <p>Loading pending products...</p>;
+  if (loading) return       <div className="loading-container">
+  <div className="loading-spinner"></div>
+</div>;
 
   return (
     <div className="admin-dashboard">
@@ -47,14 +49,15 @@ export const AdminDashboard = () => {
         <div className="product-list">
           {pendingProducts.map((product) => (
             <div key={product.id} className="product-item">
-              <Link to={`/admin/review-product/${product.id}`} style={{ textDecoration: "none" }}>
+              <Link to={`/admin/review-product/${product.id}`} style={{ textDecoration: "none", color: "black" }}>
                 <img src={product.photos[0]} alt={product.title} className="product-img" />
                 <div className="product-desc">
-                  <p className="product-title">{product.title}</p>
+                  <p className="product-title" >{product.title.slice(0,25)}...</p>
                   <div className="product-info">
-                    <p className="price">${product.price}</p>
-                    <button className="review-btn">Review Product</button>
+                    <p className="price">CA${product.price.toFixed(2)}</p>
+                    
                   </div>
+                  <button className="review-btn">Review Product</button>
                 </div>
               </Link>
               {/* Link to Seller's Account */}

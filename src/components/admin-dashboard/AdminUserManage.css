@@ -1,0 +1,206 @@
+.admin-user-manage-container {
+    font-family: "Inria Serif", serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .admin-user-manage-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .user-list-container {
+    width: 100%;
+  }
+  
+  .user-list-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    font-weight: 600;
+    color: #666;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .user-list-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .user-actions-button {
+    background-color: #4c7aee;
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    font-family: "Inria Serif", serif;
+  }
+  
+  .ban-button,
+  .contact-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  
+  .ban-button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .contact-button {
+    background-color: #1976d2;
+    text-decoration: none;
+  }
+  
+  .contact-button:hover {
+    background-color: #1565c0;
+  }
+  
+  .user-actions-button:hover {
+    background-color: #2c5bb3;
+  }
+  
+  .activity-modal-container {
+    grid-column: span 4; /* This makes the modal span across all 4 columns */
+    padding: 20px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .activity-section {
+    margin-bottom: 20px;
+  }
+  
+  .activity-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .activity-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .item-info {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .item-info span {
+    font-weight: 600;
+  }
+  
+  .activity-item p {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .activity-modal-container ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  .activity-modal-container li {
+    margin-bottom: 10px;
+  }
+  /* Thumbnail styling */
+.review-images img {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .review-images img:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Modal overlay */
+  .image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Modal content */
+  .image-modal-content {
+    position: relative;
+    width: 300px;
+    max-height: 60%;
+  }
+  
+  .image-modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  /* Close button */
+  .close-button {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 24px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+  
+  .rev-see-more-btn{
+    padding: 10px;
+    border: none;
+    background-color: #feffad;
+    border-radius: 20px;
+    font-family: "Inria Serif", serif;
+  }
+
+  .center-cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .all-items-section-list-item-images .all-items-section-list-item-img{
+    padding: 10px;
+  }

@@ -41,7 +41,7 @@
 .shop-buyer-banner-about-section {
   margin-left: 40px;
   margin-right: 40px;
-  min-width: 160px;
+  min-width: fit-content;
 }
 .shop-buyer-banner-about-section-small{
   margin-left: 40px;

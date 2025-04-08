@@ -108,7 +108,7 @@ export const AboutPage = () =>{
                     </div>
 
                     <div className='line-vert'></div>
-                    <div className='section-faqs-list-customers'>
+                    <div className='section-faqs-list-customers' id='buying-faqs'>
                         <p className='section-faqs-list-title'>For Customers</p>
                         <ol>
                             <li>How do I place an order?</li>
@@ -132,8 +132,11 @@ export const AboutPage = () =>{
     </AnimatedSection>
 
     <AnimatedSection>
-            <ReadySell/>
+    <div id="ready-to-sell">
+        <ReadySell/>
+    </div>
     </AnimatedSection>
+    
 
     <AnimatedSection>
             <Footer/>

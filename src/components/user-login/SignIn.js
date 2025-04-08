@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 import "./signin.css";
 import Menu from "../menu/Menu";
 
@@ -28,30 +30,46 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-    
+
     try {
-        const result = await login(formData.email, formData.password);
-        
-        if (result.error) {
-            setMessage(result.error);
-            return;
-        }
+      // Check if user is banned before attempting login
+      const q = query(
+        collection(db, "users"),
+        where("email", "==", formData.email)
+      );
+      const querySnapshot = await getDocs(q);
 
-        // Handle redirection based on role
-        if (result.success === "seller") {
-            navigate("/your-shop-dashboard");
-        } else if (result.success === "user") {
-            navigate("/account-settings-user");
-        } else if (result.success === "admin") {
-            navigate("/admin-dashboard"); // Redirect admin to the admin dashboard
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        if (userData.status === "banned") {
+          setMessage("Your account has been banned. Please contact our support team.");
+          setLoading(false);
+          return;
         }
+      }
+
+      const result = await login(formData.email, formData.password);
+
+      if (result.error) {
+        setMessage(result.error);
+        return;
+      }
+
+      // Handle redirection based on role
+      if (result.success === "seller") {
+        navigate("/your-shop-dashboard");
+      } else if (result.success === "user") {
+        navigate("/account-settings-user");
+      } else if (result.success === "admin") {
+        navigate("/admin-dashboard");
+      }
     } catch (error) {
-        setMessage("Invalid credentials. Please try again.");
+      console.error(error);
+      setMessage("Invalid credentials. Please try again.");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
-
+  };
 
   return (
     <div>
@@ -62,10 +80,24 @@ const SignIn = () => {
           {message && <p className="signin-message">{message}</p>}
           <form onSubmit={handleSubmit}>
             <label>Email Address:</label>
-            <input type="email" name="email" placeholder="Enter your email" required value={formData.email} onChange={handleChange} />
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+            />
 
             <label>Password:</label>
-            <input type="password" name="password" placeholder="***************" required value={formData.password} onChange={handleChange} />
+            <input
+              type="password"
+              name="password"
+              placeholder="***************"
+              required
+              value={formData.password}
+              onChange={handleChange}
+            />
 
             <a href="#" className="forgot-password">Forgot Password?</a>
 
@@ -74,7 +106,10 @@ const SignIn = () => {
             </button>
           </form>
 
-          <p>New to Craft Connect? <a href="/user-register" className="join-now">JOIN NOW</a></p>
+          <p>
+            New to Craft Connect?{" "}
+            <a href="/user-register" className="join-now">JOIN NOW</a>
+          </p>
         </div>
       </div>
     </div>

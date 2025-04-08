@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from "react";
-import "./User-chat.css";
-import Menu from "../menu/Menu";
-import { Link, useLocation } from "react-router-dom";
 import { db } from "../../firebase";
+import { FaUser } from "react-icons/fa";
 import arrow from "../shop-view-seller/pics/arrow.png";
-import { FaStore } from "react-icons/fa";
-
 import {
   doc,
   getDoc,
-  setDoc,
-  updateDoc,
   onSnapshot,
+  setDoc,
 } from "firebase/firestore";
 import { useAuth } from "../../context/AuthContext";
+import Menu from "../menu/Menu";
+import { Link } from "react-router-dom";
 
-const UserChat = () => {
+const SellerChat = () => {
   const { user } = useAuth();
-  const [chats, setChats] = useState([]);
+  const [chatList, setChatList] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const location = useLocation();
-
-  const sellerIdFromProfile = location.state?.sellerId || null;
-  const sellerNameFromProfile = location.state?.shopName || null;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,37 +32,28 @@ const UserChat = () => {
 
         const formattedChats = await Promise.all(
           chatListRaw.map(async (chat) => {
-            if (!chat.shopName && chat.chatId.includes("_")) {
-              const sellerId = chat.chatId.split("_")[1];
-              try {
-                const sellerDoc = await getDoc(doc(db, "sellers", sellerId));
-                if (sellerDoc.exists()) {
-                  return {
-                    ...chat,
-                    shopName: sellerDoc.data().shopName || "Unknown Seller",
-                  };
-                }
-              } catch (err) {
-                console.error("Error fetching seller:", err);
+            const userId = chat.chatId.split("_")[0];
+            try {
+              const userDoc = await getDoc(doc(db, "users", userId));
+              if (userDoc.exists()) {
+                return {
+                  ...chat,
+                  buyerName: userDoc.data().username || "Buyer",
+                };
               }
+            } catch (err) {
+              console.error("Error fetching user:", err);
             }
             return chat;
           })
         );
 
-        setChats(formattedChats);
+        setChatList(formattedChats);
       }
     });
 
     return () => unsubscribe();
   }, [user]);
-
-  useEffect(() => {
-    if (sellerIdFromProfile && user) {
-      const chatId = `${user.uid}_${sellerIdFromProfile}`;
-      setSelectedChat({ chatId, shopName: sellerNameFromProfile });
-    }
-  }, [sellerIdFromProfile, user]);
 
   useEffect(() => {
     if (!selectedChat?.chatId) return;
@@ -95,9 +79,10 @@ const UserChat = () => {
     };
 
     const chatId = selectedChat.chatId;
-    const sellerId = chatId.split("_")[1]; // Always seller is second
-    const userChatRef = doc(db, "chats", user.uid);
-    const sellerChatRef = doc(db, "chats", sellerId);
+    const buyerId = chatId.split("_")[0]; // userId is always first
+
+    const sellerChatRef = doc(db, "chats", user.uid);
+    const buyerChatRef = doc(db, "chats", buyerId);
     const messagesRef = doc(db, "messages", chatId);
 
     try {
@@ -108,23 +93,26 @@ const UserChat = () => {
         messages: [...prevMessages, newMessage],
       });
 
-      // Update user's chatList
-      const userChatSnap = await getDoc(userChatRef);
-      const userList = userChatSnap.exists() ? userChatSnap.data().chatList || [] : [];
-      const userHasChat = userList.some(c => c.chatId === chatId);
-      if (!userHasChat) {
-        await setDoc(userChatRef, {
-          chatList: [...userList, { chatId, shopName: selectedChat.shopName || "" }]
-        });
-      }
-
       // Update seller's chatList
       const sellerChatSnap = await getDoc(sellerChatRef);
       const sellerList = sellerChatSnap.exists() ? sellerChatSnap.data().chatList || [] : [];
       const sellerHasChat = sellerList.some(c => c.chatId === chatId);
       if (!sellerHasChat) {
         await setDoc(sellerChatRef, {
-          chatList: [...sellerList, { chatId, shopName: selectedChat.shopName || "" }]
+          chatList: [...sellerList, { chatId }]
+        });
+      }
+
+      // Update buyer's chatList
+      const buyerDocSnap = await getDoc(doc(db, "users", buyerId));
+      const buyerFullName = buyerDocSnap.exists() ? buyerDocSnap.data().fullName || "" : "";
+
+      const buyerChatSnap = await getDoc(buyerChatRef);
+      const buyerList = buyerChatSnap.exists() ? buyerChatSnap.data().chatList || [] : [];
+      const buyerHasChat = buyerList.some(c => c.chatId === chatId);
+      if (!buyerHasChat) {
+        await setDoc(buyerChatRef, {
+          chatList: [...buyerList, { chatId, shopName: selectedChat.shopName || "" }]
         });
       }
 
@@ -141,15 +129,14 @@ const UserChat = () => {
         <div className="chat-container">
           {/* Sidebar */}
           <div className="chat-list">
-            <div className="chat-header"><h3>Chats</h3></div>
-            {chats.map((chat, idx) => (
+            <div className="chat-header"><h3>Messages</h3></div>
+            {chatList.map((chat, idx) => (
               <div
                 key={idx}
                 className={`chat-item ${selectedChat?.chatId === chat.chatId ? "active" : ""}`}
                 onClick={() => setSelectedChat(chat)}
               >
-                <FaStore className="shop-icon" /> {chat.shopName || "Shop"}
-
+                 <FaUser /> {chat.buyerName || "Customer"}
               </div>
             ))}
           </div>
@@ -157,12 +144,10 @@ const UserChat = () => {
           {/* Chat Window */}
           <div className="chat-box">
             <div className="chat-header">
-                        <Link to="/account-settings-user" className="go-back">
-                          <img src={arrow} alt="arrow" className="arrow" />
-                        </Link>
-              <h3>{selectedChat?.shopName || "Select a chat"}</h3>
-              <div className="chat-icons">
-              </div>
+                                     <Link to="/account-settings-user" className="go-back">
+                                       <img src={arrow} alt="arrow" className="arrow" />
+                                     </Link>
+              <h3>{selectedChat?.buyerName || "Select a chat"}</h3>
             </div>
             <div className="chat-body">
               {messages.length > 0 ? (
@@ -195,4 +180,4 @@ const UserChat = () => {
   );
 };
 
-export default UserChat;
+export default SellerChat;

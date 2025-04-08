@@ -76,7 +76,9 @@ export const AdminProductReview = () => {
     }
   };
 
-  if (!product || !seller) return <p>Product or Seller not found</p>;
+  if (!product || !seller) return       <div className="loading-container">
+  <div className="loading-spinner"></div>
+</div>;
 
   return (
     <div className="admin-review-container">

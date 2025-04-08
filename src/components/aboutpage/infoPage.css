@@ -1,0 +1,36 @@
+.legal-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  .legal-section {
+    margin-bottom: 30px;
+  }
+  
+  .legal-section h2 {
+    font-size: 24px;
+    color: #1c5828;
+  }
+  
+  .legal-section p {
+    font-size: 16px;
+    color: #7f8c8d;
+  }
+  
+  .legal-section a {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #1c5828;
+    text-decoration: none;
+  }
+  
+  .legal-section a:hover {
+    text-decoration: underline;
+  }
+  

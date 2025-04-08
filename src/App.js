@@ -17,7 +17,7 @@ import {EditFeaturedItems} from './components/shop-view-seller/EditFeaturedItems
 import { ItemStat } from './components/item-stats/ItemStat';
 import AccountSection from './components/user-account-settings/AccountSection';
 import LoginSecurity from './components/user-account-settings/Login & Security';
-import Chat from './components/user-account-settings/Chat';
+import UserChat from './components/user-account-settings/User-chat';
 import OrdersPage from './components/user-account-settings/OrdersPage';
 import SubscriptionPage from './components/user-account-settings/SubscriptionPage';
 import CartPage from './components/cart/CartPage';
@@ -29,7 +29,7 @@ import HomePage from './components/start-selling/Homepage';
 import RegisterShop from './components/register-shop/RegisterShop';
 import TermsAndConditions from './components/terms/TermsAndConditions';
 import AccountSectionShop from './components/shop-account-settings/AccountSectionShop';
-import SellersChat from './components/shop-account-settings/sellers-chat';
+import SellersChat from './components/shop-account-settings/Seller-Chat';
 import LoginSecurityShop from './components/shop-account-settings/Login & SecurityShop';
 import { EditProduct } from './components/product-edit/EditProduct';
 import { AuthProvider } from './context/AuthContext';
@@ -39,9 +39,9 @@ import { AdminProductReview } from './components/admin-dashboard/AdminProductRev
 import AdminAccount from './components/admin-dashboard/AdminAccount';
 import AdminLoginSecurity from './components/admin-dashboard/AdminLoginSecurity';
 import ProtectedRoute from './components/routes/ProtectedRoute';
-import SearchResults from './components/menu/SearchResults';
 import SearchResultsPage from './components/menu/SearchResults';
-
+import { Orders } from './components/shop-account-settings/Orders';
+import InfoPage from './components/aboutpage/InfoPage';
 function App() {
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -68,12 +68,13 @@ function App() {
           <Route path='/start-selling' element={ <HomePage/>}/>
           <Route path='/register-shop' element={ <RegisterShop/>}/>
           <Route path="/search" element={<SearchResultsPage/>} />
+          <Route path="/craft-connect-info" element={<InfoPage/>} />
 
           {/* Protected Routes - User */}
           <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
             <Route path="/account-settings-user" element={<AccountSection/>}/>
             <Route path="/account-settings-user/login-security" element={<LoginSecurity/>}/>
-            <Route path='/account-settings-user/chat' element={ <Chat/>}/>
+            <Route path='/account-settings-user/chat' element={ <UserChat/>}/>
             <Route path='/account-settings-user/your-orders' element={ <OrdersPage/>}/>
             <Route path='/account-settings-user/your-subscriptions' element={ <SubscriptionPage/>}/>
             <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />} />
@@ -93,6 +94,7 @@ function App() {
             <Route path='/your-shop-dashboard/shop-statistics' element={<StatisticsDash/>}/>
             <Route path='/your-shop-dashboard/advertistment-overview' element={<AdStats/>}/>
             <Route path='/add-items' element={<UploadProduct/>}/>
+            <Route path='/your-shop-dashboard/orders' element={<Orders/>}/>
           </Route>
 
           {/* Protected Routes - Admin */}
