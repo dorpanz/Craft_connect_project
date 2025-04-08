@@ -122,7 +122,7 @@ export const PopularProduct = () => {
                 to={`/item-listing/${item.id}`}
                 style={{ textDecoration: "none", color: "black" }}
               >
-                <p className="item-name">{item.title?.slice(0, 50)}...</p>
+                <p className="item-name">{item.title?.slice(0, 20)}...</p>
               </Link>
               <div className="item-info">
                 <div>
