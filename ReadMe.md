@@ -45,9 +45,11 @@ Firebase is already pre-configured in the project, so no additional setup is req
 
 ## Login Credentials (For Testing)  
 - **Test User**  
-  - Email: `test@craftconnect.com`  
-  - Password: `test123`  
-
+  - Email: `hapoves@gmail.com`  
+  - Password: `12345678`  
+- **Test Seller**  
+  - Email: `daria@gmail.com`  
+  - Password: `12345678`  
 ## Contributors  
 - Liubov Uchamprina  
 - Daria Ignateva  
