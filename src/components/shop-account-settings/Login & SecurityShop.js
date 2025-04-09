@@ -13,7 +13,9 @@ const LoginSecurityShop = () => {
   const { user, logout } = useContext(AuthContext);
   const [fields, setFields] = useState({
     email: "",
-    newsletterSubscribed: false
+    newsletterSubscribed: false,
+    streetAddress: "",
+    city: ""
   });
   const [loading, setLoading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -27,9 +29,12 @@ const LoginSecurityShop = () => {
         const sellerRef = doc(db, "sellers", user.uid);
         const sellerSnap = await getDoc(sellerRef);
         if (sellerSnap.exists()) {
+          const data = sellerSnap.data();
           setFields({
-            email: sellerSnap.data().email || "",
-            newsletterSubscribed: sellerSnap.data().newsletterSubscribed || false
+            email: data.email || "",
+            newsletterSubscribed: data.newsletterSubscribed || false,
+            streetAddress: data.streetAddress || "",
+            city: data.city || ""
           });
         }
       };
@@ -62,7 +67,7 @@ const LoginSecurityShop = () => {
     setLoading(true);
     try {
       const sellerRef = doc(db, "sellers", user.uid);
-      
+
       if (newPassword || confirmNewPassword) {
         if (newPassword !== confirmNewPassword) {
           alert("New passwords do not match.");
@@ -80,11 +85,14 @@ const LoginSecurityShop = () => {
         setNewPassword("");
         setConfirmNewPassword("");
       }
-      
+
       await updateDoc(sellerRef, {
         email: fields.email,
-        newsletterSubscribed: fields.newsletterSubscribed
+        newsletterSubscribed: fields.newsletterSubscribed,
+        streetAddress: fields.streetAddress,
+        city: fields.city // ← Add this line
       });
+      
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating:", error);
@@ -107,6 +115,10 @@ const LoginSecurityShop = () => {
         <div className="login-sec-card">
           <label>Email:</label>
           <input type="email" name="email" value={fields.email} onChange={handleInputChange} />
+
+          <label>Address:</label>
+          <input type="text" name="streetAddress" value={fields.streetAddress} onChange={handleInputChange} />
+
           <div className="newsletter-container">
             <label>Newsletter Subscription:</label>
             <div className="newsletter-checkbox">
@@ -115,8 +127,8 @@ const LoginSecurityShop = () => {
             </div>
           </div>
 
-
-          {/* Password Update Fields */}
+          <label>City:</label>
+          <input type="text" name="city" value={fields.city} onChange={handleInputChange} />
           <label>Current Password:</label>
           <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
           <label>New Password:</label>
@@ -124,7 +136,6 @@ const LoginSecurityShop = () => {
           <label>Confirm New Password:</label>
           <input type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} />
 
-          {/* Save Button */}
           <div className="button-container">
             <button onClick={handleSave} disabled={loading} className="save-button">
               {loading ? "Saving..." : "SAVE"}
@@ -132,7 +143,6 @@ const LoginSecurityShop = () => {
           </div>
         </div>
 
-        {/* Separate Logout Section */}
         <div className="logout-section">
           <button onClick={logout} className="logout-button">LOGOUT</button>
         </div>

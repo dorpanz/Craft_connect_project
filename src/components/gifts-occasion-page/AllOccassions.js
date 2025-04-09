@@ -9,7 +9,9 @@ import './GiftsByOccasion.css'
 import { AnimatedSection } from "../animation/AnimatedSection";
 export const AllOccasions = () => {
   const [occasionProducts, setOccasionProducts] = useState({});
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+}, []);
   useEffect(() => {
     const fetchOccasionProducts = async () => {
       let occasionData = {};

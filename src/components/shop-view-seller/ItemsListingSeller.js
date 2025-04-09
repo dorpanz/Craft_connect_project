@@ -56,7 +56,7 @@ export const ItemsListingSeller = () => {
   
         // Filter by status
         setProducts(productsList);
-        setFilteredProducts(productsList.filter((p) => p.status === "approved"));
+        setFilteredProducts(productsList.filter((p) => p.status === "approved" && p.quantity > 0));
         setSoldOut(productsList.filter((p) => p.status === "approved" && p.quantity === 0));
         setDeclined(productsList.filter((p) => p.status === "declined"));
         setPending(productsList.filter((p) => p.status === "pending"));
@@ -74,8 +74,9 @@ export const ItemsListingSeller = () => {
     const category = event.target.value;
     setSelectedCategory(category);
   
-    const approvedItems = products.filter((p) => p.status === "approved");
-  
+    const approvedItems = products.filter(
+      (p) => p.status === "approved"
+    );
     if (category === "All") {
       setFilteredProducts(approvedItems);
     } else {

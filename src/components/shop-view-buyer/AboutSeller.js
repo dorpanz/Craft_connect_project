@@ -29,16 +29,16 @@ export const AboutSeller = ({ shop, items }) => {
         <img src={shop.logo || imagedefault} alt={shop.shopName} className="about-seller-image" />
         <div className="about-seller-details">
           <p className="about-seller-name">{shop.shopName}</p>
+          <p>📍{shop?.city}</p>
           <p className="about-seller-description">{shop.description}</p>
-
           <div className="about-seller-socials">
-    {shop?.socials?.instagramLink && (
-        <a href={shop?.socials?.instagramLink} target="_blank" rel="noopener noreferrer">
+    {shop?.socialMedia?.instagramLink && (
+        <a href={shop?.socialMedia?.instagramLink} target="_blank" rel="noopener noreferrer">
             <img src={instagramIcon} alt="Instagram" className="social-icon" />
         </a>
     )}
-    {shop?.socials?.xLink && (
-        <a href={shop?.socials?.xLink} target="_blank" rel="noopener noreferrer">
+    {shop?.socialMedia?.xLink && (
+        <a href={shop?.socialMedia?.xLink} target="_blank" rel="noopener noreferrer">
             <img src={twitterIcon} alt="Twitter" className="social-icon" />
         </a>
     )}

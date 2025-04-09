@@ -33,6 +33,7 @@ export const ShopSeller = () => {
               fullName: sellerData.fullName || "Seller Name",
               shopName: sellerData.shopName || "Your Shop Name",
               banner: sellerData.banner || banner,
+              city: sellerData.city || "Canada",
               logo: sellerData.logo || imagedefault,
               tagline: sellerData.tagline || "Add a tagline for your shop!",
               description: sellerData.description || "Tell customers about your shop!",

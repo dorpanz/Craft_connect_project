@@ -27,6 +27,7 @@ export const AboutSeller = ({ sellerData }) => {
         />
         <div className="about-seller-details">
           <p className="about-seller-name">{sellerData?.shopName}</p>
+          <p>📍{sellerData?.city}</p>
           <p className="about-seller-description">
             {sellerData?.description || "Tell customers about your shop and what makes it special!"}
           </p>
