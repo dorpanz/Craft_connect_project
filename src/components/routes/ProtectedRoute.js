@@ -29,7 +29,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
       case "admin":
         return <Navigate to="/admin-dashboard" replace />;
       default:
-        return <Navigate to="/" replace />;
+        return <Navigate to="/user-login" replace />;
     }
   }
 
