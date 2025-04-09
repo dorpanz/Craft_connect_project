@@ -39,49 +39,42 @@ export const Recommended = () => {
   }, [user]);
 
   useEffect(() => {
-    const fetchRecommendedItems = async () => {
-      try {
-        // Fetch products from the "products" collection
-        const productsRef = collection(db, "products");
-        const productSnapshot = await getDocs(productsRef);
+// inside useEffect
+const fetchRecommendedItems = async () => {
+  try {
+    const productsRef = collection(db, "products");
+    const productSnapshot = await getDocs(productsRef);
 
-        // Get the list of products
-        const allProducts = productSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+    const allProducts = productSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-        console.log("All products fetched:", allProducts);
+    // ✅ Filter: only approved products with quantity > 0
+    const approvedAndAvailableProducts = allProducts.filter(
+      (item) => item.status === "approved" && item.quantity > 0
+    );
 
-        let recommended = [];
+    let recommended = [];
 
-        if (userFavorites.length > 0) {
-          // Step 1: Get the list of favorite product titles from user's favorites
-          const favoriteWords = userFavorites.flatMap(fav => fav.title.toLowerCase().split(' '));
+    if (userFavorites.length > 0) {
+      const favoriteWords = userFavorites.flatMap(fav => fav.title.toLowerCase().split(' '));
 
-          console.log("Favorite words:", favoriteWords);
+      recommended = approvedAndAvailableProducts.filter(item => {
+        const itemTitleWords = item.title.toLowerCase().split(' ');
+        return favoriteWords.some(favWord => itemTitleWords.includes(favWord));
+      });
+    } else {
+      recommended = approvedAndAvailableProducts.sort(() => Math.random() - 0.5).slice(0, 12);
+    }
 
-          // Step 2: Filter all products based on whether their titles contain any of the favorite words
-          recommended = allProducts.filter(item => {
-            const itemTitleWords = item.title.toLowerCase().split(' '); // Split product title into words
+    const selectedItems = recommended.slice(0, 12);
+    setRecommendedItems(selectedItems);
+  } catch (error) {
+    console.error("Error fetching recommended items:", error);
+  }
+};
 
-            // Check if the product title contains any of the favorite words
-            return favoriteWords.some(favWord => itemTitleWords.includes(favWord));
-          });
-
-          console.log("Recommended items based on favorite words:", recommended);
-        } else {
-          // If no favorites, pick random products
-          recommended = allProducts.sort(() => Math.random() - 0.5).slice(0, 12); // Shuffle and take the first 12
-        }
-
-        // Step 3: Limit to 12 recommended items
-        const selectedItems = recommended.slice(0, 12);
-        setRecommendedItems(selectedItems);
-      } catch (error) {
-        console.error("Error fetching recommended items:", error);
-      }
-    };
 
     fetchRecommendedItems();
   }, [userFavorites]);

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import arrow from "../shop-view-seller/pics/arrow.png";
 import {
   collection,
   getDocs,
@@ -76,6 +78,9 @@ export const AdminSellerManage = () => {
 
   return (
     <div className="admin-user-manage-container">
+          <Link to="/admin/admin-account" className="go-back">
+            <img src={arrow} alt="arrow" className="arrow" />
+          </Link>
       <h2 className="admin-user-manage-title">Seller Management</h2>
 
       <div className="user-list-container">

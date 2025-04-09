@@ -258,8 +258,10 @@ export const ItemStat = () => {
   } = itemData;
 
   return (
-    <div className="item-stat-page">
+    <div>
       <Menu />
+    <div className="statistics-dash">
+
       <AnimatedSection>
         <div className="edit-section-title">
           <p className="edit-featured-title">Item Statistics</p>
@@ -378,6 +380,7 @@ export const ItemStat = () => {
         {/* Inventory Section */}
         <AnimatedSection>
           <div className="inventory-section">
+            
             <h3 className="reviews-title">Inventory & Supply Chain</h3>
             <div className="inventory-details">
               <p>
@@ -406,6 +409,7 @@ export const ItemStat = () => {
       <AnimatedSection>
         <Footer />
       </AnimatedSection>
+    </div>
     </div>
   );
 };

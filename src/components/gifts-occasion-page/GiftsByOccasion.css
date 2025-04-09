@@ -104,3 +104,19 @@
     }
   }
   
+  .all-occasions{
+    font-family: "Inria Serif", serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .occasion-categories-sec-all {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    justify-content: center; /* optional: remove if items align oddly */
+}
+

@@ -68,7 +68,6 @@
 /* ItemStat.css */
 .reviews-container {
     margin-top: 40px;
-    padding: 20px;
     border-radius: 10px;
   }
   
@@ -76,6 +75,11 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
+  }
+  .no-reviews {
+    font-style: italic;
+    color: #777;
+    padding: 1rem;
   }
   
   .review-card {

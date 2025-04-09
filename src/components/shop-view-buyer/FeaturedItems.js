@@ -6,7 +6,8 @@ export const FeaturedItems = ({ shopId, items }) => {
   const featuredItems = items.filter(
     (item) =>
       item.isFeatured &&
-      item.status === "approved"
+      item.status === "approved" &&
+      item.quantity > 0
   );
   return (
     <div className="featured-items-section">

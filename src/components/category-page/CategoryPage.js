@@ -28,56 +28,56 @@ const CategoryPage = () => {
       try {
         const productsRef = collection(db, "products");
         let q = query(productsRef, where("category", "==", categoryName));
-
+    
         if (subCategory) {
           q = query(q, where("subCategory", "==", subCategory));
         }
         if (subSubCategory) {
           q = query(q, where("subSubCategory", "==", subSubCategory));
         }
-
+    
         const querySnapshot = await getDocs(q);
         const fetchedProducts = [];
-
+    
         for (const doc of querySnapshot.docs) {
           const productData = doc.data();
+    
+          // Skip product if not approved or quantity is 0
+          if (productData.status !== "approved" || productData.quantity === 0) continue;
+    
           const productReviewsRef = collection(db, "reviews");
           const reviewsQuery = query(
             productReviewsRef,
             where("itemId", "==", doc.id)
           );
-
+    
           const reviewsSnapshot = await getDocs(reviewsQuery);
           const reviews = reviewsSnapshot.docs.map((reviewDoc) =>
             reviewDoc.data()
           );
-
-          // Calculate average rating for the product
+    
           const totalRating = reviews.reduce(
             (acc, review) => acc + review.rating,
             0
           );
           const averageRating =
             reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : 0;
-
-            if (productData.status === "approved") {
-              fetchedProducts.push({
-                id: doc.id,
-                ...productData,
-                reviews,
-                average_rating: averageRating,
-              });
-            }
-            
+    
+          fetchedProducts.push({
+            id: doc.id,
+            ...productData,
+            reviews,
+            average_rating: averageRating,
+          });
         }
-
+    
         setProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
       setLoading(false);
     };
-
+    
     fetchProducts();
   }, [categoryName, subCategory, subSubCategory]);
 
@@ -192,7 +192,7 @@ const CategoryPage = () => {
                     style={{ textDecoration: "none" }}
                     >
                     <p className="shop-items-section-list-item-title">
-                      {product.title.length > 30
+                      {product.title.length > 20
                         ? product.title.substring(0, 20) + "..."
                         : product.title}
                     </p>

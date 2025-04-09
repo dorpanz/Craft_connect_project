@@ -24,7 +24,8 @@ export const CustomizePage = () => {
         const q = query(
           productsRef,
           where("customized", "==", true),
-          where("status", "==", "approved")
+          where("status", "==", "approved"),
+          where("quantity", ">", 0)
         );
         
         const querySnapshot = await getDocs(q);

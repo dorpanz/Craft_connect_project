@@ -57,12 +57,11 @@ export const SingleItem = () => {
         const hasPurchased = await checkUserPurchased(user.uid, itemId);
         setCanReview(hasPurchased);
       };
-  
+
       fetchPurchaseStatus();
     }
   }, [user, itemId]);
-  
-  
+
   useEffect(() => {
     const fetchProductAndReviews = async () => {
       setIsLoading(true);
@@ -186,15 +185,15 @@ export const SingleItem = () => {
   const checkUserPurchased = async (userId, itemId) => {
     const ordersRef = collection(db, "orders");
     const q = query(ordersRef, where("userId", "==", userId));
-  
+
     const querySnapshot = await getDocs(q);
     console.log("Query Snapshot:", querySnapshot);
-  
+
     let hasPurchased = false;
     querySnapshot.forEach((doc) => {
       const order = doc.data();
       console.log("Order Data:", order);
-  
+
       // Ensure 'products' is an array and contains the 'itemId'
       if (Array.isArray(order.items)) {
         console.log("Order Products:", order.items);
@@ -206,10 +205,9 @@ export const SingleItem = () => {
         console.log("No 'products' array found in the order.");
       }
     });
-  
+
     return hasPurchased;
   };
-  
 
   // Loading spinner while fetching data
   if (isLoading || !item) {
@@ -374,15 +372,25 @@ export const SingleItem = () => {
                   <Link to={`/edit-product/${itemId}`} className="add-to-cart">
                     Edit
                   </Link>
-                  <Link to={`/stats/${itemId}`} className="add-to-fav">
+                  <Link
+                    to={`/item-statistics/${itemId}`}
+                    className="add-to-fav"
+                  >
                     Stats
                   </Link>
                 </>
               ) : (
                 <>
-                  <button className="add-to-cart" onClick={handleAddToCart}>
-                    Add To Cart
-                  </button>
+                  {stockQuantity === 0 ? (
+                    <button className="add-to-cart out-of-stock" disabled>
+                      Out of Stock
+                    </button>
+                  ) : (
+                    <button className="add-to-cart" onClick={handleAddToCart}>
+                      Add To Cart
+                    </button>
+                  )}
+
                   <button
                     className="add-to-fav"
                     onClick={() => toggleFavorite({ ...item, id: itemId })}
@@ -419,85 +427,85 @@ export const SingleItem = () => {
           </div>
         </div>
       </AnimatedSection2>
-<AnimatedSection2 itemId={itemId}>
+      <AnimatedSection2 itemId={itemId}>
+        <div className="item-details">
+          <p className="item-details-title">Customer Reviews</p>
 
-      <div className="item-details">
-        <p className="item-details-title">Customer Reviews</p>
+          {/* Sorting Controls */}
+          <div className="sorting-options">
+            <label>Sort by: </label>
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="rating-desc">Rating: High to Low</option>
+              <option value="rating-asc">Rating: Low to High</option>
+              <option value="date-desc">Date: Newest to Oldest</option>
+              <option value="date-asc">Date: Oldest to Newest</option>
+            </select>
+          </div>
 
-        {/* Sorting Controls */}
-        <div className="sorting-options">
-          <label>Sort by: </label>
-          <select
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-          >
-            <option value="rating-desc">Rating: High to Low</option>
-            <option value="rating-asc">Rating: Low to High</option>
-            <option value="date-desc">Date: Newest to Oldest</option>
-            <option value="date-asc">Date: Oldest to Newest</option>
-          </select>
-        </div>
-
-        {/* Reviews */}
-        <div>
-          {reviews.length > 0 ? (
-            reviews.slice(0, visibleReviews).map((review) => (
-              <div key={review.id} className="review">
-                <div className="review-header">
-                  <strong className="review-username">{review.username}</strong>
-                  <div className="review-rating">
-                    {generateStars(review.rating)}
+          {/* Reviews */}
+          <div>
+            {reviews.length > 0 ? (
+              reviews.slice(0, visibleReviews).map((review) => (
+                <div key={review.id} className="review">
+                  <div className="review-header">
+                    <strong className="review-username">
+                      {review.username}
+                    </strong>
+                    <div className="review-rating">
+                      {generateStars(review.rating)}
+                    </div>
                   </div>
+                  <p className="review-comment">{review.comment}</p>
+                  {/* Display multiple images if available */}
+                  {review.imageUrls && review.imageUrls.length > 0 && (
+                    <div className="review-images">
+                      {review.imageUrls.map((imageUrl, index) => (
+                        <img
+                          key={index}
+                          src={imageUrl}
+                          alt={`Review ${index + 1}`}
+                          className="review-image"
+                          onClick={() => setSelectedImage(imageUrl)}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <p className="review-comment">{review.comment}</p>
-                {/* Display multiple images if available */}
-                {review.imageUrls && review.imageUrls.length > 0 && (
-                  <div className="review-images">
-                    {review.imageUrls.map((imageUrl, index) => (
-                      <img
-                        key={index}
-                        src={imageUrl}
-                        alt={`Review ${index + 1}`}
-                        className="review-image"
-                        onClick={() => setSelectedImage(imageUrl)}
-                      />
-                    ))}
-                  </div>
-                )}
+              ))
+            ) : (
+              <p>No reviews yet. Be the first to leave one!</p>
+            )}
+          </div>
+
+          {/* Show More Button */}
+          {visibleReviews < reviews.length && (
+            <button
+              className="show-more-btn"
+              onClick={() => setVisibleReviews(visibleReviews + 3)}
+            >
+              Show More (+{Math.min(3, reviews.length - visibleReviews)})
+            </button>
+          )}
+
+          {/* Pop-up Modal for Image */}
+          {selectedImage && (
+            <div className="image-popup" onClick={() => setSelectedImage(null)}>
+              <div className="popup-content">
+                <img src={selectedImage} alt="Expanded Review" />
               </div>
-            ))
+            </div>
+          )}
+
+          {user && canReview ? (
+            <AddReview itemId={itemId} onReviewAdded={handleReviewAdded} />
           ) : (
-            <p>No reviews yet. Be the first to leave one!</p>
+            <p>You need to purchase this item before you can leave a review.</p>
           )}
         </div>
-
-        {/* Show More Button */}
-        {visibleReviews < reviews.length && (
-          <button
-            className="show-more-btn"
-            onClick={() => setVisibleReviews(visibleReviews + 3)}
-          >
-            Show More (+{Math.min(3, reviews.length - visibleReviews)})
-          </button>
-        )}
-
-        {/* Pop-up Modal for Image */}
-        {selectedImage && (
-          <div className="image-popup" onClick={() => setSelectedImage(null)}>
-            <div className="popup-content">
-              <img src={selectedImage} alt="Expanded Review" />
-            </div>
-          </div>
-        )}
-
-{user && canReview ? (
-        <AddReview itemId={itemId} onReviewAdded={handleReviewAdded} />
-      ) : (
-        <p>You need to purchase this item before you can leave a review.</p>
-      )}
-
-      </div>
-          </AnimatedSection2>
+      </AnimatedSection2>
 
       <AnimatedSection2 itemId={itemId}>
         <Footer />

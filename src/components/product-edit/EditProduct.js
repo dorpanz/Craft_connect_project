@@ -135,7 +135,6 @@ export const EditProduct = () => {
   }, [category]);
   // Function to add a tag
   const occasionTags = [
-    "Gift",
     "Birthday",
     "Christmas",
     "Valentine's Day",
@@ -146,12 +145,10 @@ export const EditProduct = () => {
     "Graduation",
     "Mother's Day",
     "Father's Day",
-    "Bridal Shower",
     "Halloween",
     "Thanksgiving",
     "Easter",
     "New Year",
-    "Hanukkah",
   ];
 
   const recipientTags = [

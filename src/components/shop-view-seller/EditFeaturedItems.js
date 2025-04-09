@@ -15,7 +15,7 @@ export const EditFeaturedItems = () => {
 
   // Only consider approved items for featured
   const approvedItems = items.filter(
-    (item) => item.sellerId === sellerId && item.status === "approved"
+    (item) => item.sellerId === sellerId && item.status === "approved" && item.quantity > 0
   );
 
   const initialFeatured = approvedItems

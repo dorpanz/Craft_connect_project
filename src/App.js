@@ -44,6 +44,7 @@ import { Orders } from './components/shop-account-settings/Orders';
 import InfoPage from './components/aboutpage/InfoPage';
 import { AdminUserManage } from "./components/admin-dashboard/AdminUserManage"
 import { AdminSellerManage } from "./components/admin-dashboard/AdminSellerManage"
+import { AllOccasions } from './components/gifts-occasion-page/AllOccassions';
 function App() {
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -71,6 +72,7 @@ function App() {
           <Route path='/register-shop' element={ <RegisterShop/>}/>
           <Route path="/search" element={<SearchResultsPage/>} />
           <Route path="/craft-connect-info" element={<InfoPage/>} />
+          <Route path="/all-occasions" element={<AllOccasions />} />
 
           {/* Protected Routes - User */}
           <Route element={<ProtectedRoute allowedRoles={["user"]} />}>

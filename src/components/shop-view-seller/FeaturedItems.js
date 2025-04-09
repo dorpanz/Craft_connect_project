@@ -8,6 +8,7 @@ export const FeaturedItems = ({ items = [], sellerId }) => {
     (item) =>
       item.isFeatured &&
       item.status === "approved" &&
+      item.quantity > 0 &&
       String(item.sellerId) === String(sellerId)
   );
 

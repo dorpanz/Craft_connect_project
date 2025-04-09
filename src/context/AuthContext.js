@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
                 let userDoc = await getDoc(doc(db, "users", currentUser.uid));
-
+    
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
                     setUser({ uid: currentUser.uid, email: currentUser.email, ...userData });
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
                     localStorage.setItem("displayName", userData.fullName);
                 } else {
                     userDoc = await getDoc(doc(db, "sellers", currentUser.uid));
-
+    
                     if (userDoc.exists()) {
                         const sellerData = userDoc.data();
                         setUser({ uid: currentUser.uid, email: currentUser.email, ...sellerData });
@@ -49,12 +49,22 @@ export const AuthProvider = ({ children }) => {
                         localStorage.setItem("userRole", "seller");
                         localStorage.setItem("displayName", sellerData.shopName);
                     } else {
-                        console.warn("User data not found in Firestore.");
-                        setUser(null);
-                        setRole(null);
-                        setDisplayName(null);
-                        localStorage.removeItem("userRole");
-                        localStorage.removeItem("displayName");
+                        userDoc = await getDoc(doc(db, "admins", currentUser.uid));
+                        if (userDoc.exists()) {
+                            const adminData = userDoc.data();
+                            setUser({ uid: currentUser.uid, email: currentUser.email, ...adminData });
+                            setRole("admin");
+                            setDisplayName(adminData.fullName);
+                            localStorage.setItem("userRole", "admin");
+                            localStorage.setItem("displayName", adminData.fullName);
+                        } else {
+                            console.warn("User data not found in Firestore.");
+                            setUser(null);
+                            setRole(null);
+                            setDisplayName(null);
+                            localStorage.removeItem("userRole");
+                            localStorage.removeItem("displayName");
+                        }
                     }
                 }
             } else {
@@ -66,9 +76,9 @@ export const AuthProvider = ({ children }) => {
             }
             setLoading(false);
         });
-
         return () => unsubscribe();
     }, []);
+    
 
     // 🔹 Register function (Handles both users & sellers)
     const registerUser = async (email, password, role, fullNameOrShopName) => {

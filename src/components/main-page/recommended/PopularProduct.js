@@ -20,7 +20,12 @@ export const PopularProduct = () => {
     const fetchPopularItems = async () => {
       try {
         const productsRef = collection(db, "products");
-        const q = query(productsRef, where("status", "==", "approved"));
+        const q = query(
+          productsRef,
+          where("status", "==", "approved"),
+
+        );
+        
         const querySnapshot = await getDocs(q);
 
         const fetchedItems = querySnapshot.docs.map((doc) => ({

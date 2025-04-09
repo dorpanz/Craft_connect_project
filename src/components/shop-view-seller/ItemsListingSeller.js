@@ -11,6 +11,8 @@ export const ItemsListingSeller = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [declined, setDeclined] = useState([]);
   const [pending, setPending] = useState([]);
+  const [soldOut, setSoldOut] = useState([]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       const user = auth.currentUser;
@@ -55,6 +57,7 @@ export const ItemsListingSeller = () => {
         // Filter by status
         setProducts(productsList);
         setFilteredProducts(productsList.filter((p) => p.status === "approved"));
+        setSoldOut(productsList.filter((p) => p.status === "approved" && p.quantity === 0));
         setDeclined(productsList.filter((p) => p.status === "declined"));
         setPending(productsList.filter((p) => p.status === "pending"));
       } catch (error) {
@@ -205,13 +208,12 @@ export const ItemsListingSeller = () => {
     </div>
   </div>
 )}
-
-{/* ========== Declined Section ========== */}
-{declined.length > 0 && (
+{/* ========== Sold Out Section ========== */}
+{soldOut.length > 0 && (
   <div className="extra-items-section">
-    <h3>Declined</h3>
+    <h3>Sold Out</h3>
     <div className="shop-items-section-list-all">
-      {declined.map((product) => (
+      {soldOut.map((product) => (
         <Link
           to={`/item-listing/${product.id}`}
           key={product.id}

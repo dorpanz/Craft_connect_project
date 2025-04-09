@@ -46,18 +46,19 @@ export const AdminProductReview = () => {
       const productRef = doc(db, "products", productId);
       await updateDoc(productRef, { status: "approved" });
       alert("Product approved successfully!");
-      navigate("/admin");
+      navigate("/admin-dashboard"); // Redirect to admin dashboard
     } catch (error) {
       console.error("Error approving product:", error);
       alert("Failed to approve product.");
     }
-  };
+};
+
 
   const handleDenial = async () => {
     try {
       await deleteDoc(doc(db, "products", productId));
       alert("Product denied and removed.");
-      navigate("/admin-dashboard");
+      navigate("/admin");
     } catch (error) {
       console.error("Error denying product:", error);
       alert("Failed to deny product.");

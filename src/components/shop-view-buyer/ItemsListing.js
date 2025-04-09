@@ -7,7 +7,9 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 export const ItemsListing = ({ items }) => {
   const { addToCart } = useCart();
   const [ratings, setRatings] = useState({}); // Store ratings for items
-  const [filteredItems, setFilteredItems] = useState(items.filter(item => item.status === "approved"));
+  const [filteredItems, setFilteredItems] = useState(
+    items.filter(item => item.status === "approved" && item.quantity > 0)
+  );  
  // Filtered items
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -40,7 +42,10 @@ export const ItemsListing = ({ items }) => {
 
   // Filter items by category
   useEffect(() => {
-    const approvedItems = items.filter((item) => item.status === "approved");
+    const approvedItems = items.filter(
+      (item) => item.status === "approved" && item.quantity > 0
+    );
+  
     if (selectedCategory === "All") {
       setFilteredItems(approvedItems);
     } else {
@@ -49,6 +54,7 @@ export const ItemsListing = ({ items }) => {
       );
     }
   }, [selectedCategory, items]);
+  
   
 
   const generateStars = (rating) => {

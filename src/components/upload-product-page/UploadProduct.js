@@ -77,7 +77,6 @@ export const UploadProduct = () => {
     }
   }, [category, subCategory]);
   const occasionTags = [
-    "Gift",
     "Birthday",
     "Christmas",
     "Valentine's Day",
@@ -88,12 +87,10 @@ export const UploadProduct = () => {
     "Graduation",
     "Mother's Day",
     "Father's Day",
-    "Bridal Shower",
     "Halloween",
     "Thanksgiving",
     "Easter",
     "New Year",
-    "Hanukkah",
   ];
 
   const recipientTags = [

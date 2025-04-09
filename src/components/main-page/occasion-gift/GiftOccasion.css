@@ -2,45 +2,74 @@
     position: relative;
     width: 210px;
     height: 210px;
-    overflow: hidden; 
+    overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: center; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 50%;
     cursor: pointer;
 }
-.occasion-categories-sec{
+
+.occasion-categories-sec {
     display: flex;
     justify-content: space-around;
     gap: 40px;
 }
+
 .ocasssion-category-item:hover {
-    transform: scale(1.0);
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Adds shadow on hover */
 }
 
 .occasion-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
-    border-radius: 50%; 
-    position: absolute; 
-    z-index: 1; 
+    object-fit: cover;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    transition: transform 0.3s ease; /* For smooth zoom effect */
+}
+
+.ocasssion-category-item:hover .occasion-img {
+    transform: scale(1.1); /* Zooms in the image when hovered */
 }
 
 .ocasssion-category-item-link {
-    position: relative; 
-    z-index: 2; 
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 10px 15px; 
-    border-radius: 15px; 
-    font-weight: 800; 
-    text-align: center; 
+    position: relative;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-weight: 800;
+    text-align: center;
     text-decoration: none;
     color: black;
-    transition: transform 0.3s ease; 
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.ocasssion-category-item:hover p {
-    transform: scale(1.1); 
+.ocasssion-category-item-link:hover {
+    transform: translateY(-5px); /* Slight lift effect */
+    background-color: rgba(255, 255, 255, 1); /* Solid white background on hover */
+}
+
+.ocasssion-category-item-link p {
+    transition: transform 0.3s ease; /* Ensures smooth transformation */
+}
+
+.ocasssion-category-item:hover .ocasssion-category-item-link p {
+    transform: scale(1.1); /* Slight text scale effect on hover */
+}
+
+.see-more-btn-occ{
+    text-decoration: none;
+    color: black;
+background-color: rgb(196, 196, 196);
+    border-radius: 30px;
+    padding: 0px 20px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.see-more-btn-occ:hover{
+    background-color: rgb(158, 158, 158);
 }

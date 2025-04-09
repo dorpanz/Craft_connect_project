@@ -28,7 +28,7 @@ export const SellerInfo = ({ item,user,sellerData, itemId }) => {
               // Exclude the current product by filtering it out
               const products = querySnapshot.docs
                 .map(doc => ({ id: doc.id, ...doc.data() }))
-                .filter(product => product.id !== itemId && product.status === "approved");
+                .filter(product => product.id !== itemId && product.status === "approved" && product.quantity > 0);
 
           
               setShopProducts(products);

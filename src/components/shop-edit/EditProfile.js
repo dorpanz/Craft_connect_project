@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+
 import { Link } from "react-router-dom";
 import Footer from "../footer/Foooter";
 import Menu from "../menu/Menu";
@@ -128,6 +129,32 @@ const ProfileEditSection = () => {
             setLoading(false);
         }
     };
+
+    const handleDeleteGalleryImage = async (imgUrl) => {
+        if (!auth.currentUser) return;
+      
+        setLoading(true);
+        try {
+          // Get the file path from the image URL
+          const baseUrl = `https://firebasestorage.googleapis.com/v0/b/${storage.app.options.storageBucket}/o/`;
+          const decodedUrl = decodeURIComponent(imgUrl.replace(baseUrl, "").split("?")[0]);
+          const imageRef = ref(storage, decodedUrl);
+      
+          // Delete from Firebase Storage
+          await deleteObject(imageRef);
+      
+          // Update Firestore and local state
+          const updatedGallery = gallery.filter((url) => url !== imgUrl);
+          setGallery(updatedGallery);
+      
+          const sellerRef = doc(db, "sellers", auth.currentUser.uid);
+          await updateDoc(sellerRef, { gallery: updatedGallery });
+        } catch (error) {
+          console.error("Error deleting gallery image:", error);
+        }
+        setLoading(false);
+      };
+      
 
     const handleSaveChanges = async (e) => {
         e.preventDefault();
@@ -271,16 +298,24 @@ const ProfileEditSection = () => {
                     {banner && <img src={banner} alt="Shop Banner" style={{ maxWidth: "100%", marginTop: "10px" }} />}
                 </div>
                 <div className="form-group">
-                    <label>Gallery</label>
-                    <input type="file" accept="image/*" multiple onChange={handleGalleryChange} />
-                    {gallery.length > 0 && (
-                        <div className="gallery-preview">
-                            {gallery.map((img, index) => (
-                                <img key={index} src={img} alt={`Gallery ${index + 1}`} style={{ maxWidth: "100px", margin: "5px" }} />
-                            ))}
-                        </div>
-                    )}
-                </div>
+    <label>Gallery</label>
+    <input type="file" multiple onChange={handleGalleryChange} />
+    <div className="gallery-preview">
+        {gallery.map((url, index) => (
+            <div key={index} className="gallery-item-edit">
+                <img src={url} alt={`Gallery ${index}`} />
+                <button
+                    type="button"
+                    className="delete-gallery-btn"
+                    onClick={() => handleDeleteGalleryImage(url)}
+                >
+                    ×
+                </button>
+            </div>
+        ))}
+    </div>
+</div>
+
                 <div className="saveChangesbtn-cont">
                     <button className="saveChangesbtn" type="submit" disabled={loading}>
                         {loading ? "Saving..." : "Save Changes"}
