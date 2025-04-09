@@ -76,11 +76,30 @@ export const EditProduct = () => {
   const [shippingCost, setShippingCost] = useState("");
   const navigate = useNavigate();
 
+  // Confirmation state
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [imageToDelete, setImageToDelete] = useState(null);
+
   const handleDeleteImage = async (imageUrl) => {
-    const storageRef = ref(storage, imageUrl);
-    await deleteObject(storageRef);
-    setUploadedURLs(uploadedURLs.filter((url) => url !== imageUrl));
+    // Show confirmation window before deleting
+    setImageToDelete(imageUrl);
+    setShowConfirm(true);
   };
+
+  const confirmDelete = async () => {
+    // Proceed with deletion if confirmed
+    const storageRef = ref(storage, imageToDelete);
+    await deleteObject(storageRef);
+    setUploadedURLs(uploadedURLs.filter((url) => url !== imageToDelete));
+    setShowConfirm(false); // Hide confirmation window
+    setImageToDelete(null);
+  };
+
+  const cancelDelete = () => {
+    setShowConfirm(false); // Close confirmation window
+    setImageToDelete(null);
+  };
+
   const handleReorder = (event) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
@@ -133,80 +152,7 @@ export const EditProduct = () => {
       setAvailableSubSubCategories([]);
     }
   }, [category]);
-  // Function to add a tag
-  const occasionTags = [
-    "Gift",
-    "Birthday",
-    "Christmas",
-    "Valentine's Day",
-    "Wedding",
-    "Anniversary",
-    "Baby Shower",
-    "Housewarming",
-    "Graduation",
-    "Mother's Day",
-    "Father's Day",
-    "Bridal Shower",
-    "Halloween",
-    "Thanksgiving",
-    "Easter",
-    "New Year",
-    "Hanukkah",
-  ];
 
-  const recipientTags = [
-    "For Him",
-    "For Her",
-    "For Kids",
-    "For Pets",
-    "For Couples",
-    "For Friends",
-    "For Family",
-    "For Parents",
-    "For Grandparents",
-    "For Teachers",
-    "For Boss",
-  ];
-
-  const regularTags = [
-    "Minimalist",
-    "Boho",
-    "Rustic",
-    "Modern",
-    "Vintage",
-    "Classic",
-    "Chic",
-    "Trendy",
-    "Abstract",
-    "Industrial",
-    "Cottagecore",
-    "Aesthetic",
-    "Kawaii",
-    "Steampunk",
-    "Wooden",
-    "Metal",
-    "Leather",
-    "Resin",
-    "Beaded",
-    "Fabric",
-    "Glass",
-    "Ceramic",
-  ];
-
-  const [selectedOccasionTag, setSelectedOccasionTag] = useState("");
-  const [selectedRecipientTag, setSelectedRecipientTag] = useState("");
-  const [selectedRegularTag, setSelectedRegularTag] = useState("");
-
-  const handleAddTag = (newTag) => {
-    if (newTag && !tags.includes(newTag) && tags.length < 13) {
-      setTags([...tags, newTag]);
-    }
-  };
-
-  // Function to remove a tag
-  const handleRemoveTag = (tagToRemove) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
-  };
   // Update available sub-subcategories when subcategory changes
   useEffect(() => {
     if (subCategory && categories[category]?.[subCategory]) {
@@ -314,283 +260,37 @@ export const EditProduct = () => {
             />
 
             {/* ✅ Draggable Image List */}
-            <div className="image-upload-section-2">
-              <p>Uploaded Images:</p>
-              <DndContext
-                collisionDetection={closestCenter}
-                onDragEnd={handleReorder}
-              >
-                <SortableContext items={uploadedURLs}>
-                  <div className="image-preview-list-2">
-                    {uploadedURLs.map((imageUrl, index) => (
-                      <DraggableImage
-                        key={imageUrl}
-                        imageUrl={imageUrl}
-                        index={index}
-                        handleDelete={handleDeleteImage}
-                      />
-                    ))}
-                  </div>
+            <div className="image-upload-section">
+              <DndContext onDragEnd={handleReorder}>
+                <SortableContext items={uploadedURLs} strategy={closestCenter}>
+                  {uploadedURLs.map((imageUrl, index) => (
+                    <DraggableImage
+                      key={imageUrl}
+                      index={index}
+                      imageUrl={imageUrl}
+                      handleDelete={handleDeleteImage}
+                    />
+                  ))}
                 </SortableContext>
               </DndContext>
             </div>
 
-            <div className="upload-about-section">
-              <p className="info-about-product">Category: </p>
-              <select
-                className="input-about-product"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              >
-                <option value="">Select a category</option>
-                {Object.keys(categories).map((categoryKey) => (
-                  <option key={categoryKey} value={categoryKey}>
-                    {categoryKey}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {category && availableSubCategories.length > 0 && (
-              <div className="upload-about-section">
-                <p className="info-about-product">Subcategory: </p>
-                <select
-                  className="input-about-product"
-                  value={subCategory}
-                  onChange={(e) => setSubCategory(e.target.value)}
-                  required
-                >
-                  <option value="">Select a subcategory</option>
-                  {availableSubCategories.map((sub, index) => (
-                    <option key={index} value={sub}>
-                      {sub}
-                    </option>
-                  ))}
-                </select>
+            {/* ✅ Confirm Deletion Dialog */}
+            {showConfirm && (
+              <div className="confirmation-dialog">
+                <p>Are you sure you want to delete this image?</p>
+                <button onClick={confirmDelete}>Yes</button>
+                <button onClick={cancelDelete}>No</button>
               </div>
             )}
-            {subCategory && availableSubSubCategories.length > 0 && (
-              <div className="upload-about-section">
-                <p className="info-about-product">Sub-subcategory: </p>
-                <select
-                  className="input-about-product"
-                  value={subSubCategory}
-                  onChange={(e) => setSubSubCategory(e.target.value)}
-                  required
-                >
-                  <option value="">Select a sub-subcategory</option>
-                  {availableSubSubCategories.map((subSub, index) => (
-                    <option key={index} value={subSub}>
-                      {subSub}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            <p className="info-about-product">Is your Item customized?</p>
-            <label>
-              <input
-                type="checkbox"
-                checked={customized}
-                onChange={(e) => setCustomized(e.target.checked)}
-              />
-              Customized
-            </label>
           </div>
         </AnimatedSection>
 
-        <AnimatedSection>
-          <div className="upload-product-sections">
-            <p className="main-title-section">Tags and Attributes</p>
-            <p className="main-desc-section">
-              Share specifics about your item to make it easier to find in
-              search and help buyers know what to expect.
-            </p>
-
-            <div className="line-2"></div>
-            <div className="upload-about-section">
-              <div className="price-quantity">
-                <p className="info-about-product">Primary Colour:</p>
-                <input
-                  type="text"
-                  value={primaryColour}
-                  className="input-about-product"
-                  onChange={(e) => setPrimaryColour(e.target.value)}
-                  required
-                />
-
-                <p className="info-about-product">Secondary Colour:</p>
-                <input
-                  type="text"
-                  value={secondaryColour}
-                  placeholder="Secondary Colour"
-                  className="input-about-product"
-                  onChange={(e) => setSecondaryColour(e.target.value)}
-                />
-                  <p className="info-about-product">Tags:</p>
-                  <p>Add up to 13 tags to help people find your listings</p>
-
-                  <div className="tags-container">
-                    {tags.map((tag, index) => (
-                      <span key={index} className="tag">
-                        {tag}
-                        <button
-                          className="remove-tag"
-                          onClick={() => handleRemoveTag(tag)}
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Occasion Tags */}
-                  <div className="tag-selection">
-                    <p>Occasion Tags:</p>
-                    <select
-                      className="input-about-product"
-                      value={selectedOccasionTag}
-                      onChange={(e) => {
-                        setSelectedOccasionTag(e.target.value);
-                        handleAddTag(e.target.value);
-                      }}
-                    >
-                      <option value="">Select an occasion</option>
-                      {occasionTags.map((tag, index) => (
-                        <option key={index} value={tag}>
-                          {tag}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Recipient Tags */}
-                  <div className="tag-selection">
-                    <p>Recipient Tags:</p>
-                    <select
-                      className="input-about-product"
-                      value={selectedRecipientTag}
-                      onChange={(e) => {
-                        setSelectedRecipientTag(e.target.value);
-                        handleAddTag(e.target.value);
-                      }}
-                    >
-                      <option value="">Select a recipient</option>
-                      {recipientTags.map((tag, index) => (
-                        <option key={index} value={tag}>
-                          {tag}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Regular Tags */}
-                  <div className="tag-selection">
-                    <p>Regular Tags:</p>
-                    <select
-                      className="input-about-product"
-                      value={selectedRegularTag}
-                      onChange={(e) => {
-                        setSelectedRegularTag(e.target.value);
-                        handleAddTag(e.target.value);
-                      }}
-                    >
-                      <option value="">Select a tag</option>
-                      {regularTags.map((tag, index) => (
-                        <option key={index} value={tag}>
-                          {tag}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                <p className="info-about-product">Materials:</p>
-                <input
-                  className="input-about-product"
-                  value={materials}
-                  type="text"
-                  placeholder="Materials (comma separated)"
-                  onChange={(e) => setMaterials(e.target.value)}
-                  required
-                />
-
-                <p className="info-about-product">Weight:</p>
-                <p>Enter weight in kg: </p>
-                <input
-                  className="input-about-product"
-                  type="number"
-                  value={weight}
-                  placeholder="Ex: 0.5"
-                  onChange={(e) => setWeight(e.target.value)}
-                  required
-                />
-
-                <p className="info-about-product">Size:</p>
-                <p>Enter size in cm:</p>
-                <label>Height: </label>
-                <input
-                  className="input-about-product-hw"
-                  type="number"
-                  value={height}
-                  placeholder="Height"
-                  onChange={(e) => setHeight(e.target.value)}
-                  required
-                />
-                <label>Width: </label>
-                <input
-                  className="input-about-product-hw"
-                  type="number"
-                  value={width}
-                  placeholder="Width"
-                  onChange={(e) => setWidth(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection>
-          <div className="upload-product-sections">
-            <p className="main-title-section">Delievery</p>
-
-            <div className="line-2"></div>
-            <div className="upload-about-section">
-              <div className="price-quantity">
-                <p className="info-about-product">
-                  Approximate Order Processing (days):
-                </p>
-                <input
-                  type="number"
-                  className="input-about-product-price"
-                  value={processingTime}
-                  onChange={(e) => setProcessingTime(e.target.value)}
-                  required
-                />
-
-                <p className="info-about-product">Shipping Cost:</p>
-                <input
-                  type="number"
-                  className="input-about-product-price"
-                  value={shippingCost}
-                  onChange={(e) => setShippingCost(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-          </div>
-        </AnimatedSection>
-        <AnimatedSection>
-          <div className="button-submit">
-            <button onClick={handleUpdate}>Apply Changes</button>
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection>
-          <Footer />
-        </AnimatedSection>
+        <div className="submit-btn">
+          <button className="submit-button" onClick={handleUpdate}>
+            Update Product
+          </button>
+        </div>
       </div>
     </div>
   );
