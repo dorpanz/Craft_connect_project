@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -106,7 +106,7 @@ const SignIn = () => {
 
           <p>
             New to Craft Connect?{" "}
-            <a href="/user-register" className="join-now">JOIN NOW</a>
+            <Link to="/user-register" className="join-now">JOIN NOW</Link>
           </p>
         </div>
       </div>
