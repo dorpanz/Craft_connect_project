@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject, listAll } from "firebase/storage";
-import { storage } from "../../firebase";
+import { classifyImage } from "../helpers/classifyImage";
+import { doc, setDoc, arrayUnion } from "firebase/firestore"; 
+import { db, storage } from "../../firebase"; 
 
-const ImageUploader = ({ onUploadComplete, productId }) => {
+const ImageUploader = ({ onUploadComplete, productId, onAIClassificationComplete }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [uploadedURLs, setUploadedURLs] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
+  const [uploadedURLs, setUploadedURLs] = useState([]);
 
   // Fetch previously uploaded images for the specific product
   useEffect(() => {
-    if (!productId) return; // Prevent fetching if productId is undefined
+    if (!productId) return;
 
     const fetchUploadedImages = async () => {
       try {
@@ -76,9 +78,58 @@ const ImageUploader = ({ onUploadComplete, productId }) => {
             try {
               const fileURL = await getDownloadURL(uploadTask.snapshot.ref);
               newUploadedURLs.push({ url: fileURL, ref: fileRef });
+
+              // --- TensorFlow Prediction ---
+              const img = new Image();
+              img.crossOrigin = "anonymous"; 
+              img.src = fileURL;
+              await new Promise((res) => { img.onload = res; });
+
+              // Make sure to check for undefined predictions or errors
+              let predictions;
+              try {
+                predictions = await classifyImage(img);
+              } catch (error) {
+                console.error("Error in image classification:", error);
+                predictions = []; // Return empty predictions in case of error
+              }
+
+              const topPrediction = predictions[0]?.className?.toLowerCase() || "";
+              const suspiciousLabels = ["human", "person", "house", "building", "weapon", "gun"];
+              const isHandmadeLikely = !suspiciousLabels.some(label =>
+                topPrediction.includes(label)
+              );
+
+              // Update Firestore with classification in the ai_classifications collection
+              const aiClassificationRef = doc(db, "ai_classifications", productId);
+              await setDoc(
+                aiClassificationRef,
+                {
+                  aisay: {
+                    label: topPrediction,
+                    handmadeLikely: isHandmadeLikely,
+                    probability: predictions[0]?.probability || 0,
+                  },
+                  photos: arrayUnion(fileURL), 
+                  productId: productId,
+                },
+                { merge: true }
+              );
+
+              // Call the parent component with AI classification data
+              onAIClassificationComplete({
+                aisay: {
+                  label: topPrediction,
+                  handmadeLikely: isHandmadeLikely,
+                  probability: predictions[0]?.probability || 0,
+                },
+                photos: [fileURL],
+                productId: productId,
+              });
+
               resolve();
             } catch (error) {
-              console.error("Error getting file URL:", error);
+              console.error("Error processing uploaded image:", error);
               reject(error);
             }
           }
@@ -87,9 +138,9 @@ const ImageUploader = ({ onUploadComplete, productId }) => {
     }
 
     setUploadedURLs((prev) => [...prev, ...newUploadedURLs]);
-    onUploadComplete(newUploadedURLs.map((item) => item.url)); // Send URLs to parent
-    setSelectedFiles([]);  // Clear selected files
-    setUploadProgress({});  // Reset upload progress
+    onUploadComplete(newUploadedURLs.map((item) => item.url));
+    setSelectedFiles([]);
+    setUploadProgress({});
   };
 
   // Delete image from Firebase Storage
@@ -134,7 +185,7 @@ const ImageUploader = ({ onUploadComplete, productId }) => {
               src={URL.createObjectURL(file)}
               alt={`preview ${index}`}
               className="preview-image"
-              onDoubleClick={() => handleDeletePreviewImage(index)} // Double-click to delete preview
+              onDoubleClick={() => handleDeletePreviewImage(index)} 
             />
             {uploadProgress[file.name] && (
               <p>Uploading: {Math.round(uploadProgress[file.name])}%</p>
@@ -153,20 +204,6 @@ const ImageUploader = ({ onUploadComplete, productId }) => {
           Upload Photos
         </button>
       </div>
-
-      {/* Display Uploaded Images */}
-      {/* <div className="uploaded-images">
-        {uploadedURLs.map((item, index) => (
-          <div key={index} className="uploaded-image-container">
-            <img
-              src={item.url}
-              alt={`uploaded ${index}`}
-              className="uploaded-image"
-              onDoubleClick={() => handleDeleteImage(item.ref, index)} // Double-click to delete uploaded image
-            />
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };

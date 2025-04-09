@@ -104,13 +104,46 @@
   }
   
   /* ====== ACTION BUTTONS ====== */
-  .admin-review-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
+/* ====== AI CLASSIFICATION INFO ====== */
+.ai-classification-info {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ai-classification-info h4 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.classification-details p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.classification-details strong {
+  font-weight: bold;
+  color: #18224d; /* Green color */
+}
+
+/* Conditional Styles for Handmade Likely */
+.handmade-likely {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.handmade-likely.green {
+  color: #2e7d32; /* Green for "Yes" */
+}
+
+.handmade-likely.red {
+  color: #d32f2f; /* Red for "No" */
+}
+
+
   .approve-btn,
   .deny-btn {
     padding: 12px 20px;

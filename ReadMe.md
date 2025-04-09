@@ -1,5 +1,6 @@
 # Craft Connect  
-
+**DEPLOYED LINK**
+https://craft-connect-ecom.netlify.app/ 
 ## Overview  
 Craft Connect is an e-commerce platform designed for artisans to sell and buy handcrafted goods. The platform provides features like dynamic category pages, user authentication, and inventory management using Firebase.  
 

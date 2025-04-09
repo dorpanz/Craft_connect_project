@@ -36,17 +36,23 @@ export const UploadProduct = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [width, setWidth] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [returnPolicy, setReturnPolicy] = useState("");
   const [shippingCost, setShippingCost] = useState("");
   const [uploadedURLs, setUploadedURLs] = useState([]);
   const [productId, setProductId] = useState(null);
+  
   const navigate = useNavigate();
+  const [aiClassification, setAiClassification] = useState(null);
   useEffect(() => {
+    
     // Generate a new product ID when the component loads
     const newProductRef = doc(collection(db, "products"));
     setProductId(newProductRef.id);
   }, []);
-
+  const handleAIClassificationComplete = (classificationData) => {
+    setAiClassification(classificationData);
+  };
   useEffect(() => {
     // Reset subcategory and sub-subcategory when category changes
     setSubCategory("");
@@ -170,7 +176,7 @@ export const UploadProduct = () => {
       alert("You must be logged in to upload a product.");
       return;
     }
-  
+
     const sellerId = user.uid; // Get the seller's unique Firebase UID
   
     // List of required fields (excluding secondaryColour)
@@ -213,6 +219,9 @@ export const UploadProduct = () => {
     }
   
     try {
+      const aiClassificationDocRef = await addDoc(collection(db, "ai_classifications"), aiClassification);
+      
+
       await addDoc(collection(db, "products"), {
         ...requiredFields,
         materials: materials.split(",").map((m) => m.trim()),
@@ -223,7 +232,8 @@ export const UploadProduct = () => {
         createdAt: new Date(),
         sellerId, // Attach the seller's ID to the product
         sales: 0,
-        status: "pending"
+        status: "pending",
+        ai_answer: aiClassificationDocRef.id,
       });
       navigate("/your-shop");
       alert("Product uploaded successfully!");
@@ -267,7 +277,7 @@ export const UploadProduct = () => {
               />
             </div>
 
-            <ImageUploader productId={productId} onUploadComplete={(newURLs) => setUploadedURLs((prev) => [...prev, ...newURLs])} />
+            <ImageUploader onAIClassificationComplete={handleAIClassificationComplete} productId={productId} onUploadComplete={(newURLs) => setUploadedURLs((prev) => [...prev, ...newURLs])} />
 
 {/* ✅ Styled Image Upload Section */}
 <div className="image-upload-section-2">
