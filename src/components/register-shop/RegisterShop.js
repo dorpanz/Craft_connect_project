@@ -54,7 +54,7 @@ const RegisterShop = () => {
       });
 
       console.log("Seller registered:", user);
-      navigate("/user-login");
+      navigate("/your-shop-dashboard");
     } catch (error) {
       const errorMessages = {
         "auth/email-already-in-use": "This email is already registered. Please use a different email or sign in.",
