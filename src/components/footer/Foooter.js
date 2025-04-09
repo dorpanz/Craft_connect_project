@@ -1,5 +1,6 @@
 import React from "react";
 import "./Footer.css"; 
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -11,10 +12,10 @@ const Footer = () => {
             <h4>Buying on Craft Connect</h4>
             <ul>
               <li>
-                <a href="/craft-connect-info">Returns</a>
+                <Link to="/craft-connect-info">Returns</Link>
               </li>
               <li>
-                <a href="/About-Craft-Connect#buying-faqs">Buying FAQ</a>
+                <Link to="/About-Craft-Connect#buying-faqs">Buying FAQ</Link>
               </li>
             </ul>
           </div>
@@ -23,13 +24,13 @@ const Footer = () => {
             <h4>Sell on Craft Connect</h4>
             <ul>
               <li>
-                <a href="/About-Craft-Connect#ready-to-sell">Open a Craft Connect shop</a>
+                <Link to="/About-Craft-Connect#ready-to-sell">Open a Craft Connect shop</Link>
               </li>
               <li>
-                <a href="mailto:contact@craftconnect.com">Help & Support</a>
+                <Link to="mailto:contact@craftconnect.com">Help & Support</Link>
               </li>
               <li>
-                <a href="/About-Craft-Connect#buying-faqs">Why Sell on Craft Connect</a>
+                <Link to="/About-Craft-Connect#buying-faqs">Why Sell on Craft Connect</Link>
               </li>
             </ul>
           </div>
@@ -44,10 +45,10 @@ const Footer = () => {
                 <a href="mailto:contact@craftconnect.com">Contact us</a>
               </li>
               <li>
-                <a href="/craft-connect-info">Privacy Policy</a>
+                <Link to="/craft-connect-info">Privacy Policy</Link>
               </li>
               <li>
-                <a href="/craft-connect-info">Terms of Use</a>
+                <Link to="/craft-connect-info">Terms of Use</Link>
               </li>
               <li>
                 <a href="mailto:press@craftconnect.com">Press enquiries</a>
