@@ -204,14 +204,16 @@ const ProfileEditSection = () => {
                         placeholder="Enter your shop name"
                         
                     />
-                </div>
-                <div className="form-group">
+                </div><div className="form-group">
                     <label>Shop Description</label>
+                    <div className="char-counter-wrapper">
+                        <small className="char-counter">{27 - shopDescription.length} characters left</small>
+                    </div>
                     <textarea
                         value={shopDescription}
                         onChange={(e) => setShopDescription(e.target.value)}
                         placeholder="Enter a brief description of your shop"
-                        
+                        maxLength={27}
                     />
                 </div>
 
