@@ -51,3 +51,27 @@
 .delete-image-btn:hover {
   background-color: rgba(255, 0, 0, 0.7); /* Red background on hover */
 }
+
+.delete-product-btn {
+  margin-top:10px;
+  background-color: #e53935;
+  color: white;
+  padding: 10px 20px;
+  font-size: 12px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: "Inria Serif", serif;
+}
+
+.delete-product-btn:hover {
+  background-color: #c62828;
+  transform: translateY(-1px);
+}
+
+.delete-product-btn:active {
+  transform: scale(0.97);
+}

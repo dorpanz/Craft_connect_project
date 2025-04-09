@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { db, storage } from "../../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DndContext, closestCenter } from "@dnd-kit/core";
@@ -202,7 +202,24 @@ export const EditProduct = () => {
       setTags([...tags, newTag]);
     }
   };
+  const handleDeleteProduct = async () => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this product? This action cannot be undone.");
 
+    if (!isConfirmed) return;
+
+    try {
+      if (!productId) return;
+
+      const productRef = doc(db, "products", productId);
+      await deleteDoc(productRef);  // Delete product document from Firestore
+
+      alert("Product deleted successfully!");
+      navigate("/your-shop");  // Redirect to your shop or another page after deletion
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Failed to delete product. Please try again.");
+    }
+  };
   // Function to remove a tag
   const handleRemoveTag = (tagToRemove) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
@@ -585,6 +602,11 @@ export const EditProduct = () => {
         <AnimatedSection>
           <div className="button-submit">
             <button onClick={handleUpdate}>Apply Changes</button>
+          </div>
+          <div className="center-cont">
+          <button onClick={handleDeleteProduct} className="delete-product-btn">
+            Delete Product
+          </button>
           </div>
         </AnimatedSection>
 
