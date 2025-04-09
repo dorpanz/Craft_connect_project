@@ -88,7 +88,7 @@ export const SellerInfo = ({ item,user,sellerData, itemId }) => {
           <p>Loading products...</p>
         ) : shopProducts.length > 0 ? (
           <div className="more-shop-items">
-            {shopProducts.map((product) => (
+            {shopProducts.slice(0,5).map((product) => (
                 <Link to={`/item-listing/${product.id}`} key={product.id} className="more-shop-item"
                 >
               <img
