@@ -21,36 +21,34 @@ export const CustomizePage = () => {
       setLoading(true);
       try {
         const productsRef = collection(db, "products");
-        const q = query(
-          productsRef,
-          where("customized", "==", true),
-          where("status", "==", "approved"),
-          where("quantity", ">", 0)
-        );
-        
+        const q = query(productsRef, where("customized", "==", true));
+
+
         const querySnapshot = await getDocs(q);
-
         const fetchedProducts = [];
-
+        
         for (const doc of querySnapshot.docs) {
           const productData = doc.data();
-          const productReviewsRef = collection(db, "reviews");
-          const reviewsQuery = query(productReviewsRef, where("itemId", "==", doc.id));
-          const reviewsSnapshot = await getDocs(reviewsQuery);
-          const reviews = reviewsSnapshot.docs.map((reviewDoc) => reviewDoc.data());
 
-          // Calculate average rating
-          const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
-          const averageRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : 0;
-
-          fetchedProducts.push({
-            id: doc.id,
-            ...productData,
-            createdAt: productData.createdAt?.toDate(),
-            reviews,
-            average_rating: averageRating,
-          });
+          if (productData.status === "approved" && productData.quantity > 0) {
+            const productReviewsRef = collection(db, "reviews");
+            const reviewsQuery = query(productReviewsRef, where("itemId", "==", doc.id));
+            const reviewsSnapshot = await getDocs(reviewsQuery);
+            const reviews = reviewsSnapshot.docs.map((reviewDoc) => reviewDoc.data());
+        
+            const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+            const averageRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : 0;
+        
+            fetchedProducts.push({
+              id: doc.id,
+              ...productData,
+              createdAt: productData.createdAt?.toDate(),
+              reviews,
+              average_rating: averageRating,
+            });
+          }
         }
+        
 
         setFilteredItems(fetchedProducts);
       } catch (error) {

@@ -1,0 +1,8 @@
+[
+    {
+      "origin": ["https://craft-connect-ecom.netlify.app"],
+      "method": ["GET"],
+      "maxAgeSeconds": 3600
+    }
+  ]
+  
