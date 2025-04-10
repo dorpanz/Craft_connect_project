@@ -7,6 +7,7 @@ import Footer from "../footer/Foooter";
 import { Link } from "react-router-dom";
 import user from "./pic/users.jpg"
 import shop from "./pic/shops.jpg"
+import stats from "./pic/stats.jpg"
 const adminAccountOptions = [
   {
     title: "Product Verification Dashboard",
@@ -31,6 +32,12 @@ const adminAccountOptions = [
     description: "Manage Sellers",
     imgSrc: shop,
     link: "/admin/sellers-management",  // Link to login & security settings
+  },
+  {
+    title: "Craft Connect Statistics",
+    description: "Track Total Stats",
+    imgSrc: stats,
+    link: "/admin/website-stats",  // Link to login & security settings
   },
 ];
 

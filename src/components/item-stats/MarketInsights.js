@@ -108,8 +108,6 @@ export const MarketInsights = ({ itemId }) => {
       }
     };
     
-    
-
     if (itemId) fetchMarketInsights();
   }, [itemId]);
 

@@ -45,6 +45,7 @@ import InfoPage from './components/aboutpage/InfoPage';
 import { AdminUserManage } from "./components/admin-dashboard/AdminUserManage"
 import { AdminSellerManage } from "./components/admin-dashboard/AdminSellerManage"
 import { AllOccasions } from './components/gifts-occasion-page/AllOccassions';
+import { CraftStat } from './components/admin-dashboard/CraftStat';
 function App() {
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -110,6 +111,7 @@ function App() {
             <Route path="/admin/login-security" element={<UploadProduct />} />
             <Route path="/admin/users-management" element={<AdminUserManage/>}/>
             <Route path="/admin/sellers-management" element={<AdminSellerManage/>}/>
+            <Route path="/admin/website-stats" element={<CraftStat/>}/>
           </Route>
         </Routes>
       </AuthProvider>

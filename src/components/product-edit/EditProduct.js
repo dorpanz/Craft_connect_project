@@ -251,8 +251,9 @@ export const EditProduct = () => {
         weight: weight || "",
         customized: customized || false,
         quantity: quantity || 0,
-        processingTime: processingTime || "",
-        shippingCost: shippingCost || "",
+        processingTime: parseFloat(processingTime) || "",
+        shippingCost: parseFloat(shippingCost) || "",
+        price: parseFloat(price) || 0
       });
 
       alert("Product updated successfully!");
