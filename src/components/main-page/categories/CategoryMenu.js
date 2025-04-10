@@ -4,35 +4,41 @@ import { Link } from 'react-router-dom';
 
 export const categories = {
     "ACCESSORIES": {
-        "Bags": ["Tote Bags", "Backpacks", "Clutches"],
-        "Jewelry": ["Necklaces", "Bracelets", "Rings", "Earrings"],
+        "Bags": ["Tote Bags", "Backpacks", "Clutches", "Other"],
+        "Jewelry": ["Necklaces", "Bracelets", "Rings", "Earrings", "Other"],
         "Hats": [],
-        "Scarves": []
+        "Scarves": [],
+        "Hair Accessories": [],
+        "Other":[]
     },
     "CLOTHING": {
-        "Men": ["Shirts", "Pants", "Jackets", "Hoodies", "Suits"],
-        "Women": ["Dresses", "Tops", "Bottoms", "Jumpsuits", "Outerwear"],
-        "Kids": ["Baby Clothing", "Teen Wear", "Toddler Sets", "Costumes"]
+        "Men": ["Shirts", "Pants", "Jackets", "Hoodies", "Suits", "Other"],
+        "Women": ["Dresses", "Tops", "Bottoms", "Jumpsuits", "Outerwear", "Other"],
+        "Kids": ["Baby Clothing", "Teen Wear", "Toddler Sets", "Costumes", "Other"],
+        "Other":[]
     },
     "HOMEWARE": {
-        "Decor": ["Wall Art", "Vases", "Candles", "Pillows", "Planters", "Storage"],
-        "Kitchen": ["Utensils", "Dinnerware", "Cutting Boards", "Aprons", "Mugs"],
-        "Furniture": ["Tables", "Chairs", "Shelves", "Benches", "Stools"]
+        "Decor": ["Wall Art", "Vases", "Candles", "Pillows", "Planters", "Storage", "Other"],
+        "Kitchen": ["Utensils", "Dinnerware", "Cutting Boards", "Aprons", "Mugs", "Other"],
+        "Furniture": ["Tables", "Chairs", "Shelves", "Benches", "Stools", "Other"],
+        "Other":[]
     },
     "ART": {
         "Paintings": [],
         "Sculptures": [],
-        "Photography": []
+        "Photography": [],
+        "Other":[]
     },
     "CARDS&STATIONERY": {
         "Greeting Cards": [],
         "Notebooks": [],
-        "Planners": []
+        "Planners": [],
+        "Other":[]
     },
-    "SUPPLIES": {
-        "Crafting": [],
-        "Sewing": [],
-        "Painting": []
+    "OTHER": {
+        "Toys": [],
+        "Pet Accessories": [],
+        "Collectibles & Charms": []
     }
 };
 
