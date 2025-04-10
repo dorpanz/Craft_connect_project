@@ -1,5 +1,7 @@
 .admin-dashboard {
   font-family: "Inria Serif", serif;
+  width: 80%;
+margin: auto;
 }
 
 .admin-dashboard h2 {

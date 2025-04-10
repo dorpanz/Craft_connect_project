@@ -35,8 +35,10 @@ export const AdminDashboard = () => {
 </div>;
 
   return (
+    <div>
+
+      <Menu /> 
     <div className="admin-dashboard">
-      <Menu /> {/* Adding the Menu component at the top */}
         <div className="edit-section-title">
           <Link to="/admin/admin-account" className="go-back">
             <img src={arrow} alt="arrow" className="arrow" />
@@ -71,5 +73,6 @@ export const AdminDashboard = () => {
         </div>
       )}
     </div>
+          </div>
   );
 };

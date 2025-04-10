@@ -204,3 +204,8 @@
   .all-items-section-list-item-images .all-items-section-list-item-img{
     padding: 10px;
   }
+
+  .admin-user-manage-container-top{
+    display:flex;
+    align-items: center;
+  }

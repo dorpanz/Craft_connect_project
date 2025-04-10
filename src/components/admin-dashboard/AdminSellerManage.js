@@ -78,10 +78,13 @@ export const AdminSellerManage = () => {
 
   return (
     <div className="admin-user-manage-container">
+      <div className="admin-user-manage-container-top">
           <Link to="/admin/admin-account" className="go-back">
             <img src={arrow} alt="arrow" className="arrow" />
+        
           </Link>
-      <h2 className="admin-user-manage-title">Seller Management</h2>
+          <h2 className="admin-user-manage-title">Seller Management</h2>
+      </div>
 
       <div className="user-list-container">
         <div className="user-list-header">

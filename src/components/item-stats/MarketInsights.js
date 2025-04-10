@@ -38,7 +38,7 @@ export const MarketInsights = ({ itemId }) => {
         }
     
         console.log("Current item data:", currentItem);
-        const { price, status, category, subCategory, subSubCategory } = currentItem;
+        const { price, status, category, subCategory, subSubCategory, sellerId } = currentItem;
         if (status !== "approved") {
           console.warn("Current item is not approved. Skipping insight generation.");
           return;
@@ -49,16 +49,18 @@ export const MarketInsights = ({ itemId }) => {
         // Determine matching key for comparison
         const categoryKey = subSubCategory || subCategory || category;
     
+        // Filter competitors in the same category, and ensure they're from different shops
         const approvedCompetitors = itemDocs.filter(
           i =>
             i.id !== itemId &&
             i.status === "approved" &&
             (i.subSubCategory === categoryKey ||
-             i.subCategory === categoryKey ||
-             i.category === categoryKey)
+              i.subCategory === categoryKey ||
+              i.category === categoryKey) &&
+            i.sellerId !== sellerId // Ensures different sellerId
         );
     
-        console.log("Competitors in same category level:", approvedCompetitors);
+        console.log("Competitors in same category from different shops:", approvedCompetitors);
     
         const prices = [price, ...approvedCompetitors.map(i => i.price)];
         const avg = prices.reduce((sum, p) => sum + p, 0) / prices.length;
@@ -105,6 +107,7 @@ export const MarketInsights = ({ itemId }) => {
         console.error("Error fetching market insights:", err);
       }
     };
+    
     
 
     if (itemId) fetchMarketInsights();

@@ -419,7 +419,7 @@ export const StatisticsDash = () => {
             <div className="stats-graph-1-item">
               <div className="green-square"></div>
               <div className="stats-graph-1-item-info">
-                <p className="stats-graph-1-item-info-title">Orders</p>
+                <p className="stats-graph-1-item-info-title">Sold</p>
                 <p className="stats-graph-1-item-info-desc">
                   {shopStats.orders}
                 </p>

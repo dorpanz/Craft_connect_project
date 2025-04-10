@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useFavorites } from "../../context/FavoritesContext";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
+import { ShopLink } from "../single-item/ShopLink";
 
 const FavoritesPage = () => {
   const { favorites, toggleFavorite } = useFavorites();
@@ -119,7 +120,7 @@ const FavoritesPage = () => {
                   </p>
                   {item.sellerId && (
                     <Link to={`/shop/${item.sellerId}`} className="favorite-shop-link">
-                      <p className="favorite-shop">{shopNames[item.sellerId] || "Loading..."}</p>
+                      <ShopLink sellerId={item.sellerId}/>
                     </Link>
                   )}
 

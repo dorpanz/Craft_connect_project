@@ -9,7 +9,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import "./AdminUserManage.css";
-
+import arrow from "../shop-view-seller/pics/arrow.png";
+import { Link } from "react-router-dom";
 export const AdminUserManage = () => {
   const [users, setUsers] = useState([]);
   const [expandedUserId, setExpandedUserId] = useState(null);
@@ -94,8 +95,13 @@ export const AdminUserManage = () => {
 
   return (
     <div className="admin-user-manage-container">
-      <h2 className="admin-user-manage-title">User Management</h2>
-
+      <div className="admin-user-manage-container-top">
+          <Link to="/admin/admin-account" className="go-back">
+            <img src={arrow} alt="arrow" className="arrow" />
+        
+          </Link>
+          <h2 className="admin-user-manage-title">User Management</h2>
+      </div>
       <div className="user-list-container">
         <div className="user-list-header">
           <div>Username</div>
