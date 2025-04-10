@@ -3,6 +3,7 @@ import { db, auth } from "../../firebase"; // Import Firebase setup
 import { collection, getDocs, query, where, deleteDoc, doc } from "firebase/firestore"; // Firestore query functions
 import "./OrdersPage.css";
 import Menu from "../menu/Menu";
+import { Link } from "react-router-dom";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -153,11 +154,14 @@ const OrdersPage = () => {
                     {order.items.map((item, index) => (
                       <div key={index} className="order-item">
                         {item.photos && item.photos.length > 0 && (
+                          <Link to={`/item-listing/${item.id}`}
+                          style={{ textDecoration: "none" }}> 
                           <img
                             src={item.photos[0]} 
                             alt={item.title || item.name}
                             className="order-item-img"
-                          />
+                            />
+                            </Link>
                         )}
                         <div className="order-item-details">
                           <p>{item.title || item.name}</p>
