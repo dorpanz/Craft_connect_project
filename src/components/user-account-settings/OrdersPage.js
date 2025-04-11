@@ -11,7 +11,9 @@ const OrdersPage = () => {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("All"); // New state for the status filter
   const [user, setUser] = useState(null); // Track user authentication state
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+}, []);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {

@@ -38,7 +38,9 @@ export const StatisticsDash = () => {
   const [loading, setLoading] = useState(false);
   const [sellerId, setSellerId] = useState(null);
   const [reviewsData, setReviewsData] = useState({});
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+}, []);
   // ✅ Track logged-in seller ID
   useEffect(() => {
     const auth = getAuth();
