@@ -411,7 +411,7 @@ export const StatisticsDash = () => {
               <div className="stats-graph-1-item-info">
                 <p className="stats-graph-1-item-info-title">Total Revenue</p>
                 <p className="stats-graph-1-item-info-desc">
-                  CA${shopStats.revenue}
+                  CA${shopStats.revenue.toFixed(2)}
                 </p>
               </div>
             </div>
