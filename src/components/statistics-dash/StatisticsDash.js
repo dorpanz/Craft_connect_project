@@ -26,7 +26,6 @@ import "./StatisticsDash.css";
 
 export const StatisticsDash = () => {
   const [salesData, setSalesData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [mostPopularItems, setMostPopularItems] = useState([]);
   const [shopStats, setShopStats] = useState({
     shopViews: 0,
@@ -36,6 +35,7 @@ export const StatisticsDash = () => {
     searchClicks: 0,
     revenue: 0,
   });
+  const [loading, setLoading] = useState(false);
   const [sellerId, setSellerId] = useState(null);
   const [reviewsData, setReviewsData] = useState({});
 
@@ -133,6 +133,7 @@ export const StatisticsDash = () => {
     if (!sellerId) return;
 
     const fetchMostPopularItems = async () => {
+      setLoading(true);
       try {
         const productsQuery = query(
           collection(db, "products"),
@@ -151,6 +152,8 @@ export const StatisticsDash = () => {
         fetchReviewsData(items);
       } catch (error) {
         console.error("Error fetching popular items:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -506,6 +509,10 @@ export const StatisticsDash = () => {
                         {generateStars(reviewsData[item.id]?.avgRating)} (
                         {reviewsData[item.id]?.reviewCount || 0} reviews)
                       </p>
+
+                      <p>Most Purchased During: {getTopSalesMonths(item.id)}</p>
+
+{generateChart(item.id)}
                     </div>
                   </div>
                 ))}
