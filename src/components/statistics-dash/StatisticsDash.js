@@ -55,12 +55,12 @@ export const StatisticsDash = () => {
 
   useEffect(() => {
     if (!sellerId) return;
-  
+
     const fetchFollowers = async () => {
       try {
         const usersQuery = query(collection(db, "users"));
         const querySnapshot = await getDocs(usersQuery);
-  
+
         let userFollowers = [];
         querySnapshot.forEach((docSnap) => {
           const user = docSnap.data();
@@ -68,16 +68,16 @@ export const StatisticsDash = () => {
             userFollowers.push(user);
           }
         });
-  
+
         setFollowers(userFollowers);
       } catch (error) {
         console.error("Error fetching followers:", error);
       }
     };
-  
+
     fetchFollowers();
   }, [sellerId]);
-  
+
   // ✅ Fetch sales data
   useEffect(() => {
     if (!sellerId) return;
@@ -256,7 +256,7 @@ export const StatisticsDash = () => {
 
   useEffect(() => {
     const fetchCategoryStats = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
         // Query the "products" collection where "status" is "approved"
         const q = query(
@@ -437,33 +437,37 @@ export const StatisticsDash = () => {
           </div>
         </AnimatedSection>
         <AnimatedSection>
-  <div className="shop-followers">
-    <div className="stats-section-title">
-      <p>Shop Followers</p>
-      
-    </div>
-    <p>Total Followers: {followers.length}</p> {/* Display total followers */}
-    {followers.length > 0 ? (
-      <div className="followers-list">
-        {followers.map((follower, index) => (
-          <ul key={index} className="follower-item">
-            <li>{follower.username} - {follower.email}</li> {/* Display username */}
-          </ul>
-        ))}
-      </div>
-    ) : (
-      <p>No followers found.</p>
-    )}
-  </div>
-</AnimatedSection>
+          <div className="shop-followers">
+            <div className="stats-section-title">
+              <p>Shop Followers</p>
+            </div>
+            <p>Total Followers: {followers.length}</p>{" "}
+            {/* Display total followers */}
+            {followers.length > 0 ? (
+              <div className="followers-list">
+                {followers.map((follower, index) => (
+                  <ul key={index} className="follower-item">
+                    <li>
+                      {follower.username} - {follower.email}
+                    </li>{" "}
+                    {/* Display username */}
+                  </ul>
+                ))}
+              </div>
+            ) : (
+              <p>No followers found.</p>
+            )}
+          </div>
+        </AnimatedSection>
 
         <AnimatedSection>
-        {loading ? (
-  <div className="loader-container">
-    <div className="spinner"></div> {/* or use a proper spinner component */}
-    <p>Loading statistics...</p>
-  </div>
-) : (
+          {loading ? (
+            <div className="skeleton-container">
+            <div className="skeleton-box"></div>
+            <div className="skeleton-box"></div>
+            <div className="skeleton-box"></div>
+          </div>
+          ) : (
             <div>
               <div className="stats-section-title">
                 <p>All Items Statistics</p>
@@ -502,7 +506,8 @@ export const StatisticsDash = () => {
                     </div>
                     <div className="top-items-desc">
                       <p>
-                        Total Sold: <strong>{item.salesCount || 0} units</strong>
+                        Total Sold:{" "}
+                        <strong>{item.salesCount || 0} units</strong>
                       </p>
                       <p>Item views: {item.views || 0}</p>
                       <p>
@@ -513,7 +518,7 @@ export const StatisticsDash = () => {
 
                       <p>Most Purchased During: {getTopSalesMonths(item.id)}</p>
 
-{generateChart(item.id)}
+                      {generateChart(item.id)}
                     </div>
                   </div>
                 ))}
