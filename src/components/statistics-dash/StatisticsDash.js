@@ -459,8 +459,6 @@ export const StatisticsDash = () => {
             )}
           </div>
         </AnimatedSection>
-
-        <AnimatedSection>
           {loading ? (
             <div className="skeleton-container">
             <div className="skeleton-box"></div>
@@ -525,7 +523,6 @@ export const StatisticsDash = () => {
               </div>
             </div>
           )}
-        </AnimatedSection>
 
         <AnimatedSection>
           <div className="shop-stats">
