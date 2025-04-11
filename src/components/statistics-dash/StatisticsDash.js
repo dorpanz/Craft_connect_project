@@ -450,62 +450,63 @@ export const StatisticsDash = () => {
 </AnimatedSection>
 
         <AnimatedSection>
-          <div>
-            <div className="stats-section-title">
-              <p>Most Popular Items</p>
-            </div>
+        {loading ? (
+            <div className="loading-container">
+            <div className="loading-spinner"></div>
+          </div>
+          ) : (
             <div>
-              {mostPopularItems.map((item) => (
-                <div className="top-items" key={item.id}>
-                  <div className="top-items-title">
-                    <img
-                      src={item.photos?.[0]}
-                      className="top-items-img"
-                      alt={item.title}
-                    />
-                    <Link
-                      to={`/item-listing/${item.id}`}
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      <p>{item.title}</p>
-                    </Link>
+              <div className="stats-section-title">
+                <p>All Items Statistics</p>
+              </div>
+              <div>
+                {mostPopularItems.map((item) => (
+                  <div className="top-items" key={item.id}>
+                    <div className="top-items-title">
+                      <img
+                        src={item.photos?.[0]}
+                        className="top-items-img"
+                        alt={item.title}
+                      />
+                      <Link
+                        to={`/item-listing/${item.id}`}
+                        style={{ textDecoration: "none", color: "black" }}
+                      >
+                        <p>{item.title}</p>
+                      </Link>
 
-                    <p>${item.price.toFixed(2)}</p>
-                    <div className="top-items-buttons-cont">
-                      <Link
-                        to={`/edit-product/${item.id}`}
-                        className="edit-item-btn"
-                      >
-                        Edit
-                      </Link>
-                      <Link
-                        to={`/item-statistics/${item.id}`}
-                        className="stats-item-btn top-items-buttons"
-                      >
-                        Stats
-                      </Link>
+                      <p>${item.price.toFixed(2)}</p>
+                      <div className="top-items-buttons-cont">
+                        <Link
+                          to={`/edit-product/${item.id}`}
+                          className="edit-item-btn"
+                        >
+                          Edit
+                        </Link>
+                        <Link
+                          to={`/item-statistics/${item.id}`}
+                          className="stats-item-btn top-items-buttons"
+                        >
+                          Stats
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="top-items-desc">
+                      <p>
+                        Total Sold: <strong>{item.salesCount || 0} units</strong>
+                      </p>
+                      <p>Item views: {item.views || 0}</p>
+                      <p>
+                        Customer Ratings:{" "}
+                        {generateStars(reviewsData[item.id]?.avgRating)} (
+                        {reviewsData[item.id]?.reviewCount || 0} reviews)
+                      </p>
                     </div>
                   </div>
-                  <div className="top-items-desc">
-                    <p>
-                      Total Sold: <strong>{item.salesCount || 0} units</strong>
-                    </p>
-                    <p>Item views: {item.views || 0}</p>
-                    <p>
-                      Customer Ratings:{" "}
-                      {generateStars(reviewsData[item.id]?.avgRating)} (
-                      {reviewsData[item.id]?.avgRating || "0.0"} based on{" "}
-                      {reviewsData[item.id]?.reviewCount || 0} reviews)
-                    </p>
-
-                    <p>Most Purchased During: {getTopSalesMonths(item.id)}</p>
-
-                    {generateChart(item.id)}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </AnimatedSection>
 
         <AnimatedSection>
