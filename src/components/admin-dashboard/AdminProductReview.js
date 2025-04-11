@@ -148,7 +148,7 @@ export const AdminProductReview = () => {
           <h3>{product.title}</h3>
           {/* Link to Seller's Account */}
           <div className="seller-info">
-            <p>Shop: <Link to={`/shop/${product.sellerId}`} className="seller-link">
+            <p>Shop: <Link to={`/shop/${seller.shopName}`} className="seller-link">
               {seller.shopName}
             </Link></p>
           </div>
