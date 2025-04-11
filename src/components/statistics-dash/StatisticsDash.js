@@ -459,10 +459,11 @@ export const StatisticsDash = () => {
 
         <AnimatedSection>
         {loading ? (
-            <div className="loading-container">
-            <div className="loading-spinner"></div>
-          </div>
-          ) : (
+  <div className="loader-container">
+    <div className="spinner"></div> {/* or use a proper spinner component */}
+    <p>Loading statistics...</p>
+  </div>
+) : (
             <div>
               <div className="stats-section-title">
                 <p>All Items Statistics</p>
