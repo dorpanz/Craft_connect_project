@@ -301,7 +301,7 @@ export const StatisticsDash = () => {
     };
 
     fetchCategoryStats();
-  }, []);
+  }, [sellerId]);
   const generateChart = (itemId) => {
     const matchingData = salesData.find((data) => data.itemId === itemId);
     if (!matchingData) {
