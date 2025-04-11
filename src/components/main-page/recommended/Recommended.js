@@ -113,7 +113,7 @@ const fetchRecommendedItems = async () => {
                   style={{ textDecoration: "none", color: "black" }}
                 >
                   <p className="item-name">
-                    {item.title.length > 30 ? item.title.slice(0, 30) + "..." : item.title}
+                    {item.title.length > 25 ? item.title.slice(0, 25) + "..." : item.title}
                   </p>
                 </Link>
                 <div className="item-info">
