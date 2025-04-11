@@ -38,46 +38,70 @@ export const Recommended = () => {
     }
   }, [user]);
 
-  useEffect(() => {
 // inside useEffect
-const fetchRecommendedItems = async () => {
-  try {
-    const productsRef = collection(db, "products");
-    const productSnapshot = await getDocs(productsRef);
+useEffect(() => {
+  const fetchRecommendedItems = async () => {
+    try {
+      const productsRef = collection(db, "products");
+      const productSnapshot = await getDocs(productsRef);
 
-    const allProducts = productSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+      const allProducts = productSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-    // ✅ Filter: only approved products with quantity > 0
-    const approvedAndAvailableProducts = allProducts.filter(
-      (item) => item.status === "approved" && item.quantity > 0
-    );
+      // Filter only approved and in-stock items
+      const approvedAndAvailableProducts = allProducts.filter(
+        item => item.status === "approved" && item.quantity > 0
+      );
 
-    let recommended = [];
+      let recommended = [];
 
-    if (userFavorites.length > 0) {
-      const favoriteWords = userFavorites.flatMap(fav => fav.title.toLowerCase().split(' '));
+      if (userFavorites.length > 0) {
+        // Extract favorite title words
+        const favoriteWords = userFavorites.flatMap(fav =>
+          fav.title.toLowerCase().split(' ')
+        );
 
-      recommended = approvedAndAvailableProducts.filter(item => {
-        const itemTitleWords = item.title.toLowerCase().split(' ');
-        return favoriteWords.some(favWord => itemTitleWords.includes(favWord));
-      });
-    } else {
-      recommended = approvedAndAvailableProducts.sort(() => Math.random() - 0.5).slice(0, 12);
+        // Extract categories from user's favorites
+        const favCategories = new Set();
+        const favSubCategories = new Set();
+        const favSubSubCategories = new Set();
+
+        userFavorites.forEach(fav => {
+          if (fav.category) favCategories.add(fav.category.toLowerCase());
+          if (fav.subCategory) favSubCategories.add(fav.subCategory.toLowerCase());
+          if (fav.subSubCategory) favSubSubCategories.add(fav.subSubCategory.toLowerCase());
+        });
+
+        // Filter based on either title word or category match
+        recommended = approvedAndAvailableProducts.filter(item => {
+          const titleWords = item.title.toLowerCase().split(' ');
+
+          const titleMatch = favoriteWords.some(word => titleWords.includes(word));
+
+          const categoryMatch =
+            (item.category && favCategories.has(item.category.toLowerCase())) ||
+            (item.subCategory && favSubCategories.has(item.subCategory.toLowerCase())) ||
+            (item.subSubCategory && favSubSubCategories.has(item.subSubCategory.toLowerCase()));
+
+          return titleMatch || categoryMatch;
+        });
+      } else {
+        // No favorites? Show random picks
+        recommended = approvedAndAvailableProducts
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 12);
+      }
+
+      setRecommendedItems(recommended.slice(0, 12));
+    } catch (error) {
+      console.error("Error fetching recommended items:", error);
     }
+  };
 
-    const selectedItems = recommended.slice(0, 12);
-    setRecommendedItems(selectedItems);
-  } catch (error) {
-    console.error("Error fetching recommended items:", error);
-  }
-};
-
-
-    fetchRecommendedItems();
-  }, [userFavorites]);
+  fetchRecommendedItems();
+}, [userFavorites]);
 
   if (loading) {
     return <div className="loading-container">

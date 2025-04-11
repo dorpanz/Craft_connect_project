@@ -41,7 +41,7 @@ const RegisterPage = () => {
       });
 
       console.log("User registered:", user);
-      navigate("/user-login");
+      navigate("/account-settings-user");
     } catch (error) {
       const errorMessages = {
         "auth/email-already-in-use": "This email is already registered. Please use a different email or sign in.",
