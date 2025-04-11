@@ -69,8 +69,10 @@
   margin-top: 30px;
   padding-top: 20px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+  gap: 15px;
 }
 
 .save-button {
@@ -116,4 +118,30 @@
   display: flex;
   align-items: center;
   gap: 2px; /* Adjust space between checkbox and "Yes" */
+}
+
+.logout-button,
+.delete-account-button {
+  background-color: #d67b24;
+  color: white;
+  width: 100%;
+  max-width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #b5641a;
+}
+
+.delete-account-button {
+  background-color: #cc0000;
+}
+
+.delete-account-button:hover {
+  background-color: #990000;
 }

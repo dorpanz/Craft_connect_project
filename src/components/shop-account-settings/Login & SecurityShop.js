@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../user-account-settings/LoginSecurity.css";
 import arrow from "../shop-view-seller/pics/arrow.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Menu from "../menu/Menu";
 import Footer from "../footer/Foooter";
 import { AuthContext } from "../../context/AuthContext";
 import { db, auth } from "../../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { updatePassword, reauthenticateWithCredential, EmailAuthProvider, deleteUser } from "firebase/auth";
 
 const LoginSecurityShop = () => {
   const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [fields, setFields] = useState({
     email: "",
     newsletterSubscribed: false,
@@ -90,15 +91,36 @@ const LoginSecurityShop = () => {
         email: fields.email,
         newsletterSubscribed: fields.newsletterSubscribed,
         streetAddress: fields.streetAddress,
-        city: fields.city // ← Add this line
+        city: fields.city
       });
-      
+
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating:", error);
       alert(error.message);
     }
     setLoading(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+
+    const confirmDelete = window.confirm("Are you sure you want to delete your account? This cannot be undone.");
+    if (!confirmDelete) return;
+
+    try {
+      // Delete from Firestore 'sellers' collection
+      await deleteDoc(doc(db, "sellers", user.uid));
+
+      // Delete from Firebase Auth
+      await deleteUser(auth.currentUser);
+
+      alert("Your account has been deleted.");
+      navigate("/");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      alert("Account deletion failed. Please re-authenticate and try again.");
+    }
   };
 
   return (
@@ -145,6 +167,7 @@ const LoginSecurityShop = () => {
 
         <div className="logout-section">
           <button onClick={logout} className="logout-button">LOGOUT</button>
+          <button onClick={handleDeleteAccount} className="delete-account-button">DELETE ACCOUNT</button>
         </div>
       </div>
       <Footer />

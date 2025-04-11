@@ -6,14 +6,14 @@ import Menu from "../menu/Menu";
 import Footer from "../footer/Foooter";
 import { AuthContext } from "../../context/AuthContext";
 import { db, auth } from "../../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { updatePassword, reauthenticateWithCredential, EmailAuthProvider, deleteUser, getAuth } from "firebase/auth";
 
 const LoginSecurity = () => {
   const { user, logout } = useContext(AuthContext);
   const [fields, setFields] = useState({ name: "", email: "", mobile: "" });
   const [loading, setLoading] = useState(false);
-  
+
   // Password fields
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -61,7 +61,7 @@ const LoginSecurity = () => {
     setLoading(true);
     try {
       const userRef = doc(db, "users", user.uid);
-      
+
       // Update password if provided
       if (newPassword || confirmNewPassword) {
         if (newPassword !== confirmNewPassword) {
@@ -76,12 +76,11 @@ const LoginSecurity = () => {
         }
         await updatePassword(auth.currentUser, newPassword);
         alert("Password updated successfully!");
-        // Reset password fields
         setCurrentPassword("");
         setNewPassword("");
         setConfirmNewPassword("");
       }
-      
+
       // Update other user info
       await updateDoc(userRef, {
         username: fields.name,
@@ -94,6 +93,31 @@ const LoginSecurity = () => {
       alert(error.message);
     }
     setLoading(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+  
+    if (user) {
+      const confirmDelete = window.confirm("Are you sure you want to delete your account? This cannot be undone.");
+      if (!confirmDelete) return;
+  
+      try {
+        // Delete user from Firestore 'users' collection
+        await deleteDoc(doc(db, "users", user.uid));
+  
+        // Delete user from Firebase Authentication
+        await deleteUser(user);
+  
+        alert("Your account has been deleted.");
+        // Optionally redirect user
+        window.location.href = "/"; 
+      } catch (error) {
+        console.error("Error deleting account:", error);
+        alert("Failed to delete account. Please re-authenticate and try again.");
+      }
+    }
   };
 
   return (
@@ -115,7 +139,6 @@ const LoginSecurity = () => {
           <label>Mobile:</label>
           <input type="text" name="mobile" value={fields.mobile} onChange={handleInputChange} />
 
-          {/* Password Update Fields */}
           <label>Current Password:</label>
           <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
           <label>New Password:</label>
@@ -123,7 +146,6 @@ const LoginSecurity = () => {
           <label>Confirm New Password:</label>
           <input type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} />
 
-          {/* Save Button */}
           <div className="button-container">
             <button onClick={handleSave} disabled={loading} className="save-button">
               {loading ? "Saving..." : "SAVE"}
@@ -131,9 +153,10 @@ const LoginSecurity = () => {
           </div>
         </div>
 
-        {/* Separate Logout Section */}
+        {/* Logout & Delete Account */}
         <div className="logout-section">
           <button onClick={logout} className="logout-button">LOGOUT</button>
+          <button onClick={handleDeleteAccount} className="delete-account-button">DELETE ACCOUNT</button>
         </div>
       </div>
       <Footer />
