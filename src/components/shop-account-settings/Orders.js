@@ -143,7 +143,7 @@ export const Orders = () => {
           filteredOrders.map((userOrders, index) => (
             <div key={index} className="orders-customer-section">
               <h3 className="orders-customer-name">
-                Customer: {userMap[userOrders[0]?.userId] || userOrders[0]?.userId}
+                Customer: {userMap[userOrders[0]?.username] || userOrders[0]?.username}
               </h3>
               {userOrders.map(order => (
                 <div key={order.id} className="orders-card">
