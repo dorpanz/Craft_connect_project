@@ -26,6 +26,7 @@ import "./StatisticsDash.css";
 
 export const StatisticsDash = () => {
   const [salesData, setSalesData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [mostPopularItems, setMostPopularItems] = useState([]);
   const [shopStats, setShopStats] = useState({
     shopViews: 0,
@@ -252,6 +253,7 @@ export const StatisticsDash = () => {
 
   useEffect(() => {
     const fetchCategoryStats = async () => {
+      setLoading(true); 
       try {
         // Query the "products" collection where "status" is "approved"
         const q = query(
@@ -297,11 +299,14 @@ export const StatisticsDash = () => {
         setCategoryStats(categories);
       } catch (error) {
         console.error("Error fetching category stats: ", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCategoryStats();
   }, [sellerId]);
+
   const generateChart = (itemId) => {
     const matchingData = salesData.find((data) => data.itemId === itemId);
     if (!matchingData) {
