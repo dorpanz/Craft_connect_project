@@ -138,52 +138,62 @@ export const Orders = () => {
         </div>
 
         {Object.keys(ordersByUser).length === 0 ? (
-          <p className="orders-empty">No orders yet.</p>
-        ) : (
-          filteredOrders.map((userOrders, index) => (
-            <div key={index} className="orders-customer-section">
-              <h3 className="orders-customer-name">
-                Customer: {userMap[userOrders[0]?.username] || userOrders[0]?.username}
-              </h3>
-              {userOrders.map(order => (
-                <div key={order.id} className="orders-card">
-                  <p className="orders-date">
-                    Order Date: {new Date(order.createdAt.seconds * 1000).toLocaleDateString()}
-                  </p>
-                  <div className="orders-items">
-                    {order.items.map((item) => (
-                      <div key={item.id} className={`orders-item ${getStatusClass(order.status)}`}>
-                        <img
-                          src={item.photos?.[0]}
-                          alt={item.title}
-                          className="orders-item-image"
-                        />
-                        <div className="orders-item-details">
-                          <h4 className="orders-item-title">{item.title}</h4>
-                          <p>Quantity: {item.amount}</p>
-                          <p>Total: ${item.amount * item.price}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="orders-status">
-                    <p>Status: {order.status}</p>
-                    <select
-                      className="orders-status-dropdown"
-                      value={order.status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
+  <p className="orders-empty">No orders yet.</p>
+) : (
+  Object.entries(ordersByUser).map(([userId, userOrders]) => {
+    const filteredUserOrders =
+      statusFilter === 'all'
+        ? userOrders
+        : userOrders.filter((order) => order.status === statusFilter);
+
+    if (filteredUserOrders.length === 0) return null;
+
+    return (
+      <div key={userId} className="orders-customer-section">
+        <h3 className="orders-customer-name">
+          Customer: {userMap[userId] || userId}
+        </h3>
+        {filteredUserOrders.map(order => (
+          <div key={order.id} className="orders-card">
+            <p className="orders-date">
+              Order Date: {new Date(order.createdAt.seconds * 1000).toLocaleDateString()}
+            </p>
+            <div className="orders-items">
+              {order.items.map((item) => (
+                <div key={item.id} className={`orders-item ${getStatusClass(order.status)}`}>
+                  <img
+                    src={item.photos?.[0]}
+                    alt={item.title}
+                    className="orders-item-image"
+                  />
+                  <div className="orders-item-details">
+                    <h4 className="orders-item-title">{item.title}</h4>
+                    <p>Quantity: {item.amount}</p>
+                    <p>Total: ${item.amount * item.price}</p>
                   </div>
                 </div>
               ))}
             </div>
-          ))
-        )}
+            <div className="orders-status">
+              <p>Status: {order.status}</p>
+              <select
+                className="orders-status-dropdown"
+                value={order.status}
+                onChange={(e) => handleStatusChange(order.id, e.target.value)}
+              >
+                <option value="pending">Pending</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  })
+)}
+
       </div>
     </div>
   );
