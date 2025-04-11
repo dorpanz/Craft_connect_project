@@ -256,7 +256,8 @@ export const StatisticsDash = () => {
         // Query the "products" collection where "status" is "approved"
         const q = query(
           collection(db, "products"),
-          where("status", "==", "approved")
+          where("status", "==", "approved"),
+          where("sellerId", "==", sellerId)
         );
         const querySnapshot = await getDocs(q);
 
